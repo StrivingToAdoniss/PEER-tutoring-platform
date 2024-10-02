@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - static:/static
+    env_file:
+      - backend/backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres-db
+    command: >
+      /bin/bash -c "python3 manage.py collectstatic --noinput &&
+                    python3 manage.py makemigrations &&
+                    python3 manage.py migrate &&
+                    gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - frontend:/app/build
+    restart: always
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - static:/static
+      - frontend:/var/www/frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - frontend
+  postgres-db:
+    image: postgres:14.8-alpine3.18
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=django
+
+
+
+volumes:
+  static:
+  frontend:
+  postgres_data:
