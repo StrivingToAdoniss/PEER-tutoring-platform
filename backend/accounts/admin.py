@@ -55,10 +55,11 @@ class UserAdmin(admin.ModelAdmin):
 
     def get_inline_instances(self, request, obj=None):
         inlines = []
-        if obj.role == Student.base_role:
-            inlines.append(StudentMoreInline(self.model, self.admin_site))
-        elif obj.role == Tutor.base_role:
-            inlines.append(TutorMoreInline(self.model, self.admin_site))
+        if obj:
+            if obj.role == Student.base_role:
+                inlines.append(StudentMoreInline(self.model, self.admin_site))
+            elif obj.role == Tutor.base_role:
+                inlines.append(TutorMoreInline(self.model, self.admin_site))
         return inlines
 
 
