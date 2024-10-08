@@ -18,8 +18,10 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
-        if not (extra_fields.get('is_staff') and extra_fields.get('is_superuser')):
-            raise ValueError('Superuser must have is_staff=True and is_superuser=True')
+        if not (extra_fields.get('is_staff')
+                and extra_fields.get('is_superuser')):
+            raise ValueError(
+                'Superuser must have is_staff=True and is_superuser=True')
         return self.create_user(email, password, **extra_fields)
 
 
@@ -35,13 +37,23 @@ class User(AbstractUser, PermissionsMixin):
         FOURTH = 'FOURTH', 'Fourth year'
         POSTGRADUATE = 'POSTGRADUATE', 'Postgraduate'
 
-    role = models.CharField(max_length=20, choices=Roles.choices, default=Roles.STUDENT)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    role = models.CharField(
+        max_length=20,
+        choices=Roles.choices,
+        default=Roles.STUDENT)
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     phone_number = models.CharField(max_length=20, unique=True)
     is_active = models.BooleanField(default=True)
-    current_grade = models.CharField(max_length=20, choices=CurrentGrade.choices, default=CurrentGrade.FIRST)
-    university = models.CharField(max_length=255, choices=parse_university_data())
+    current_grade = models.CharField(
+        max_length=20,
+        choices=CurrentGrade.choices,
+        default=CurrentGrade.FIRST)
+    university = models.CharField(
+        max_length=255,
+        choices=parse_university_data())
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -67,7 +79,10 @@ class TutorManager(models.Manager):
 
 
 class StudentMore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='students_more')
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='students_more')
 
 
 class Student(User):
@@ -96,7 +111,10 @@ def file_upload_to(instance, filename):
 
 
 class TutorMore(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='tutors_more')
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='tutors_more')
     students = models.ManyToManyField(Student, blank=True)
     is_approved = models.BooleanField(default=False)
     photo_url = models.ImageField(upload_to=upload_to)
