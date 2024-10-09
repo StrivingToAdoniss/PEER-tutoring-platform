@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
+    'django_rest_passwordreset'
 ]
 
 MIDDLEWARE = [
@@ -173,3 +174,9 @@ SIMPLE_JWT = {
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
