@@ -1,6 +1,6 @@
 import re
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from rest_framework import serializers
 
 from .models import TutorMore, StudentMore
@@ -8,7 +8,7 @@ from .models import TutorMore, StudentMore
 UserCustomModel = get_user_model()
 
 ERROR_MESSAGE = "Both password and username must contain at least 8 characters, and the password must contain at least one uppercase letter and one special character."
-
+NOT_FOUND_MESSAGE = "No such user, or incorrect credentials provided."
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,3 +63,22 @@ class UserSerializer(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError(
                 f"Failed to create Student data: {str(e)}")
+
+
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = UserCustomModel
+        fields = ('email', 'password')
+
+    def authenticate_user(self, request_data):
+        email = request_data.get('email')
+        password = request_data.get('password')
+        user = authenticate(email=email, password=password)
+        if not user:
+            raise serializers.ValidationError(NOT_FOUND_MESSAGE)
+        return user
+
+
