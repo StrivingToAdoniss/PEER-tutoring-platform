@@ -44,6 +44,21 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=django
 
+  redis-server:
+    image: redis:7.2.5-alpine3.20
+
+
+  celery:
+    container_name: celery
+    build:
+      context: ./backend
+    command: celery --app=backend worker -l INFO
+    volumes:
+      - ./backend:/usr/src/app
+    depends_on:
+      - redis-server
+      - backend
+
 
 
 volumes:
