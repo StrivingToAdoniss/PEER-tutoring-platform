@@ -33,9 +33,7 @@ class TutorAdminApproval(admin.ModelAdmin):
 
     def disapprove_user(self, request, queryset):
         for tutor in queryset:
-            tutor_more = tutor.more
-            tutor_more.is_approved = False
-            tutor_more.save()
+            tutor.delete()
 
     disapprove_user.short_description = 'Disapprove selected users'
 
