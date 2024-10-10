@@ -10,6 +10,7 @@ UserCustomModel = get_user_model()
 ERROR_MESSAGE = "Both password and username must contain at least 8 characters, and the password must contain at least one uppercase letter and one special character."
 NOT_FOUND_MESSAGE = "No such user, or incorrect credentials provided."
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCustomModel
@@ -82,3 +83,5 @@ class UserLoginSerializer(serializers.Serializer):
         return user
 
 
+class ResetPasswordEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
