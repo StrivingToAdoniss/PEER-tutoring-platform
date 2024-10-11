@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 
 User = get_user_model()
 
-EMAIL_FROM = "noreply@yourdomain.com"
+EMAIL_FROM = settings.EMAIL_HOST_USER
 PASSWORD_RESET_SUBJECT = "Password Reset for {title}"
 NOTIFICATION_SUBJECT = "New notification for {username}"
 APPROVED_MESSAGE_TEMPLATE = (
@@ -57,9 +57,11 @@ def reset_password(current_user_id, username, email, reset_password_url):
 def send_notifications_email(username, email):
     try:
         tutor_message = (
-            f"Dear Tutor {username}, admins will review your application soon. "
+            f"Dear Tutor {username}, "f"admins will review application soon. "
             f"Please wait for their response.")
-        admin_message = f"<p>Dear admin {settings.EMAIL_HOST_USER}, tutor {username} with {email} awaits your response.</p>"
+        admin_message = (
+            f"<p>Dear admin {settings.EMAIL_HOST_USER}, tutor {username} with {email} "
+            f"awaits your response.</p>")
 
         for message, recipient in (
                 (tutor_message, email), (admin_message, settings.EMAIL_HOST_USER)):

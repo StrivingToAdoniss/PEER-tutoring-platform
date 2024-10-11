@@ -7,7 +7,9 @@ from .models import TutorMore, StudentMore
 
 UserCustomModel = get_user_model()
 
-ERROR_MESSAGE = "Both password and username must contain at least 8 characters, and the password must contain at least one uppercase letter and one special character."
+ERROR_MESSAGE = (
+    "Both password and username must contain at least 8 characters,"
+    "and the password must contain at least one uppercase letter and one special character.")
 NOT_FOUND_MESSAGE = "No such user, or incorrect credentials provided."
 
 

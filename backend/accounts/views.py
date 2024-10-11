@@ -56,7 +56,6 @@ class UserLoginView(APIView):
 
     @staticmethod
     def check_tutor_is_approved(user):
-
         if user.role == 'TUTOR' and not user.tutors_more.is_approved:
             raise PermissionDenied(
                 "Wait until administration approves your application")
