@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Tutor, User, TutorMore, Student, StudentMore
+from .tasks import send_result_email_to_tutor
 
 
 class TutorMoreInline(admin.TabularInline):
@@ -21,19 +22,26 @@ class TutorAdminApproval(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        return queryset.filter(role=Tutor.base_role).prefetch_related('tutors_more')
+        return queryset.filter(
+            role=Tutor.base_role).prefetch_related('tutors_more')
 
     def approve_user(self, request, queryset):
         for tutor in queryset:
             tutor_more = tutor.more
             tutor_more.is_approved = True
             tutor_more.save()
+            send_result_email_to_tutor.delay(
+                username=tutor.username, email=tutor.email, is_approved=True)
 
     approve_user.short_description = 'Approve selected users'
 
     def disapprove_user(self, request, queryset):
         for tutor in queryset:
             tutor.delete()
+            send_result_email_to_tutor.delay(
+                username=tutor.username,
+                email=tutor.email,
+                is_approved=False)
 
     disapprove_user.short_description = 'Disapprove selected users'
 
