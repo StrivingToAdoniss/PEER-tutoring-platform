@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
         if created_user.role == 'TUTOR':
             self.create_tutor_specific_data(created_user, request_data)
         elif created_user.role == 'STUDENT':
-            self.create_student_specific_data(created_user, request_data)
+            self.create_student_specific_data(created_user)
         created_user.set_password(validated_data.get('password'))
         created_user.save()
 
@@ -58,9 +58,9 @@ class UserSerializer(serializers.ModelSerializer):
                 f"Failed to create Tutor data: {str(e)}")
 
     @staticmethod
-    def create_student_specific_data(created_user, request_data):
+    def create_student_specific_data(created_user):
         try:
-            StudentMore.objects.create(user=created_user, **request_data.data)
+            StudentMore.objects.create(user=created_user)
         except Exception as e:
             raise serializers.ValidationError(
                 f"Failed to create Student data: {str(e)}")
