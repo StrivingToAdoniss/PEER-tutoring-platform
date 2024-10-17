@@ -24,9 +24,7 @@ const tutors = [
     price: '30€', 
     response: 1, 
     lessonDuration: '50 min', 
-    bio: `An experienced, knowledgeable teacher will help you learn physics, study theory, learn to solve problems, think, analyze and draw conclusions. 
-
-I work as a teacher of physics and computer science, I have 30 years of teaching experience, I have my own developments that are posted on various educational sites, I undergo annual training both in my specialty and in pedagogy and psychology.`, 
+    bio: `An experienced, knowledgeable teacher will help you learn physics, study theory, learn to solve problems, think, analyze and draw conclusions. I work as a teacher of physics and computer science, I have 30 years of teaching experience, I have my own developments that are posted on various educational sites, I undergo annual training both in my specialty and in pedagogy and psychology.`, 
     location: 'Only online', 
     university: 'Université catholique de Louvain', 
     year: '3rd year', 
@@ -40,9 +38,7 @@ I work as a teacher of physics and computer science, I have 30 years of teaching
     price: '50€', 
     response: 10, 
     lessonDuration: '30 min', 
-    bio: `Tutor for mathematics, physics, school, admission to university — Deep and accessible presentation of material, enthusiasm, optimism, block system, emphasis on practice, taking into account the psychological characteristics of the student.
-
-I have 16 years in educational institutions - school, lyceum, gymnasium, and 12 years - tutoring.`, 
+    bio: `Tutor for mathematics, physics, school, admission to university — Deep and accessible presentation of material, enthusiasm, optimism, block system, emphasis on practice, taking into account the psychological characteristics of the student. I have 16 years in educational institutions - school, lyceum, gymnasium, and 12 years - tutoring.`, 
     location: 'Brussels, online', 
     university: 'Universiteit Gent', 
     year: '3rd year', 
@@ -121,8 +117,8 @@ const TutorSection = () => {
       ))}
 
       <div className="pagination">
-        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>Previous</button>
-        <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTutor >= filteredTutors.length}>Next</button>
+        <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>←</button>
+        <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTutor >= filteredTutors.length}>→</button>
       </div>
     </div>
   );
