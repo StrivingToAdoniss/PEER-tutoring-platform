@@ -1,0 +1,81 @@
+/* Navbar.css */
+.navbar {
+  position: sticky; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: transparent;
+  font-family: 'Montserrat';
+  box-sizing: border-box; 
+
+}
+
+.navbar-logo {
+  font-family: 'Montserrat';
+  display: flex;
+  align-items: center;  /* Vertically center the text and logo */
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: black;
+}
+
+.logo-image {
+  width: 40px;  /* Adjust the size of the logo */
+  height: auto; /* Keep aspect ratio */
+  margin-right: 10px;  /* Add space between the logo and text */
+}
+
+.navbar-links {
+  list-style-type: none; /* Remove bullet points */
+  padding: 0;
+  margin: 0;
+  display: flex; /* Align links horizontally */
+}
+
+.navbar-links li {
+  margin-left: 2rem; /* Space between each link */
+}
+
+/* Targeting the a elements within the li tags */
+.navbar-links li a.custom-nav-link {
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1rem;
+  color: black;
+  transition: all 0.3s ease;
+}
+
+.navbar-links li a.custom-nav-link.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.navbar-links a.custom-nav-link:hover {
+  font-weight: bold;
+  color: black;
+}
+
+.navbar-links li {
+  margin-left: 1.5rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #000;
+}
+
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* This adds space between buttons */
+}
+
+@media (max-width: 768px) {
+  .navbar-buttons .signup-btn, .navbar-buttons .login-btn {
+      padding: 0.4rem 0.8rem; /* Reduce padding for smaller screens */
+      margin-left: 0.5rem; /* Reduce margin for smaller screens */
+  }
+}
