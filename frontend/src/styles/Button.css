@@ -1,68 +1,45 @@
-/* Button.css */
-
-/* Base button styles */
+/* Base button styles (shared across all buttons) */
 .custom-button {
-    font-family: 'Montserrat';
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    text-align: center;      /* Center the text */
-    white-space: nowrap; 
-  }
-  
-  /* Default black button */
-  .black-button {
-    line-height: 0.4;  
-    font-weight: 600;
-    font-size: 1rem;
-    height: auto;
-    width: auto;
-    background: black;
-    color: white;
-    border: none;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-weight: normal;
-  }
-  
-  .black-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* White outlined button */
-  .outline-button {
-    line-height: 0.4;   
-    height: auto;
-    width: auto;
-    font-weight: 600;
-    background: white;
-    color: black;
-    border: 2px solid black;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-  
-  .outline-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Hero section gradient button */
-  .hero-button {
-    font-weight: 600;
-    font-size: 25px;
-    height: auto;
-    width: auto;
-    background: linear-gradient(90deg, #1F28CF, #530378);
-    color: white;
-    padding: 12px 30px;
-    border: none;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
-  }
-  
-  .hero-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.5);
-  }
-  
+  font-family: 'Montserrat';
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Common hover effects (shared) */
+.custom-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Default black button */
+.black-button {
+  background: black;
+  color: white;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* White outlined button */
+.outline-button {
+  background: white;
+  color: black;
+  border: 2px solid black;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Hero section gradient button */
+.hero-button {
+  background: linear-gradient(90deg, #1F28CF, #530378);
+  color: white;
+  padding: 12px 30px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-button:hover {
+  box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.5);
+}
