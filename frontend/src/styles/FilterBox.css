@@ -1,7 +1,9 @@
 /* FilterBox.css */
 
 /* Container to center the filter box */
+
 .filter-box-container {
+    font-family: 'Montserrat';
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
@@ -19,6 +21,7 @@
     padding: 20px;
   }
   
+  
   /* Filter item styles */
   .filter-item {
     margin-right: 20px;
@@ -31,12 +34,29 @@
     margin-bottom: 5px;
   }
   
-  .filter-item select,
+.filter-item select {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #040303;
+  background-color: #ffffff;
+  font-family: 'Montserrat'; /* Consistent font */
+}
+
+/* Dropdown option styling */
+.filter-item select option {
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #ffffff;
+
+}
   .filter-item .price-display {
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
+    border: 1px solid #040303;
   }
   
   /* Price box style */
@@ -44,11 +64,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    background-color: #ffffff;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    width: 130px; /* Set a fixed width */
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis;
   }
   
   .price-display button {
@@ -66,12 +89,14 @@
     position: absolute;
     top: 100%;
     left: 0;
+    height: 45px;
     right: 0;
-    padding: 20px;
+    padding: 2px;
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #b3b3b3;
+    border-radius: 8px;
     z-index: 10;
+
   }
   
   /* Custom slider styling */

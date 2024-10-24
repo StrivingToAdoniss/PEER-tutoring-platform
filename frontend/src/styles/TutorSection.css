@@ -4,11 +4,20 @@
   flex-direction: column;
   align-items: center;
   padding: 40px;
+
+  opacity: 0; /* Initially invisible */
+  transform: translateY(20px); /* Initially shifted down */
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.tutor-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Tutor Card Styles */
 .tutor-card {
-  background-color: #D9D9D9;
+  background-color: #d9d9d9;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
@@ -16,12 +25,37 @@
   max-width: 1100px;
   display: flex;
   justify-content: space-between;
-  align-items: stretch; /* Ensure child elements can stretch vertically */
+  align-items: stretch;
   cursor: default;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  border: 2px solid #000000;
+
+  opacity: 0; /* Initially invisible */
+  transform: translateY(20px); /* Start slightly shifted down */
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Adjust as needed */
+  transition-delay: 0s; /* Will be adjusted dynamically */
 }
 
+.tutor-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: Add delay to each tutor card (if not using JavaScript for staggered animation) */
+/*
+.tutor-card:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.tutor-card:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.tutor-card:nth-child(3) {
+  transition-delay: 0.3s;
+}
+*/
+
+/* Rest of your existing styles */
+
+/* Tutor Card Hover Effect */
 .tutor-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -34,7 +68,7 @@
 }
 
 .tutor-photo {
-  width: 300px; /* Adjusted size for consistency */
+  width: 300px;
   height: 300px;
   object-fit: cover;
   border-radius: 10px;
@@ -47,21 +81,19 @@
 }
 
 .tutor-info h3 {
-  margin-bottom: 5px; /* Reduced spacing */
+  margin-bottom: 5px;
 }
 
 .tutor-info p {
   display: flex;
-  align-items: center; /* Aligns icons and text vertically */
-  margin-bottom: 4px;   /* Reduced spacing between paragraphs */
+  align-items: center;
+  margin-bottom: 4px;
   color: #7a7a7a;
-  line-height: 1.2;     /* Adjusted line height for density */
+  line-height: 1.2;
 }
 
 .tutor-info p img {
-  margin: 0;
-  padding: 0;
-  margin-right: 4px;    /* Adjusts spacing between icon and text */
+  margin-right: 4px;
   width: 20px;
   height: 20px;
 }
@@ -69,10 +101,10 @@
 .tutor-info .tutor-bio {
   white-space: pre-wrap;
   color: black;
-  margin-top: 5px;      /* Reduced spacing above bio */
+  margin-top: 5px;
   text-align: justify;
   max-width: 700px;
-  line-height: 1.4;     /* Slightly larger for readability */
+  line-height: 1.4;
 }
 
 /* Tutor Meta Styles */
@@ -89,22 +121,25 @@
   gap: 20px;
   width: 100%;
   margin-bottom: 20px;
-  align-self: flex-end; 
+  align-self: flex-end;
 }
 
-.rating, .price {
+.rating,
+.price {
   display: flex;
   align-items: center;
 }
 
-.rating img, .price img {
+.rating img,
+.price img {
   width: 24px;
   height: 24px;
   margin-right: 8px;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
 
-.rating-text, .price-text {
+.rating-text,
+.price-text {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -129,14 +164,14 @@
 
 /* Button Styles */
 .blue-button {
-  background-color: #2603FF;
+  background-color: #2603ff;
   color: white;
 }
 
 .blue-outline-button {
   background-color: white;
-  border: 2px solid #2603FF;
-  color: #007BFF;
+  border: 2px solid #2603ff;
+  color: #007bff;
 }
 
 /* Pagination Styles */
@@ -150,7 +185,7 @@
   padding: 10px 20px;
   margin: 0 10px;
   border: none;
-  background-color: #2603FF;
+  background-color: #2603ff;
   color: white;
   cursor: pointer;
   border-radius: 5px;

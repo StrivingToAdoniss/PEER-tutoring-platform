@@ -1,62 +1,69 @@
-import React, { useEffect, useRef, useState } from "react";
-import "../styles/RangeSlider.css"; // Ensure this file is created with correct styles
+import React, { memo, useEffect, useRef, useState } from 'react';
+import '../styles/RangeSlider.css';
 
-const RangeSliderComponent = ({ max, min, onChange, step, value }) => {
+const RangeSliderComponent = ({
+  classes,
+  max,
+  min,
+  onChange,
+  step,
+  value,
+  minDistance = 0,
+}) => {
   const [minValue, setMinValue] = useState(value[0]);
   const [maxValue, setMaxValue] = useState(value[1]);
-  const trackRef = useRef(null);
+  const rangeRef = useRef(null);
 
-  // Update the slider track width and position
   useEffect(() => {
-    if (trackRef.current) {
-      const minLeft = `${((minValue - min) / (max - min)) * 100}%`;
-      const maxRight = `${((max - maxValue) / (max - min)) * 100}%`;
-      trackRef.current.style.left = minLeft;
-      trackRef.current.style.right = maxRight;
-    }
-  }, [minValue, maxValue, min, max]);
+    if (rangeRef.current) {
+      const range = max - min;
+      const minPercent = ((minValue - min) / range) * 100;
+      const maxPercent = ((maxValue - min) / range) * 100;
 
-  const handleMinChange = (event) => {
-    const value = Number(event.target.value);
-    if (value <= maxValue) {
-      setMinValue(value);
-      onChange([value, maxValue]);
+      // Adjust range track position and width
+      rangeRef.current.style.left = `${minPercent}%`;
+      rangeRef.current.style.width = `${maxPercent - minPercent}%`;
     }
+  }, [max, maxValue, min, minValue]);
+
+  const handleChangeMin = (event) => {
+    const value = Math.min(Number(event.target.value), maxValue - minDistance);
+    setMinValue(value);
+    onChange && onChange([value, maxValue]);
   };
 
-  const handleMaxChange = (event) => {
-    const value = Number(event.target.value);
-    if (value >= minValue) {
-      setMaxValue(value);
-      onChange([minValue, value]);
-    }
+  const handleChangeMax = (event) => {
+    const value = Math.max(Number(event.target.value), minValue + minDistance);
+    setMaxValue(value);
+    onChange && onChange([minValue, value]);
   };
 
   return (
     <div className="RangeSlider">
       <div className="RangeSlider-Slider">
-        <div className="RangeSlider-Slider-Track" ref={trackRef}></div>
+        <div className="RangeSlider-Slider-Track"></div>
+        <div className="RangeSlider-Slider-Range" ref={rangeRef}></div>
         <input
-          className="RangeSlider-Slider-Input"
-          type="range"
-          min={min}
+          className="RangeSlider-Slider-Input RangeSlider-Slider-Input-Min"
           max={max}
-          value={minValue}
-          onChange={handleMinChange}
+          min={min}
+          onChange={handleChangeMin}
           step={step}
+          type="range"
+          value={minValue}
         />
         <input
-          className="RangeSlider-Slider-Input"
-          type="range"
-          min={min}
+          className="RangeSlider-Slider-Input RangeSlider-Slider-Input-Max"
           max={max}
-          value={maxValue}
-          onChange={handleMaxChange}
+          min={min}
+          onChange={handleChangeMax}
           step={step}
+          type="range"
+          value={maxValue}
         />
       </div>
     </div>
   );
 };
 
-export const RangeSlider = RangeSliderComponent;
+export const RangeSlider = memo(RangeSliderComponent);
