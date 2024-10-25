@@ -1,0 +1,52 @@
+/* src/styles/RoleSelection.css */
+
+/* Container for role selection */
+.role-selection {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Title */
+  .role-selection h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+  
+  /* Role options wrapper */
+  .role-options {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 30px;
+  }
+  
+  /* Individual role card */
+  .role-card {
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  /* Role card hover effect */
+  .role-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Role card image */
+  .role-card img {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  /* Role card title */
+  .role-card h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+  }
+  

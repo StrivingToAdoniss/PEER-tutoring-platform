@@ -1,15 +1,29 @@
-// src/components/LogInForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';  // Axios for making HTTP requests
 import '../styles/LogIn.css';
-import backgroundImage from '../assets/login_background.svg';
+import backgroundImage from '../assets/LogIn/login_background.svg';
 
 const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);  // For displaying errors
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Find the elements that need to animate
+    const loginContainer = document.querySelector('.login-container');
+    const loginContent = document.querySelector('.login-content');
+    const cornerImage = document.querySelector('.corner-image');
+
+    // Add the 'visible' class after a short delay to trigger the animation
+    setTimeout(() => {
+      loginContainer.classList.add('visible');
+      loginContent.classList.add('visible');
+      cornerImage.classList.add('visible');
+    }, 100);  // Adjust delay as needed
+  }, []);
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();  // Prevent page reload

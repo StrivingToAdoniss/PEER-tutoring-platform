@@ -3,7 +3,7 @@ import '../styles/Navbar.css';  // If you want to add CSS for styling
 import Button from './Button';
 import NavLink from './NavLink';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.svg'; 
+import logo from '../assets/Global/logo.svg'; 
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Navbar = () => {
         <li><NavLink href="#tutors">TUTORS</NavLink></li>
       </ul>
       <div className="navbar-buttons">
-        <Button text="Sign up" onClick={() => {}} className="black-button" />
+        <Button text="Sign up" onClick={() => navigate('/signup')} className="black-button" />
         <Button text="Log in" onClick={() => navigate('/login')} className="outline-button" />
       </div>
     </nav>

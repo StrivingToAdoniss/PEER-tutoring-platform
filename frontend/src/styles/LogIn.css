@@ -1,5 +1,27 @@
 /* src/styles/LogIn.css */
 
+
+/* Initial hidden state for the container */
+.login-container,
+.login-content,
+.corner-image {
+  opacity: 0;
+  transform: translateY(50px);  /* Slightly move elements down initially */
+  transition: opacity 0.8s ease, transform 0.8s ease;  /* Smooth transitions */
+}
+
+/* When visible, the elements fade in and slide up */
+.login-container.visible,
+.login-content.visible{
+  opacity: 1;
+  transform: translateY(0);  /* Slide elements into place */
+}
+
+.corner-image.visible {
+  opacity: 0.4;
+  transform: translateY(0);  /* Slide elements into place */
+}
+
 /* Container for the entire login page */
 .login-container {
     font-family: 'Montserrat';
