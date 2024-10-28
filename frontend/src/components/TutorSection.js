@@ -105,7 +105,7 @@ const TutorSection = () => {
               <img src={iconSubject} alt="Subject" /> {tutor.subject}
             </p>
             <p>
-              <img src={iconUniversity} alt="University" /> {tutor.university}{' '}
+              <img src={iconUniversity} alt="University" /> {tutor.university}&nbsp;
               <b>{tutor.year}</b>
             </p>
             <p>

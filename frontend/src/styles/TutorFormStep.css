@@ -1,0 +1,50 @@
+/* Tutor form step */
+.tutor-form-step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .tutor-form input {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    width: 100%;
+  }
+  
+  /* Focus effect on inputs */
+  .tutor-form input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Button container */
+  .form-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Button styles */
+  .form-button-container button {
+    width: 48%;
+  }
+  
+  @media (max-width: 768px) {
+    .form-button-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-button-container button {
+      width: 100%;
+    }
+  }
+  

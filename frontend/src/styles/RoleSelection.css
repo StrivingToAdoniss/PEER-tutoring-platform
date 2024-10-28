@@ -1,5 +1,20 @@
 /* src/styles/RoleSelection.css */
 
+/* Initial hidden state for the container */
+.role-selection,
+.role-options {
+  opacity: 0;
+  transform: translateY(50px);  /* Slightly move elements down initially */
+  transition: opacity 0.8s ease, transform 0.8s ease;  /* Smooth transitions */
+}
+
+/* When visible, the elements fade in and slide up */
+.role-selection.visible,
+.role-options.visible{
+  opacity: 1;
+  transform: translateY(0);  /* Slide elements into place */
+}
+
 /* Container for role selection */
 .role-selection {
     text-align: center;

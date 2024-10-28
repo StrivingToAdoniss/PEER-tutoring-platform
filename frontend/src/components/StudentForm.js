@@ -1,16 +1,31 @@
-// src/components/StudentForm.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from './Button';
-import '../styles/StudentForm.css'; // Custom styles for the form
+import '../styles/StudentForm.css'; 
+import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
 
-const StudentForm = ({ onSubmit, onBack }) => {
-  const [formData, setFormData] = useState({
+const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
+
+  useEffect(() => {
+    const studentForm = document.querySelector('.student-form');
+    const buttonContainer = document.querySelector('.form-button-container');
+    setTimeout(() => {
+      studentForm.classList.add('visible');
+      buttonContainer.classList.add('visible');
+    }, 100);
+  }, []);
+
+  const [formData, setFormData] = useState(initialFormData || {
     firstName: '',
     lastName: '',
     email: '',
     password: '',
-    phoneNumber: '',
-    dateOfBirth: '',
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -18,68 +33,64 @@ const StudentForm = ({ onSubmit, onBack }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(formData); // Pass form data to parent component
-  };
+  const isFormComplete = Object.values(formData).every(value => value !== '');
 
   return (
-    <form onSubmit={handleSubmit} className="student-form">
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        value={formData.firstName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        value={formData.lastName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="phoneNumber"
-        placeholder="Phone Number"
-        value={formData.phoneNumber}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="dateOfBirth"
-        placeholder="Date of Birth"
-        value={formData.dateOfBirth}
-        onChange={handleChange}
-        required
-      />
-
-      {/* Button Container */}
-      <div className="form-button-container">
-        <Button text="Back" className="outline-button" onClick={onBack} />
-        <Button text="Next" className="gray-button" />
+    <div className="student-form-container">
+      {/* Image Section */}
+      <div className="student-image">
+        <img src={backgroundImage} alt="Student illustration" />
       </div>
-    </form>
+
+      {/* Form Section */}
+      <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className="student-form">
+        <input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
+
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
+          onChange={handleChange}
+          required
+        />
+        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        {errors.email && <p className="error-message">{errors.email}</p>}
+
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        {errors.password && <p className="error-message">{errors.password}</p>}
+
+        {/* Button Container */}
+        <div className="form-button-container">
+          <Button text="Back" className="outline-button" onClick={onBack} />
+          <Button text="Next" className={isFormComplete ? 'blue-button' : 'gray-button'} />
+        </div>
+      </form>
+    </div>
   );
 };
 

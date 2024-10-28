@@ -1,60 +1,90 @@
-/* src/styles/StudentForm.css */
+/* Student form container with image */
+.student-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Image container */
+.student-image {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 50vw; /* 20% of the viewport width */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 1; /* Behind the login-content */
+  opacity: 0.4;
+}
+
 
 /* Form container */
 .student-form {
-    display: flex;
-    flex-direction: column;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Form input fields */
+.student-form input {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  width: 100%;
+}
+
+/* Focus effect on inputs */
+.student-form input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Button container: Position buttons under the form fields */
+.form-button-container {
+  display: flex;
+  justify-content: space-between; /* Space between Back and Next buttons */
+  margin-top: 20px; /* Add some margin to separate from form fields */
+}
+
+/* Button styles */
+.student-form button {
+  width: 48%; /* Buttons take up half of the container's width */
+  margin: 0; /* Ensure buttons are aligned without additional margins */
+}
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .student-form-container {
+    flex-direction: column; /* Stack image and form vertically on small screens */
     gap: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
   }
-  
-  /* Form input fields */
-  .student-form input {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    background-color: #fafafa;
-    width: 100%;
-  }
-  
-  /* Focus effect on inputs */
-  .student-form input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-  }
-  
-  /* Date picker input */
-  .student-form input[type="date"] {
-    color: #666;
-  }
-  
-  /* Button container: Position buttons under the form fields */
+
   .form-button-container {
-    display: flex;
-    justify-content: space-between; /* Space between Back and Next buttons */
-    margin-top: 20px; /* Add some margin to separate from form fields */
+    flex-direction: column; /* Stack buttons on smaller screens */
+    gap: 10px;
   }
-  
-  /* Button styles */
+
   .student-form button {
-    width: 48%; /* Buttons take up half of the container's width */
-    margin: 0; /* Ensure buttons are aligned without additional margins */
+    width: 100%; /* Buttons take full width on mobile */
   }
-  
-  /* Mobile adjustments */
-  @media (max-width: 768px) {
-    .form-button-container {
-      flex-direction: column; /* Stack buttons on smaller screens */
-      gap: 10px;
-    }
-  
-    .student-form button {
-      width: 100%; /* Buttons take full width on mobile */
-    }
-  }
-  
+}
+

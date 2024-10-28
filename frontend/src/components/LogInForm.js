@@ -30,7 +30,6 @@ const LogInForm = () => {
     setError(null);  // Reset any existing errors
 
     try {
-      // Make the POST request to the backend with email and password
       const response = await axios.post('http://your-backend-url.com/api/login/', {
         email,
         password

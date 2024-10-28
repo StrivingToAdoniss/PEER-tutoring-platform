@@ -1,0 +1,47 @@
+/* Tutor university form step */
+.tutor-university-step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  
+  .tutor-university-step input {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .tutor-university-step input[type="file"] {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  /* Button container */
+  .form-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Button styles */
+  .form-button-container button {
+    width: 48%;
+  }
+  
+  @media (max-width: 768px) {
+    .form-button-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-button-container button {
+      width: 100%;
+    }
+  }
+  
