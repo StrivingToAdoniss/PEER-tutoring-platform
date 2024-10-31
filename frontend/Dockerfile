@@ -12,6 +12,7 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 
 # Install dependencies
+RUN npm install axios
 RUN npm install --verbose
 
 # Copy the rest of the application code
