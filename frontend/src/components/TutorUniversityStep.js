@@ -1,15 +1,112 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Button from './Button';
 import '../styles/TutorUniversityStep.css';
+import backgroundImage from '../assets/SignUp/tutor_step_3_background.svg';
 
 const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
+  const [profilePhotoPreview, setProfilePhotoPreview] = useState(null);
+  const profilePhotoInputRef = useRef(null);
+  const certificationInputRef = useRef(null);
+
+  // Mock data for dropdowns
+  const institutes = [    "KU Leuven",
+    "Ghent University",
+    "Wageningen University and Research",
+    "Aarhus University",
+    "Uppsala University",
+    "UCLouvain",
+    "Institute for European Studies - Université libre de Bruxelles",
+    "University of Antwerp",
+    "MIP Politecnico Di Milano",
+    "Vrije Universiteit Brussel (VUB)",
+    "University of Liège",
+    "University of Kent",
+    "Politecnico di Torino",
+    "Hasselt University",
+    "University of Luxembourg",
+    "Université de Mons",
+    "University of Salzburg",
+    "University of Namur",
+    "Institute of Tropical Medicine Antwerp (ITM)",
+    "GEM Stones",
+    "Haute Ecole Charlemagne",
+    "Brussels School of Governance",
+    "VIVES University of Applied Sciences",
+    "Evangelische Theologische Faculteit (ETF)",
+    "LUCA School of Arts - Campus Sint-Lucas Brussels",
+    "IAD - Institut des Arts de Diffusion",
+    "Catholic University College of Bruges-Ostend",
+    "ESRA International Film School",
+    "Lerian-Nti",
+    "EU-Japan Centre for Industrial Cooperation",
+    "Flemish Interuniversity Council - University Development Cooperation (VLIR-UOS)",
+    "FWO: Fonds Wetenschappelijk Onderzoek - Vlaanderen",
+    "GLOBIS University",
+    "Université UCLouvain Saint-Louis Bruxelles",
+    "The United Nations University Institute on Comparative Regional Integration Studies (UNU-CRIS)",
+    "Thomas More",
+    "UC Leuven-Limburg",
+    "The Haute École de Namur-Liège-Luxembourg",
+    "The International School of Protocol & Diplomacy ISPD",
+    "Artevelde University of Applied Sciences",
+    "Howest University of Applied Sciences",
+    "Haute Ecole Libre Mosane",
+    "United International Business Schools",
+    "Odisee University",
+    "Utrecht Summer School",
+    "Entrepreneurship School",
+    "EIT Food",
+    "ECS European Communication School Brussels",
+    "ICHEC Brussels Management School",
+    "EUREC - The Association of European Renewable Energy Research Centres",
+    "College of Europe",
+    "EIT Urban Mobility Master School",
+    "UBI Business School",
+    "Antwerp Management School",
+    "Vlerick Business School",
+    "IHECS FORMATIONS - Journalism & Communication",
+    "Solvay Brussels School of Economics and Management",
+    "EIT RawMaterials Academy",
+    "InnoEnergy MastersPlus",
+    "Centre international de formation européenne - CIFE",
+    "Swiss School Of Business and Management",
+    "KdG University of Applied Sciences and Arts",
+    "Global Institute of Sport",
+    "HEH - Haute Ecole de la Communauté française en Hainaut",
+    "Wallonie-Bruxelles International (WBI)",
+    "European Desk - Belgian-Italian Chamber of Commerce",
+    "EIT Digital Professional School",
+    "iSE The Institute of Sustainable Energy by InnoEnergy",
+    "Royal Military Academy",
+    "Haute Ecole de Namur",
+    "Artesis Plantijn University of Applied Sciences and Arts Antwerp",
+    "Belgium Directorate-General for Development Cooperation",
+    "Alliance française de Bruxelles-Europe",
+    "European Public Health Master",
+    "The European Heart Academy",
+    "Cours Florent School",
+    "Erasmus Brussels University of Applied Sciences and Arts",
+    "IPE Management School Paris",
+    "Haute École Albert Jacquard"];
+  const specialties = ["Specialty X", "Specialty Y", "Specialty Z"];
+  const courseNumbers = ["1", "2", "3", "4"];
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     onChange({ education: { ...formData.education, [name]: value } });
   };
 
   const handleFileChange = (e) => {
-    onChange({ [e.target.name]: e.target.files[0] });
+    const file = e.target.files[0];
+    if (!file) return;
+
+    onChange({ [e.target.name]: file });
+
+    if (e.target.name === 'profilePhoto') {
+      const reader = new FileReader();
+      reader.onloadend = () => setProfilePhotoPreview(reader.result);
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -17,47 +114,130 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
     onNext();
   };
 
-  return (
-    <div className="tutor-university-step">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="institute"
-          placeholder="Institute"
-          value={formData.education.institute}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="specialty"
-          placeholder="Specialty"
-          value={formData.education.specialty}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="courseNumber"
-          placeholder="Course Number"
-          value={formData.education.courseNumber}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="file"
-          name="profilePhoto"
-          onChange={handleFileChange}
-        />
-        <input
-          type="file"
-          name="certifications"
-          onChange={handleFileChange}
-        />
+  const isFormComplete = Object.values(formData).every(value => value !== '');
 
+  return (
+    <div className="tutor-form-step">
+      <div className="tutor-image">
+        <img src={backgroundImage} alt="Tutor illustration" />
+      </div>
+      <form onSubmit={handleSubmit} className="tutor-form">
+        
+        {/* Adjusted Width Container for Fields */}
+        <div className="adjusted-width-container">
+          
+          {/* Section 1: Profile Photo Upload */}
+          <div className="form-section">
+            <div className="filter-item">
+              <label className="upload-label">Upload profile photo:</label>
+              <div className="upload-container">
+                <Button
+                  className={`plus-button ${profilePhotoPreview ? 'square-button' : ''}`}
+                  onClick={() => profilePhotoInputRef.current.click()}
+                />
+                <input
+                  type="file"
+                  name="profilePhoto"
+                  accept="image/*"
+                  ref={profilePhotoInputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+                {profilePhotoPreview && (
+                  <img
+                    src={profilePhotoPreview}
+                    alt="Profile Preview"
+                    className="photo-preview"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Education Fields */}
+          <div className="form-section">
+            <div className="filter-item">
+              <label>Institute:</label>
+              <select
+                name="institute"
+                value={formData.education.institute}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Institute</option>
+                {institutes.map((institute, index) => (
+                  <option key={index} value={institute}>
+                    {institute}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="filter-item">
+              <label>Specialty:</label>
+              <select
+                name="specialty"
+                value={formData.education.specialty}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Specialty</option>
+                {specialties.map((specialty, index) => (
+                  <option key={index} value={specialty}>
+                    {specialty}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="filter-item">
+              <label>Course Number:</label>
+              <select
+                name="courseNumber"
+                value={formData.education.courseNumber}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Select Course Number</option>
+                {courseNumbers.map((course, index) => (
+                  <option key={index} value={course}>
+                    {course}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Section 3: Certificate Upload */}
+          <div className="form-section">
+            <div className="filter-item">
+              <label className="upload-label">Upload certified document from the university:</label>
+              <div className="upload-container">
+                <Button
+                  className="plus-button"
+                  onClick={() => certificationInputRef.current.click()}
+                />
+                <input
+                  type="file"
+                  name="certifications"
+                  accept="image/*,.pdf,.doc,.docx"
+                  ref={certificationInputRef}
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }}
+                />
+                {formData.certifications && (
+                  <span className="upload-preview">Document loaded</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Back and Next Buttons */}
         <div className="form-button-container">
           <Button text="Back" className="outline-button" onClick={onBack} />
-          <Button text="Next" className="gray-button" />
+          <Button text="Next" className={isFormComplete ? 'blue-button' : 'gray-button'} />
         </div>
       </form>
     </div>

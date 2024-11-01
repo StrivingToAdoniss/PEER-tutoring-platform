@@ -1,11 +1,33 @@
 /* Tutor form step */
 .tutor-form-step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  }
+
+  .tutor-form{
+    z-index: 2;
+    flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 40px;
-    max-width: 1200px;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
     margin: 0 auto;
+    text-align: center;
+
+  }
+
+  .background-tutor-image{
+    position: absolute;
+    bottom: 0;
+    right: -10vw;
+    width: 50vw; /* 20% of the viewport width */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1; /* Behind the login-content */
+    opacity: 0.4;
   }
   
   .tutor-form input {
@@ -23,6 +45,7 @@
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+
   }
   
   /* Button container */

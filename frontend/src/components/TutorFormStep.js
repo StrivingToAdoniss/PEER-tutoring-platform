@@ -14,9 +14,11 @@ const TutorFormStep = ({ formData, onBack, onNext, onChange }) => {
     onNext();
   };
 
+  const isFormComplete = Object.values(formData).every(value => value !== '');
+
   return (
     <div className="tutor-form-step">
-      <div className="tutor-image">
+      <div className="background-tutor-image">
         <img src={backgroundImage} alt="Tutor illustration" />
       </div>
       <form onSubmit={handleSubmit} className="tutor-form">
@@ -53,9 +55,10 @@ const TutorFormStep = ({ formData, onBack, onNext, onChange }) => {
           required
         />
 
+        {/* Button Container */}
         <div className="form-button-container">
           <Button text="Back" className="outline-button" onClick={onBack} />
-          <Button text="Next" className="gray-button" />
+          <Button text="Next" className={isFormComplete ? 'blue-button' : 'gray-button'} />
         </div>
       </form>
     </div>

@@ -1,47 +1,104 @@
-/* Tutor university form step */
-.tutor-university-step {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .tutor-university-step input {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    box-sizing: border-box;
-    background-color: #fafafa;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  .tutor-university-step input[type="file"] {
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
-  /* Button container */
+/* Common width for all fields based on longest content */
+.adjusted-width-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 42ch; /* Maximum width constraint */
+}
+
+.adjusted-width-container .filter-item,
+.adjusted-width-container .upload-container {
+  width: 100%;
+}
+
+.filter-item select,
+.filter-item input,
+.upload-container .plus-button {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling if content exceeds width */
+}
+
+.filter-item select option,
+.filter-item input {
+  max-width: 42ch; /* Limit the width of content inside select options */
+  text-overflow: ellipsis;
+}
+
+.upload-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.upload-container .plus-button {
+  width: 100%; /* Full width within the adjusted container */
+  max-width: 100%;
+  padding: 10px;
+  background-color: #e0e0e0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+/* Profile photo preview styling */
+.photo-preview {
+  width: 80px;  /* Fixed width */
+  height: 80px; /* Fixed height */
+  border-radius: 8px; /* Rounded corners */
+  object-fit: cover; /* Ensures image fills the area without distortion */
+  margin-left: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
+}
+
+
+/* Back and Next Button Container */
+.form-button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.form-button-container button {
+  width: 48%; /* Set specific width for back and next buttons */
+}
+
+/* Square button style after image upload */
+.square-button {
+  border-radius: 8px; /* Change to square */
+  width: 80px !important; /* Fixed width for square */
+}
+
+@media (max-width: 768px) {
   .form-button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  /* Button styles */
+
   .form-button-container button {
-    width: 48%;
+    width: 100%;
   }
-  
-  @media (max-width: 768px) {
-    .form-button-container {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .form-button-container button {
-      width: 100%;
-    }
+
+  .form-section {
+    flex-direction: column;
+    align-items: stretch;
   }
+}
+
+  
+  .tutor-image{
+    position: absolute;
+    bottom: 0;
+    left: -25vw;
+    width: 50vw; /* 20% of the viewport width */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1; /* Behind the login-content */
+    opacity: 0.4;
+  }
+
   
