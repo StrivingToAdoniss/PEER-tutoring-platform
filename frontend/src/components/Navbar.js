@@ -14,10 +14,6 @@ const Navbar = () => {
         <img src={logo} alt="Logo" className="logo-image" />
         Peer-a-peer
       </div>
-      <ul className="navbar-links">
-        <li><NavLink href="#main">MAIN</NavLink></li>
-        <li><NavLink href="#tutors">TUTORS</NavLink></li>
-      </ul>
       <div className="navbar-buttons">
         <Button text="Sign up" onClick={() => navigate('/signup')} className="black-button" />
         <Button text="Log in" onClick={() => navigate('/login')} className="outline-button" />
