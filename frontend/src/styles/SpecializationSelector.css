@@ -29,12 +29,6 @@
     margin-left: 8px;
   }
   
-.filter-item {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
   .selected-items {
     display: flex;
     flex-wrap: wrap;

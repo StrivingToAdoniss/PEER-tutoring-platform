@@ -1,6 +1,6 @@
 .filter-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
   }
   
@@ -17,6 +17,12 @@
     padding: 5px 10px;
     border-radius: 12px;
     color: #fff;
+    border: 1px solid black;
+    text-shadow:
+    1px 1px 0 black,
+    -1px -1px 0 black,
+    -1px 1px 0 black,
+    1px -1px 0 black;
     font-weight: bold;
   }
   
@@ -28,12 +34,7 @@
     cursor: pointer;
     margin-left: 8px;
   }
-  
-.filter-item {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+
   
   .selected-items {
     display: flex;

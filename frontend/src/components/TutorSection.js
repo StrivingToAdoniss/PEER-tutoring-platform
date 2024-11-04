@@ -79,6 +79,7 @@ const TutorSection = () => {
 
   return (
     <div className="tutor-section">
+      
       <FilterBox
         subjects={['Physics', 'Math', 'Computer Science']}
         locations={['Kyiv', 'Lviv']}
