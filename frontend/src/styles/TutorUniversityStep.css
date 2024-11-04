@@ -1,31 +1,58 @@
-/* Common width for all fields based on longest content */
+/* Outer Container to Center the Form */
+.outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh; /* Full viewport height */
+  padding: 20px; /* Optional padding for smaller screens */
+  box-sizing: border-box;
+}
+
+/* Adjusted Width Container */
 .adjusted-width-container {
   display: flex;
   flex-direction: column;
+
+
+  max-width: 800px; /* Increased maximum width constraint */
+  margin: 0 auto;
+}
+
+/* Form Section */
+.form-section {
+  display: grid;
+  grid-template-columns: 220px 1fr;
   align-items: center;
-  width: 100%;
-  max-width: 42ch; /* Maximum width constraint */
+  gap: 20px;
+  margin-bottom: 25px;
 }
 
-.adjusted-width-container .filter-item,
-.adjusted-width-container .upload-container {
+/* Side Text */
+.side-text {
+  font-weight: bold;
+  color: black;
+  font-size: 1.2rem;
+  text-shadow:
+    1px 1px 0 white,
+    -1px -1px 0 white,
+    -1px 1px 0 white,
+    1px -1px 0 white;
+}
+
+/* Filter Item */
+.filter-item {
   width: 100%;
 }
 
+/* Input Fields */
 .filter-item select,
-.filter-item input,
-.upload-container .plus-button {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: auto; /* Enable horizontal scrolling if content exceeds width */
-}
-
-.filter-item select option,
 .filter-item input {
-  max-width: 42ch; /* Limit the width of content inside select options */
-  text-overflow: ellipsis;
+  width: 42ch;
+  padding: 10px;
+  font-size: 1rem;
 }
 
+/* Upload Container */
 .upload-container {
   display: flex;
   align-items: center;
@@ -33,8 +60,7 @@
 }
 
 .upload-container .plus-button {
-  width: 100%; /* Full width within the adjusted container */
-  max-width: 100%;
+  width: 200px; /* Fixed width */
   padding: 10px;
   background-color: #e0e0e0;
   display: flex;
@@ -46,16 +72,32 @@
   cursor: pointer;
 }
 
-/* Profile photo preview styling */
-.photo-preview {
-  width: 80px;  /* Fixed width */
-  height: 80px; /* Fixed height */
-  border-radius: 8px; /* Rounded corners */
-  object-fit: cover; /* Ensures image fills the area without distortion */
-  margin-left: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow for aesthetics */
+/* Square Button Style After Image Upload */
+.square-button {
+  width: 50px !important; /* Change width to 80px after upload */
 }
 
+/* Profile Photo Preview */
+.photo-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-left: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* File Name Display */
+.file-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #333;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
+}
 
 /* Back and Next Button Container */
 .form-button-container {
@@ -65,16 +107,34 @@
 }
 
 .form-button-container button {
-  width: 48%; /* Set specific width for back and next buttons */
+  width: 48%;
 }
 
-/* Square button style after image upload */
-.square-button {
-  border-radius: 8px; /* Change to square */
-  width: 80px !important; /* Fixed width for square */
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
+  .adjusted-width-container {
+    max-width: 100%;
+  }
+
+  .form-section {
+    grid-template-columns: 1fr;
+  }
+
+  .side-text {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .filter-item {
+    width: 100%;
+  }
+
+  .filter-item select,
+  .filter-item input,
+  .upload-container {
+    width: 100%;
+  }
+
   .form-button-container {
     flex-direction: column;
     gap: 10px;
@@ -83,22 +143,15 @@
   .form-button-container button {
     width: 100%;
   }
-
-  .form-section {
-    flex-direction: column;
-    align-items: stretch;
-  }
 }
 
-  
-  .tutor-image{
-    position: absolute;
-    bottom: 0;
-    left: -25vw;
-    width: 50vw; /* 20% of the viewport width */
-    height: auto; /* Maintain aspect ratio */
-    z-index: 1; /* Behind the login-content */
-    opacity: 0.4;
-  }
-
-  
+/* Tutor Image */
+.tutor-image {
+  position: absolute;
+  bottom: 0;
+  left: -25vw;
+  width: 50vw;
+  height: auto;
+  z-index: 1;
+  opacity: 0.4;
+}

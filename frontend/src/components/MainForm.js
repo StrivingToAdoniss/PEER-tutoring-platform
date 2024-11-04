@@ -24,7 +24,10 @@ const MainForm = () => {
       courseNumber: '',
       certifications: null,  // For file uploads
     },
-    profilePhoto: null,  // For file uploads
+    profilePhoto: null,             // For file uploads
+    profilePhotoPreview: '',        // Added for preview
+    certifications: null,           // For file uploads
+    certificateFileName: '',        // Added for file name
     subjects: [],
     specializations: {},
   });
@@ -48,7 +51,25 @@ const MainForm = () => {
   };
 
   const handleFormDataChange = (newData) => {
-    setFormData((prevData) => ({ ...prevData, ...newData }));
+    setFormData((prevData) => {
+      const updatedData = { ...prevData };
+  
+      for (const key in newData) {
+        if (
+          typeof newData[key] === 'object' &&
+          !Array.isArray(newData[key]) &&
+          newData[key] !== null
+        ) {
+          // Merge nested objects
+          updatedData[key] = { ...prevData[key], ...newData[key] };
+        } else {
+          // Update or add new fields
+          updatedData[key] = newData[key];
+        }
+      }
+  
+      return updatedData;
+    });
   };
 
   const handleSubmit = () => {

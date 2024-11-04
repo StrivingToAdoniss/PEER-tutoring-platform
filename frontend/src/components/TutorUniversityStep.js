@@ -1,15 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Button from './Button';
 import '../styles/TutorUniversityStep.css';
 import backgroundImage from '../assets/SignUp/tutor_step_3_background.svg';
 
 const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
   const [profilePhotoPreview, setProfilePhotoPreview] = useState(null);
+  const [certificateFileName, setCertificateFileName] = useState('');
   const profilePhotoInputRef = useRef(null);
   const certificationInputRef = useRef(null);
 
   // Mock data for dropdowns
-  const institutes = [    "KU Leuven",
+  const institutes = [
+    "KU Leuven",
     "Ghent University",
     "Wageningen University and Research",
     "Aarhus University",
@@ -87,34 +89,61 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
     "Cours Florent School",
     "Erasmus Brussels University of Applied Sciences and Arts",
     "IPE Management School Paris",
-    "Haute École Albert Jacquard"];
+    "Haute École Albert Jacquard"
+  ];
   const specialties = ["Specialty X", "Specialty Y", "Specialty Z"];
   const courseNumbers = ["1", "2", "3", "4"];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    onChange({ education: { ...formData.education, [name]: value } });
+    onChange({
+      education: { [name]: value },
+    });
   };
 
+  useEffect(() => {
+    if (formData.profilePhotoPreview) {
+      setProfilePhotoPreview(formData.profilePhotoPreview);
+    }
+    if (formData.certificateFileName) {
+      setCertificateFileName(formData.certificateFileName);
+    }
+  }, [formData.profilePhotoPreview, formData.certificateFileName]);
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    onChange({ [e.target.name]: file });
-
+  
     if (e.target.name === 'profilePhoto') {
       const reader = new FileReader();
-      reader.onloadend = () => setProfilePhotoPreview(reader.result);
+      reader.onloadend = () => {
+        setProfilePhotoPreview(reader.result);
+        onChange({
+          profilePhoto: file,
+          profilePhotoPreview: reader.result,
+        });
+      };
       reader.readAsDataURL(file);
+    } else if (e.target.name === 'certifications') {
+      setCertificateFileName(file.name);
+      onChange({
+        certifications: file,
+        certificateFileName: file.name,
+      });
     }
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     onNext();
   };
 
-  const isFormComplete = Object.values(formData).every(value => value !== '');
+  const isFormComplete =
+  formData.profilePhoto &&
+  formData.certifications &&
+  formData.education &&
+  formData.education.institute &&
+  formData.education.specialty &&
+  formData.education.courseNumber;
 
   return (
     <div className="tutor-form-step">
@@ -123,17 +152,21 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
       </div>
       <form onSubmit={handleSubmit} className="tutor-form">
         
+      <div class="outer-container">
         {/* Adjusted Width Container for Fields */}
         <div className="adjusted-width-container">
           
           {/* Section 1: Profile Photo Upload */}
           <div className="form-section">
+            <span className="side-text">Upload profile photo:</span>
             <div className="filter-item">
-              <label className="upload-label">Upload profile photo:</label>
               <div className="upload-container">
                 <Button
                   className={`plus-button ${profilePhotoPreview ? 'square-button' : ''}`}
-                  onClick={() => profilePhotoInputRef.current.click()}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent form submission
+                    profilePhotoInputRef.current.click();
+                  }}
                 />
                 <input
                   type="file"
@@ -154,17 +187,17 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
             </div>
           </div>
 
-          {/* Section 2: Education Fields */}
+          {/* Section 2: Institute */}
           <div className="form-section">
+            <span className="side-text">Institute:</span>
             <div className="filter-item">
-              <label>Institute:</label>
               <select
                 name="institute"
                 value={formData.education.institute}
                 onChange={handleInputChange}
                 required
               >
-                <option value="">Select Institute</option>
+                <option value=""disabled hidden>Select Institute</option>
                 {institutes.map((institute, index) => (
                   <option key={index} value={institute}>
                     {institute}
@@ -172,16 +205,19 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
                 ))}
               </select>
             </div>
+          </div>
 
+          {/* Section 3: Specialty */}
+          <div className="form-section">
+            <span className="side-text">Specialty:</span>
             <div className="filter-item">
-              <label>Specialty:</label>
               <select
                 name="specialty"
                 value={formData.education.specialty}
                 onChange={handleInputChange}
                 required
               >
-                <option value="">Select Specialty</option>
+                <option value=""disabled hidden>Select Specialty</option>
                 {specialties.map((specialty, index) => (
                   <option key={index} value={specialty}>
                     {specialty}
@@ -189,16 +225,19 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
                 ))}
               </select>
             </div>
+          </div>
 
+          {/* Section 4: Course Number */}
+          <div className="form-section">
+            <span className="side-text">Course Number:</span>
             <div className="filter-item">
-              <label>Course Number:</label>
               <select
                 name="courseNumber"
                 value={formData.education.courseNumber}
                 onChange={handleInputChange}
                 required
               >
-                <option value="">Select Course Number</option>
+                <option value=""disabled hidden>Select Course Number</option>
                 {courseNumbers.map((course, index) => (
                   <option key={index} value={course}>
                     {course}
@@ -208,14 +247,17 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
             </div>
           </div>
 
-          {/* Section 3: Certificate Upload */}
+          {/* Section 5: Certificate Upload */}
           <div className="form-section">
+            <span className="side-text">Upload certified document from the university:</span>
             <div className="filter-item">
-              <label className="upload-label">Upload certified document from the university:</label>
               <div className="upload-container">
                 <Button
                   className="plus-button"
-                  onClick={() => certificationInputRef.current.click()}
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent form submission
+                    certificationInputRef.current.click();
+                  }}
                 />
                 <input
                   type="file"
@@ -225,13 +267,14 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
                   onChange={handleFileChange}
                   style={{ display: 'none' }}
                 />
-                {formData.certifications && (
-                  <span className="upload-preview">Document loaded</span>
-                )}
               </div>
+              {certificateFileName && (
+                <span className="file-name">{certificateFileName}</span>
+              )}
             </div>
           </div>
 
+        </div>
         </div>
 
         {/* Back and Next Buttons */}

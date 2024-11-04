@@ -8,13 +8,15 @@ const TutorFormStep = ({ formData, onBack, onNext, onChange }) => {
     const { name, value } = e.target;
     onChange({ [name]: value });
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onNext();
   };
 
-  const isFormComplete = Object.values(formData).every(value => value !== '');
+  const requiredFields = ['firstName', 'lastName', 'email', 'password'];
+  const isFormComplete = requiredFields.every((field) => formData[field] !== '');  
 
   return (
     <div className="tutor-form-step">

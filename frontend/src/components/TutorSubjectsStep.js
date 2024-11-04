@@ -1,77 +1,152 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SubjectSelector from './SubjectSelector';
+import SpecializationSelector from './SpecializationSelector';
 import Button from './Button';
-import SubjectTag from './SubjectTag';
 import '../styles/TutorSubjectsStep.css';
+import backgroundImage from '../assets/SignUp/tutor_step_4_background.svg';
 
-// Example mock subjects and specializations
-const mockSubjects = ['English', 'Math', 'Physics', 'Chemistry'];
+const colors = [
+  '#FFB6C1', '#ADD8E6', '#98FB98', '#DDA0DD', '#FFD700',
+  '#FF7F50', '#4682B4', '#8A2BE2', '#FFA500', '#40E0D0',
+  '#6495ED', '#DC143C', '#32CD32', '#9370DB', '#FFDAB9',
+  '#FF6347', '#4682B4', '#8B0000', '#FFD700', '#00CED1',
+  '#DAA520', '#7FFF00', '#D2691E', '#FF4500', '#8FBC8F'
+];
+
+const MAX_SUBJECTS = 3;
+
+const mockSubjects = ['Math', 'Physics', 'English', 'Chemistry', 'Biology'];
 const mockSpecializations = {
-  Math: ['Algebra', 'Calculus', 'Probability'],
-  Physics: ['Quantum Mechanics', 'Classical Mechanics'],
+  Math: ['Calculus', 'Algebra', 'Probability'],
+  Physics: ['Mechanics', 'Optics', 'Quantum Physics'],
+  English: ['British', 'American', 'IELTS Preparation'],
+  Chemistry: ['Organic', 'Inorganic', 'Physical Chemistry'],
+  Biology: ['Genetics', 'Ecology', 'Microbiology'],
 };
 
-const TutorSubjectsStep = ({ formData, onBack, onSubmit, onChange }) => {
+const assignColor = (name, colorMap) => {
+  if (colorMap[name]) return colorMap[name];
+
+  let availableColors = colors.filter(color => !Object.values(colorMap).includes(color));
+  const color = availableColors.length > 0 ? availableColors[0] : colors[Math.floor(Math.random() * colors.length)];
+  
+  colorMap[name] = color;
+  return color;
+};
+
+const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [selectedSpecializations, setSelectedSpecializations] = useState({});
+  const [colorMap, setColorMap] = useState({});
+  const [error, setError] = useState('');
+
+  const clearError = () => setError('');
 
   const handleSubjectSelect = (subject) => {
-    setSelectedSubjects((prev) => [...prev, subject]);
-    setSelectedSpecializations((prev) => ({ ...prev, [subject]: [] }));
-  };
-
-  const handleSpecializationSelect = (subject, specialization) => {
-    setSelectedSpecializations((prev) => ({
-      ...prev,
-      [subject]: [...prev[subject], specialization],
-    }));
+    if (selectedSubjects.length >= MAX_SUBJECTS) {
+      setError(`You can only select up to ${MAX_SUBJECTS} subjects.`);
+      return;
+    }
+    clearError();
+    if (!selectedSubjects.includes(subject)) {
+      setSelectedSubjects([...selectedSubjects, subject]);
+      setSelectedSpecializations((prev) => ({
+        ...prev,
+        [subject]: [],
+      }));
+    }
   };
 
   const handleSubjectRemove = (subject) => {
-    setSelectedSubjects((prev) => prev.filter((s) => s !== subject));
+    clearError();
+    setSelectedSubjects(selectedSubjects.filter(s => s !== subject));
     setSelectedSpecializations((prev) => {
-      const newSpecs = { ...prev };
-      delete newSpecs[subject];
-      return newSpecs;
+      const updatedSpecializations = { ...prev };
+      delete updatedSpecializations[subject];
+      return updatedSpecializations;
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onChange({ subjects: selectedSubjects, specializations: selectedSpecializations });
-    onSubmit();
+  const handleSpecializationSelect = (subject, specialization) => {
+    clearError();
+    setSelectedSpecializations((prev) => ({
+      ...prev,
+      [subject]: prev[subject].includes(specialization)
+        ? prev[subject]
+        : [...prev[subject], specialization],
+    }));
   };
 
+  const handleSpecializationRemove = (subject, specialization) => {
+    clearError();
+    setSelectedSpecializations((prev) => ({
+      ...prev,
+      [subject]: prev[subject].filter(s => s !== specialization),
+    }));
+  };
+
+  useEffect(() => {
+    const newColorMap = { ...colorMap };
+    selectedSubjects.forEach((subject) => assignColor(subject, newColorMap));
+    Object.keys(selectedSpecializations).forEach((subject) => {
+      selectedSpecializations[subject].forEach((spec) => assignColor(spec, newColorMap));
+    });
+    setColorMap(newColorMap);
+  }, [selectedSubjects, selectedSpecializations]);
+
+  const availableSubjects = mockSubjects.filter(subject => !selectedSubjects.includes(subject));
+  const availableSpecializations = {};
+  selectedSubjects.forEach(subject => {
+    availableSpecializations[subject] = mockSpecializations[subject].filter(
+      spec => !selectedSpecializations[subject]?.includes(spec)
+    );
+  });
+
+  const isFormComplete = selectedSubjects.length > 0;
+
   return (
-    <div className="tutor-subjects-step">
-      <h2>Choose Subjects and Specializations</h2>
-      <div className="subjects-container">
-        {mockSubjects.map((subject) => (
-          <SubjectTag
-            key={subject}
-            subject={subject}
-            selected={selectedSubjects.includes(subject)}
-            onSelect={() => handleSubjectSelect(subject)}
-            onRemove={() => handleSubjectRemove(subject)}
-          />
-        ))}
+    <div className="subject-outer-container">
+      <div className="step-4-tutor-image">
+        <img src={backgroundImage} alt="Tutor illustration" />
       </div>
-
-      {selectedSubjects.map((subject) => (
-        <div key={subject}>
-          <h4>{subject} Specializations:</h4>
-          {mockSpecializations[subject].map((specialization) => (
-            <SubjectTag
-              key={specialization}
-              subject={specialization}
-              onSelect={() => handleSpecializationSelect(subject, specialization)}
-            />
-          ))}
+      <div className="subject-adjusted-width-container">
+        <h2>Choose the subjects you can teach</h2>
+        <div className="form-section">
+          <span className="side-text">Subjects:</span>
+          <SubjectSelector
+            availableSubjects={availableSubjects}
+            selectedSubjects={selectedSubjects}
+            onSelect={handleSubjectSelect}
+            onRemove={handleSubjectRemove}
+            colorMap={colorMap}
+          />
         </div>
-      ))}
 
-      <div className="form-button-container">
-        <Button text="Back" className="outline-button" onClick={onBack} />
-        <Button text="Submit" className="blue-button" onClick={handleSubmit} />
+        {error && <p className="error-text">{error}</p>}
+
+        {selectedSubjects.length > 0 && (
+          <div className="form-section">
+            <span className="side-text">Specializations:</span>
+            <SpecializationSelector
+              selectedSubjects={selectedSubjects}
+              selectedSpecializations={selectedSpecializations}
+              availableSpecializations={availableSpecializations}
+              onSelectSpecialization={handleSpecializationSelect}
+              onRemoveSpecialization={handleSpecializationRemove}
+              colorMap={colorMap}
+            />
+          </div>
+        )}
+        
+        <div className="form-button-container">
+          <Button text="Back" className="outline-button" onClick={onBack} />
+          <Button
+            text="Next"
+            className={isFormComplete ? 'blue-button' : 'gray-button'}
+            onClick={onNext}
+            disabled={!isFormComplete}
+          />
+        </div>
       </div>
     </div>
   );

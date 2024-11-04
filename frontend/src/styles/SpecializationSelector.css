@@ -1,0 +1,61 @@
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .selected-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  
+  .item-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .remove-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 8px;
+  }
+  
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .selected-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  
+  .item-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .remove-button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 8px;
+  }
