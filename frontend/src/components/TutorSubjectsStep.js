@@ -102,7 +102,7 @@ const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
     );
   });
 
-  const isFormComplete = selectedSubjects.length > 0;
+  const isFormComplete = selectedSubjects.length > 0 && Object.values(selectedSpecializations).every(arr => arr.length > 0);
 
   return (
     <div className="subject-outer-container">
