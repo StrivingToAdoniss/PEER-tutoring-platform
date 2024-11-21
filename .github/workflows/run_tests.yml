@@ -41,6 +41,7 @@ jobs:
           pip install pytest-django
 
       - name: Run Tests
+        working-directory: ./backend/tests
         run: pytest
         env:
           DATABASE_NAME: postgres
