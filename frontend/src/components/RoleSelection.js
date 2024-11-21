@@ -7,7 +7,7 @@ const RoleSelection = ({ onSelectRole }) => {
 
   useEffect(() => {
     const roleSelection = document.querySelector('.role-selection');
-    const roleOptions = document.querySelector('.role-options');
+    const roleOptions = document.querySelector('.role-selection-options');
     setTimeout(() => {
       roleSelection.classList.add('visible');
       roleOptions.classList.add('visible');
@@ -17,12 +17,12 @@ const RoleSelection = ({ onSelectRole }) => {
   return (
     <div className="role-selection">
       <h2>Select Your Role</h2>
-      <div className="role-options">
-        <div className="role-card" onClick={() => onSelectRole('Student')}>
+      <div className="role-selection-options">
+        <div className="role-selection-card" onClick={() => onSelectRole('Student')}>
           <img src={studentImage} alt="Student" />
           <h3>Student</h3>
         </div>
-        <div className="role-card" onClick={() => onSelectRole('Tutor')}>
+        <div className="role-selection-card" onClick={() => onSelectRole('Tutor')}>
           <img src={teacherImage} alt="Tutor" />
           <h3>Tutor</h3>
         </div>

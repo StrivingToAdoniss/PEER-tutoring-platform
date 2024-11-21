@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/SpecializationSelector.css';
+import styles from '../styles/SpecializationSelector.module.css';
 
 const SpecializationSelector = ({
   selectedSubjects,
@@ -10,13 +10,13 @@ const SpecializationSelector = ({
   colorMap
 }) => {
   return (
-    <div className="filter-item">
+    <div className={styles.filterItem}>
       {selectedSubjects.map((subject) => {
         // Check if there are any specializations left to select for this subject
         const isDisabled = !availableSpecializations[subject]?.length;
 
         return (
-          <div key={subject} className="specialization-section">
+          <div key={subject} className={styles.specializationSection}>
             <label>Specializations for {subject}:</label>
             <select
               onChange={(e) => onSelectSpecialization(subject, e.target.value)}
@@ -30,16 +30,16 @@ const SpecializationSelector = ({
                 <option key={spec} value={spec}>{spec}</option>
               ))}
             </select>
-            <div className="selected-items">
+            <div className={styles.selectedItems}>
               {selectedSpecializations[subject]?.map((specialization) => (
                 <span
                   key={specialization}
-                  className="item-tag"
+                  className={styles.itemTag}
                   style={{ backgroundColor: colorMap[specialization] }}
                 >
                   {specialization}
                   <button
-                    className="remove-button"
+                    className={styles.removeButton}
                     onClick={() => onRemoveSpecialization(subject, specialization)}
                   >
                     &times;

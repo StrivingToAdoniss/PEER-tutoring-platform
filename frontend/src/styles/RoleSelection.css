@@ -2,7 +2,7 @@
 
 /* Initial hidden state for the container */
 .role-selection,
-.role-options {
+.role-selection-options {
   opacity: 0;
   transform: translateY(50px);  /* Slightly move elements down initially */
   transition: opacity 0.8s ease, transform 0.8s ease;  /* Smooth transitions */
@@ -10,7 +10,7 @@
 
 /* When visible, the elements fade in and slide up */
 .role-selection.visible,
-.role-options.visible{
+.role-selection-options.visible{
   opacity: 1;
   transform: translateY(0);  /* Slide elements into place */
 }
@@ -29,37 +29,39 @@
   }
   
   /* Role options wrapper */
-  .role-options {
+  .role-selection-options {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 30vh;
     margin-bottom: 30px;
   }
   
   /* Individual role card */
-  .role-card {
+  .role-selection-card {
     padding: 20px;
     border-radius: 12px;
     text-align: center;
+    justify-content: center; 
+    align-items: center; 
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
   /* Role card hover effect */
-  .role-card:hover {
+  .role-selection-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   }
   
   /* Role card image */
-  .role-card img {
-    width: 120px;
-    height: auto;
+  .role-selection-card img {
+    width: 50vh;
+    height: 400px;
     margin-bottom: 10px;
   }
   
   /* Role card title */
-  .role-card h3 {
+  .role-selection-card h3 {
     font-size: 1.2rem;
     font-weight: bold;
     color: #333;

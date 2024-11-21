@@ -1,10 +1,12 @@
+// StudentForm.js
+
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Button from './Button';
-import '../styles/StudentForm.css'; 
+import '../styles/StudentForm.css';
 import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
 
 const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
-
   useEffect(() => {
     const studentForm = document.querySelector('.student-form');
     const buttonContainer = document.querySelector('.form-button-container');
@@ -14,26 +16,81 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
     }, 100);
   }, []);
 
-  const [formData, setFormData] = useState(initialFormData || {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState(
+    initialFormData || {
+      firstName: '',
+      lastName: '',
+      email: '',
+      username: '',
+      password: '',
+      role: 'STUDENT', // Set default role as 'STUDENT'
+    }
+  );
 
-  const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-  });
+  const [errors, setErrors] = useState({});
 
+  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const isFormComplete = Object.values(formData).every(value => value !== '');
+  // Function to handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Frontend validation for password and username
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&]).{8,}$/;
+    const usernamePattern = /^.{4,}$/;
+
+    const validationErrors = {};
+
+    if (!passwordPattern.test(formData.password)) {
+      validationErrors.password =
+        'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
+    }
+
+    if (!usernamePattern.test(formData.username)) {
+      validationErrors.username = 'Username must be at least 8 characters long.';
+    }
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/register/', {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        role: formData.role,
+      });
+
+      // Store the JWT tokens
+      const { access, refresh } = response.data;
+      localStorage.setItem('accessToken', access);
+      localStorage.setItem('refreshToken', refresh);
+
+      // Set the default authorization header for Axios
+      axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
+
+      // Proceed to the next step or redirect as needed
+      onSubmit(formData);
+    } catch (error) {
+      // Handle errors returned by the server
+      if (error.response && error.response.data) {
+        setErrors(error.response.data);
+      } else {
+        console.error('Registration error:', error);
+      }
+    }
+  };
+
+  // Check if the form is complete
+  const isFormComplete = Object.values(formData).every((value) => value !== '');
 
   return (
     <div className="student-form-container">
@@ -43,7 +100,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
       </div>
 
       {/* Form Section */}
-      <form onSubmit={(e) => { e.preventDefault(); onSubmit(formData); }} className="student-form">
+      <form onSubmit={handleSubmit} className="student-form">
         <input
           type="text"
           name="firstName"
@@ -52,7 +109,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
           onChange={handleChange}
           required
         />
-        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
+        {errors.first_name && <p className="error-message">{errors.first_name}</p>}
 
         <input
           type="text"
@@ -62,7 +119,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
           onChange={handleChange}
           required
         />
-        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+        {errors.last_name && <p className="error-message">{errors.last_name}</p>}
 
         <input
           type="email"
@@ -73,6 +130,16 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
           required
         />
         {errors.email && <p className="error-message">{errors.email}</p>}
+
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+        {errors.username && <p className="error-message">{errors.username}</p>}
 
         <input
           type="password"
@@ -87,7 +154,11 @@ const StudentForm = ({ onSubmit, onBack, initialFormData }) => {
         {/* Button Container */}
         <div className="form-button-container">
           <Button text="Back" className="outline-button" onClick={onBack} />
-          <Button text="Next" className={isFormComplete ? 'blue-button' : 'gray-button'} />
+          <Button
+            text="Register"
+            className={isFormComplete ? 'blue-button' : 'gray-button'}
+            disabled={!isFormComplete}
+          />
         </div>
       </form>
     </div>

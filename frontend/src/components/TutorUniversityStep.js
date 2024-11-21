@@ -159,7 +159,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
           {/* Section 1: Profile Photo Upload */}
           <div className="form-section">
             <span className="side-text">Upload profile photo:</span>
-            <div className="filter-item">
+            <div className="filterItem">
               <div className="upload-container">
                 <Button
                   className={`plus-button ${profilePhotoPreview ? 'square-button' : ''}`}
@@ -190,7 +190,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
           {/* Section 2: Institute */}
           <div className="form-section">
             <span className="side-text">Institute:</span>
-            <div className="filter-item">
+            <div className="filterItem">
               <select
                 name="institute"
                 value={formData.education.institute}
@@ -210,7 +210,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
           {/* Section 3: Specialty */}
           <div className="form-section">
             <span className="side-text">Specialty:</span>
-            <div className="filter-item">
+            <div className="filterItem">
               <select
                 name="specialty"
                 value={formData.education.specialty}
@@ -230,7 +230,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
           {/* Section 4: Course Number */}
           <div className="form-section">
             <span className="side-text">Course Number:</span>
-            <div className="filter-item">
+            <div className="filterItem">
               <select
                 name="courseNumber"
                 value={formData.education.courseNumber}
@@ -250,7 +250,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
           {/* Section 5: Certificate Upload */}
           <div className="form-section">
             <span className="side-text">Upload certified document from the university:</span>
-            <div className="filter-item">
+            <div className="filterItem">
               <div className="upload-container">
                 <Button
                   className="plus-button"

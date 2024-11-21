@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../styles/FilterBox.css';
 import { RangeSlider } from './RangeSlider'; // Import your custom RangeSlider component
+import styles from '../styles/FilterBox.module.css';
 
 const FilterBox = ({
   subjects = [],
@@ -39,10 +39,10 @@ const FilterBox = ({
   };
 
   return (
-    <div className="filter-box-container">
-      <div className="filter-box">
+    <div className={styles.filterBoxContainer}>
+      <div className={styles.filterBox}>
         {/* Subject dropdown */}
-        <div className="filter-item">
+        <div className={styles.filterItem}>
           <label>I want to learn</label>
           <select
             value={subject}
@@ -61,7 +61,7 @@ const FilterBox = ({
         </div>
 
         {/* Location dropdown */}
-        <div className="filter-item">
+        <div className={styles.filterItem}>
           <label>Location</label>
           <select
             value={location}
@@ -80,7 +80,7 @@ const FilterBox = ({
         </div>
 
         {/* University dropdown */}
-        <div className="filter-item">
+        <div className={styles.filterItem}>
           <label>University</label>
           <select
             value={university}
@@ -99,7 +99,7 @@ const FilterBox = ({
         </div>
 
         {/* Mode dropdown (Online/Offline) */}
-        <div className="filter-item">
+        <div className={styles.filterItem}>
           <label>Mode</label>
           <select
             value={mode}
@@ -115,19 +115,19 @@ const FilterBox = ({
         </div>
 
         {/* Price Range Box with Custom Slider */}
-        <div className="filter-item price-range-box" style={{ position: 'relative' }}>
+        <div className={styles.filterItem} style={{ position: 'relative' }}>
           <label>Price per lesson</label>
           <div
-            className="price-display"
+            className={styles.priceDisplay}
             onClick={() => setIsPriceOpen(!isPriceOpen)}
           >
             {priceRangeState[0]} {currencyCode} – {priceRangeState[1]} {currencyCode}
-            <button className="toggle-button">
+            <button className={styles.toggleButton}>
               {isPriceOpen ? '✖' : '▼'}
             </button>
           </div>
           {isPriceOpen && (
-            <div className="custom-slider-container">
+            <div className={styles.customSliderContainer}>
               {/* Use the custom RangeSlider component */}
               <RangeSlider
                 min={priceRange[0]}
@@ -143,7 +143,7 @@ const FilterBox = ({
         </div>
 
         {/* Gender dropdown */}
-        <div className="filter-item">
+        <div className={styles.filterItem }>
           <label>Gender</label>
           <select
             value={gender}

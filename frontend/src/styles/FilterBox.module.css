@@ -1,18 +1,21 @@
 /* FilterBox.css */
 
+@import './CommonStyles.module.css';
+
 /* Container to center the filter box */
 
-.filter-box-container {
+.filterBoxContainer {
     font-family: 'Montserrat';
     display: flex;
     justify-content: center;
+    
 
     margin-bottom: 30px;
     width: 100%;
   }
   
   /* One line layout for all filters */
-  .filter-box {
+  .filterBox {
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -24,11 +27,10 @@
   
   
   /* Filter item styles */
-  .filter-item {
-    margin-right: 20px;
-    position: relative;
+  .filterItem {
+    composes: filterItem from './CommonStyles.module.css';
   }
-  
+  /*
   .filter-item label {
     display: block;
     font-size: 0.9rem;
@@ -42,10 +44,9 @@
   cursor: pointer;
   border: 1px solid #040303;
   background-color: #ffffff;
-  font-family: 'Montserrat'; /* Consistent font */
+  font-family: 'Montserrat'; 
 }
 
-/* Dropdown option styling */
 .filter-item select option {
   padding: 10px;
   font-size: 1rem;
@@ -59,10 +60,12 @@
     cursor: pointer;
     border: 1px solid #040303;
   }
+  */
   
   /* Price box style */
-  .price-display {
+  .priceDisplay  {
     display: flex;
+    border: 1px solid #040303;
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
@@ -75,7 +78,7 @@
     text-overflow: ellipsis;
   }
   
-  .price-display button {
+  .priceDisplay button {
     background: none;
     border: none;
     cursor: pointer;
@@ -84,7 +87,7 @@
   }
   
   /* Custom slider container for styling */
-  .custom-slider-container {
+  .customSliderContainer {
     display: flex;
     align-items: center;
     position: absolute;
@@ -101,7 +104,7 @@
   }
   
   /* Custom slider styling */
-  .custom-slider {
+  .customSlider {
     -webkit-appearance: none;
     width: 100%;
     height: 8px;
@@ -111,7 +114,7 @@
     margin: 0 10px;
   }
   
-  .custom-slider::-webkit-slider-thumb {
+  .customSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 24px;
@@ -122,7 +125,7 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   }
   
-  .custom-slider::-moz-range-thumb {
+  .customSlider::-moz-range-thumb {
     width: 24px;
     height: 24px;
     background-color: #007bff;
@@ -131,11 +134,11 @@
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   }
   
-  .custom-slider:active::-webkit-slider-thumb {
+  .customSlider:active::-webkit-slider-thumb {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
   }
   
-  .custom-slider:active::-moz-range-thumb {
+  .customSlider:active::-moz-range-thumb {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
   }
   

@@ -1,3 +1,7 @@
+/* Import shared styles */
+@import './CommonStyles.module.css';
+
+
 /* Outer Container to Center the Form */
 .outer-container {
   display: flex;
@@ -39,17 +43,22 @@
     1px -1px 0 white;
 }
 
-/* Filter Item */
+/* Filter Item 
 .filter-item {
   width: 100%;
 }
-
+*/
 /* Input Fields */
-.filter-item select,
-.filter-item input {
+.filterItem select,
+.filterItem input {
   width: 42ch;
   padding: 10px;
   font-size: 1rem;
+}
+
+.filterItem {
+  composes: filterItem from './CommonStyles.module.css';
+  /* Add component-specific styles here if needed */
 }
 
 /* Upload Container */
