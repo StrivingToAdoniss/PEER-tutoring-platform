@@ -12,8 +12,10 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        image: postgres:14.8-alpine3.18
         env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: django
         options: >-
           --health-cmd pg_isready
