@@ -6,10 +6,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   test:
     runs-on: ubuntu-20.04
-
     container: python:3.10
 
     services:
@@ -37,11 +35,10 @@ jobs:
 
       - name: Run Tests
         run: |
-          python3 backend/manage.py test
+          pytest
         env:
           DATABASE_NAME: postgres
           DATABASE_USER: postgres
           DATABASE_PASS: django
           DATABASE_HOST: postgres
           DATABASE_PORT: 5432
-
