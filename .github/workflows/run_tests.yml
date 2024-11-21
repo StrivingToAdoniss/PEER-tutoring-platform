@@ -44,3 +44,4 @@ jobs:
           DATABASE_PASS: django
           DATABASE_HOST: postgres
           DATABASE_PORT: 5432
+          DJANGO_SETTINGS_MODULE: backend.settings
