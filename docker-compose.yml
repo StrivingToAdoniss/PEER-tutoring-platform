@@ -44,6 +44,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=django
 
+    ports:
+      - "5432:5432"
+
   redis-server:
     image: redis:7.2.5-alpine3.20
 
