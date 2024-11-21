@@ -33,9 +33,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
+      - name: Install pytest
+        run: pip install pytest
+
       - name: Run Tests
-        run: |
-          pytest
+        run: pytest
         env:
           DATABASE_NAME: postgres
           DATABASE_USER: postgres
