@@ -6,16 +6,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   test:
     runs-on: ubuntu-20.04
-
     container: python:3.10
 
     services:
       postgres:
-        image: postgres
+        image: postgres:14.8-alpine3.18
         env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: django
         options: >-
           --health-cmd pg_isready
@@ -24,7 +24,7 @@ jobs:
           --health-retries 5
 
         ports:
-          -5432:5432
+          - "5432:5432"
 
     steps:
       - name: Check out repository code
@@ -35,13 +35,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
-      - name: Run Tests
+      - name: Install pytest
         run: |
-          python3 backend/manage.py test
+          pip install pytest 
+          pip install pytest-django
+
+      - name: Run Tests
+        working-directory: ./backend/tests
+        run: pytest
         env:
           DATABASE_NAME: postgres
           DATABASE_USER: postgres
           DATABASE_PASS: django
           DATABASE_HOST: postgres
           DATABASE_PORT: 5432
-
+          DJANGO_SETTINGS_MODULE: backend.settings
