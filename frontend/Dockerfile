@@ -1,9 +1,8 @@
 FROM node:alpine
 
-
-
-RUN npm install --verbose
-
+WORKDIR /app
 COPY . .
+
+RUN npm install
 
 CMD ["npm", "run", "build"]
