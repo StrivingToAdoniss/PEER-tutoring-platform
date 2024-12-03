@@ -124,7 +124,7 @@ const FilterBox = ({
           <div
             className={styles.priceDisplay}
             onClick={() => setIsPriceOpen(!isPriceOpen)}
-          
+            >
             {priceRangeState[0]} {currencyCode} – {priceRangeState[1]} {currencyCode}
             <button className={styles.toggleButton}>
 
