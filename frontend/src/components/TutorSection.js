@@ -6,12 +6,13 @@ import FilterBox from './FilterBox';
 // Import icons and images
 import mockTutor1 from '../assets/mock_tutor_1.jpg';
 import mockTutor2 from '../assets/mock_tutor_2.jpg';
-import iconSubject from '../assets/icon_subject.svg';
-import iconUniversity from '../assets/icon_university.svg';
-import iconLanguage from '../assets/icon_language.svg';
-import iconLocation from '../assets/icon_location.svg';
-import iconRating from '../assets/icon_rating.svg';
-import iconPrice from '../assets/icon_price.svg';
+
+import iconSubject from '../assets/TutorSection/icon_subject.svg';
+import iconUniversity from '../assets/TutorSection/icon_university.svg';
+import iconLanguage from '../assets/TutorSection/icon_language.svg';
+import iconLocation from '../assets/TutorSection/icon_location.svg';
+import iconRating from '../assets/TutorSection/icon_rating.svg';
+import iconPrice from '../assets/TutorSection/icon_price.svg';
 
 // Mock list of tutors with photos
 const tutors = [
@@ -105,7 +106,9 @@ const TutorSection = () => {
               <img src={iconSubject} alt="Subject" /> {tutor.subject}
             </p>
             <p>
-              <img src={iconUniversity} alt="University" /> {tutor.university}{' '}
+
+              <img src={iconUniversity} alt="University" /> {tutor.university}&nbsp;
+
               <b>{tutor.year}</b>
             </p>
             <p>

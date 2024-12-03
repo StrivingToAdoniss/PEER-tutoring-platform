@@ -1,0 +1,75 @@
+/* Tutor form step */
+.tutor-form-step {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Montserrat";
+  }
+
+  .tutor-form{
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+
+  }
+
+  .background-tutor-image{
+    position: absolute;
+    bottom: 0;
+    right: -10vw;
+    width: 50vw; /* 20% of the viewport width */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1; /* Behind the login-content */
+    opacity: 0.4;
+  }
+  
+  .tutor-form input {
+    font-family: "Montserrat";
+    padding: 15px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    width: 50vh;
+  }
+  
+  /* Focus effect on inputs */
+  .tutor-form input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+
+  }
+  
+  /* Button container */
+  .form-button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* Button styles */
+  .form-button-container button {
+    width: 48%;
+  }
+  
+  @media (max-width: 768px) {
+    .form-button-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .form-button-container button {
+      width: 100%;
+    }
+  }
+  

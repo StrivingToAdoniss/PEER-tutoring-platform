@@ -1,0 +1,139 @@
+/* SignUp page container */
+.signup-container {
+    font-family: 'Montserrat';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(90deg, #F8F9FA, #89C5CC);
+    padding: 20px;
+    position: relative; /* To position the corner image */
+    overflow: hidden; /* Hide any overflow */
+  }
+
+  .role-selection h2 {
+    font-size: 2.5rem; /* Adjust this value to change the size */
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #626262; /* Optional: Set the color if needed */
+}
+  
+  /* Role selection styles */
+  .role-selection {
+    text-align: center;
+    max-width: 1200px; /* Constrain the maximum width for large screens */
+    width: 100%; /* Take up full width */
+    margin: 0 auto;
+  }
+  
+  .role-options {
+    display: flex;
+    justify-content: center;
+    gap: 25vh; /* Space between role cards */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    padding: 20px 0;
+  }
+  
+  .role-card {
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+    flex: 1 1 300px; /* Responsive size, minimum 300px */
+    max-width: 400px; /* Ensure cards don't get too large */
+  }
+  
+  .role-card img {
+    width: 35vh;
+    height: 35vh;
+  }
+  
+  .role-card h3 {
+    margin-top: 10px;
+    font-size: 2rem;
+  }
+  
+  .role-card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Student form styles */
+  .student-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .student-form input {
+    font-family: 'Montserrat';
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+  }
+  
+  .student-form input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    cursor: text;
+  }
+  
+  /* Submit button */
+  .student-form input {
+    font-family: 'Montserrat';
+    padding: 15px;
+    color: #000000;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Container for navigation buttons (Back and Next/Submit) */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .navigation-buttons button {
+    width: 150px; /* Set a fixed width for the buttons */
+  }
+  
+  .form-button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .form-button-container button {
+    flex-grow: 1; /* Make the buttons grow to take up the available space */
+    max-width: 300px; /* Optional: Set a maximum width */
+    width: 100%; /* Ensure the buttons take up all the available space */
+  }
+
+  .form-button-container button {
+    width: 100%; /* Make buttons full width */
+    max-width: none; /* Remove any max-width */
+  }
+  
+  
+
+  /* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .role-card img {
+        max-width: 150px; /* Smaller image for small screens */
+    }
+
+    .role-card h3 {
+        font-size: 1.5rem;
+    }
+}

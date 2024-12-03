@@ -1,0 +1,139 @@
+/* src/styles/LogIn.css */
+
+/* Initial hidden state for the container */
+.login-container,
+.login-content,
+.corner-image {
+  opacity: 0;
+  transform: translateY(50px);  /* Slightly move elements down initially */
+  transition: opacity 0.8s ease, transform 0.8s ease;  /* Smooth transitions */
+}
+
+/* When visible, the elements fade in and slide up */
+.login-container.visible,
+.login-content.visible{
+  opacity: 1;
+  transform: translateY(0);  /* Slide elements into place */
+}
+
+.corner-image.visible {
+  opacity: 0.4;
+  transform: translateY(0);  /* Slide elements into place */
+}
+
+/* Container for the entire login page */
+.login-container {
+    font-family: 'Montserrat';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    position: relative; /* To position the corner image */
+    overflow: hidden; /* Hide any overflow */
+  }
+  
+  /* Content box for the login form */
+  .login-content {
+    background: transparent;
+    padding: 40px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    z-index: 2; /* Above the corner image */
+  }
+  
+  /* Positioning the corner image */
+  .corner-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50vw; /* 20% of the viewport width */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 1; /* Behind the login-content */
+    opacity: 0.4;
+  }
+  
+  /* Log in title */
+  .login-content h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #626262;
+    ;
+  }
+  
+  /* Input fields */
+  .login-input {
+    font-family: 'Montserrat';
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+  }
+  
+  .login-input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Submit button */
+  .login-button {
+    font-family: 'Montserrat';
+    width: 100%;
+    padding: 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #555;
+  }
+  
+  /* Redirect text for sign up */
+  .signup-redirect {
+    margin-top: 20px;
+    font-size: 1rem;
+  }
+  
+  .signup-redirect a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .signup-redirect a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Error message */
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Design - For smaller screens */
+  @media (max-width: 768px) {
+    .login-content {
+      padding: 30px;
+    }
+  
+    .login-input,
+    .login-button {
+      padding: 12px;
+    }
+  
+    .corner-image {
+      width: 150px; /* Adjust size for smaller screens */
+    }
+  }
+  

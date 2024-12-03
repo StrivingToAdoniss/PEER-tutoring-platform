@@ -1,0 +1,33 @@
+/* Subject tag container */
+.subject-tag {
+    padding: 10px 15px;
+    border-radius: 25px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover state for tag */
+  .subject-tag:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Remove icon (X) */
+  .remove-tag {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  /* Selected state */
+  .subject-tag.selected {
+    background-color: #28a745;
+  }
+  

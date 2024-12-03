@@ -1,0 +1,44 @@
+/* Import shared styles */
+@import './CommonStyles.module.css';
+
+/* Use the shared filterItem styles */
+.filterItem {
+  composes: filterItem from './CommonStyles.module.css';
+  /* Add component-specific styles here if needed */
+}
+
+/* Use the shared styles for selected items */
+.selectedItems {
+  composes: selectedItems from './CommonStyles.module.css';
+}
+
+.itemTag {
+  composes: itemTag from './CommonStyles.module.css';
+  /* Add component-specific styles if needed */
+}
+
+.removeButton {
+  composes: removeButton from './CommonStyles.module.css';
+}
+
+/* If you need to tweak styles specifically for SubjectSelector */
+.filterItem {
+  flex-direction: row;
+  gap: 10px;
+}
+
+
+  .itemTag{
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+    border: 1px solid black;
+    text-shadow:
+    1px 1px 0 black,
+    -1px -1px 0 black,
+    -1px 1px 0 black,
+    1px -1px 0 black;
+    font-weight: bold;
+  }
