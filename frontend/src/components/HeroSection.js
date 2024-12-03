@@ -1,6 +1,6 @@
-// src/components/HeroSection.js
+
 import React, { useEffect } from 'react';
-import '../styles/HeroSection.css';  // Create this CSS for styling
+import '../styles/HeroSection.css'; 
 import Button from './Button';
 import peersSitting from '../assets/HeroSection/peers_sitting.svg';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,6 @@ const HeroSection = () => {
     const heroContent = document.querySelector('.hero-content');
     const heroImage = document.querySelector('.hero-image');
 
-    // Add the 'visible' class after a short delay to trigger the animation
     setTimeout(() => {
       heroContainer.classList.add('visible');
       heroContent.classList.add('visible');
@@ -29,6 +28,7 @@ const HeroSection = () => {
         Peer Learning Platform connects you with fellow students in seconds. You can try to prepare for exams on your own, but with us, it will be much easier and more effective!
       </p>
       <Button text="Find Your Peer" onClick={() => navigate('/login')} className="hero-button" />
+
       </div>
         <div className="hero-image">
         <img src={peersSitting} alt="Peers sitting together" />

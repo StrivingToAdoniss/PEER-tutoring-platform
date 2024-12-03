@@ -6,6 +6,7 @@ import FilterBox from './FilterBox';
 // Import icons and images
 import mockTutor1 from '../assets/mock_tutor_1.jpg';
 import mockTutor2 from '../assets/mock_tutor_2.jpg';
+
 import iconSubject from '../assets/TutorSection/icon_subject.svg';
 import iconUniversity from '../assets/TutorSection/icon_university.svg';
 import iconLanguage from '../assets/TutorSection/icon_language.svg';
@@ -79,7 +80,6 @@ const TutorSection = () => {
 
   return (
     <div className="tutor-section">
-      
       <FilterBox
         subjects={['Physics', 'Math', 'Computer Science']}
         locations={['Kyiv', 'Lviv']}
@@ -106,7 +106,9 @@ const TutorSection = () => {
               <img src={iconSubject} alt="Subject" /> {tutor.subject}
             </p>
             <p>
+
               <img src={iconUniversity} alt="University" /> {tutor.university}&nbsp;
+
               <b>{tutor.year}</b>
             </p>
             <p>

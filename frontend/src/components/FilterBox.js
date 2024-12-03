@@ -39,6 +39,7 @@ const FilterBox = ({
   };
 
   return (
+
     <div className={styles.filterBoxContainer}>
       <div className={styles.filterBox}>
         {/* Subject dropdown */}
@@ -61,6 +62,7 @@ const FilterBox = ({
         </div>
 
         {/* Location dropdown */}
+
         <div className={styles.filterItem}>
           <label>Location</label>
           <select
@@ -81,6 +83,7 @@ const FilterBox = ({
 
         {/* University dropdown */}
         <div className={styles.filterItem}>
+
           <label>University</label>
           <select
             value={university}
@@ -99,6 +102,7 @@ const FilterBox = ({
         </div>
 
         {/* Mode dropdown (Online/Offline) */}
+
         <div className={styles.filterItem}>
           <label>Mode</label>
           <select
@@ -114,21 +118,23 @@ const FilterBox = ({
           </select>
         </div>
 
-        {/* Price Range Box with Custom Slider */}
+
         <div className={styles.filterItem} style={{ position: 'relative' }}>
           <label>Price per lesson</label>
           <div
             className={styles.priceDisplay}
             onClick={() => setIsPriceOpen(!isPriceOpen)}
-          >
+          
             {priceRangeState[0]} {currencyCode} – {priceRangeState[1]} {currencyCode}
             <button className={styles.toggleButton}>
+
               {isPriceOpen ? '✖' : '▼'}
             </button>
           </div>
           {isPriceOpen && (
+
             <div className={styles.customSliderContainer}>
-              {/* Use the custom RangeSlider component */}
+
               <RangeSlider
                 min={priceRange[0]}
                 max={priceRange[1]}
@@ -142,8 +148,9 @@ const FilterBox = ({
           )}
         </div>
 
-        {/* Gender dropdown */}
+
         <div className={styles.filterItem }>
+
           <label>Gender</label>
           <select
             value={gender}
