@@ -15,7 +15,7 @@ const TutorFormStep = ({ formData, onBack, onNext, onChange }) => {
     onNext();
   };
 
-  const requiredFields = ['firstName', 'lastName', 'email', 'password'];
+  const requiredFields = ['firstName', 'lastName', 'username', 'email', 'password'];
   const isFormComplete = requiredFields.every((field) => formData[field] !== '');  
 
   return (
@@ -37,6 +37,14 @@ const TutorFormStep = ({ formData, onBack, onNext, onChange }) => {
           name="lastName"
           placeholder="Last Name"
           value={formData.lastName}
+          onChange={handleInputChange}
+          required
+        />
+                <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
           onChange={handleInputChange}
           required
         />
