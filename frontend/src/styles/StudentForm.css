@@ -13,54 +13,83 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 50vw; /* 20% of the viewport width */
-  height: auto; /* Maintain aspect ratio */
-  z-index: 1; /* Behind the login-content */
+  width: 50vw; /* Adjust as needed */
+  height: auto;
+  z-index: 1;
   opacity: 0.4;
 }
-
 
 /* Form container */
 .student-form {
   z-index: 2;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 400px;
+  max-width: 800px; /* Increased to allow for two columns */
   margin: 0 auto;
-  text-align: center;
+}
+
+/* Form columns */
+.form-columns {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* Form column */
+.form-column {
+  flex: 1;
+  min-width: 250px; /* Adjust as needed */
+  margin-right: 20px;
+}
+
+.form-column:last-child {
+  margin-right: 0;
 }
 
 /* Form input fields */
-.student-form input {
+.form-column input{
+  width: 100%;
+  margin-bottom: 15px;
+  font-family: 'Montserrat';
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
   box-sizing: border-box;
   background-color: #fafafa;
-  width: 100%;
 }
 
-/* Focus effect on inputs */
-.student-form input:focus {
+.form-column select {
+  width: 100%;
+  margin-bottom: 15px;
+  font-family: 'Montserrat';
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  border-color: black;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+  background-color: #fafafa;
+}
+
+/* Focus effect on inputs and selects */
+.form-column input:focus,
+.form-column select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* Button container: Position buttons under the form fields */
+/* Button container */
 .form-button-container {
   display: flex;
-  justify-content: space-between; /* Space between Back and Next buttons */
-  margin-top: 20px; /* Add some margin to separate from form fields */
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 /* Button styles */
 .student-form button {
-  width: 48%; /* Buttons take up half of the container's width */
-  margin: 0; /* Ensure buttons are aligned without additional margins */
+  width: 48%;
+  margin: 0;
 }
 
 /* Error message styling */
@@ -70,21 +99,27 @@
   margin-top: 10px;
 }
 
-
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .student-form-container {
-    flex-direction: column; /* Stack image and form vertically on small screens */
+    flex-direction: column;
     gap: 20px;
   }
 
+  .form-columns {
+    flex-direction: column;
+  }
+
+  .form-column {
+    margin-right: 0;
+  }
+
   .form-button-container {
-    flex-direction: column; /* Stack buttons on smaller screens */
+    flex-direction: column;
     gap: 10px;
   }
 
   .student-form button {
-    width: 100%; /* Buttons take full width on mobile */
+    width: 100%;
   }
 }
-
