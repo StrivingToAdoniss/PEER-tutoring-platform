@@ -18,7 +18,6 @@ def create_user():
             'password': 'Password@123',
             'email': 'testuser@example.com',
             'role': 'STUDENT',
-            "phone_number": "1234567890",
             "university": "UCLouvain",
         }
         user_data.update(kwargs)
@@ -34,7 +33,6 @@ def test_user_registration_success(api_client):
         'password': 'Password@123',
         'email': 'testuser@example.com',
         'role': 'STUDENT',
-        "phone_number": "1234567890",
         "university": "UCLouvain",
     })
     assert response.status_code == 201
@@ -48,7 +46,6 @@ def test_user_registration_failure(api_client):
         'password': 'pass',  # Invalid password
         'email': 'testuser@example.com',
         'role': 'STUDENT',
-        "phone_number": "1234567890",
         "university": "UCLouvain"
     })
     assert response.status_code == 400
@@ -109,7 +106,6 @@ def test_user_registration_duplicate_email(api_client, create_user):
         'password': 'Password@123',
         'email': 'duplicate@example.com',  # Duplicate email
         'role': 'STUDENT',
-        "phone_number": "1234567890",
         "university": "UCLouvain",
     })
     assert response.status_code == 400
@@ -123,12 +119,10 @@ def test_user_registration_missing_fields(api_client):
         'password': 'Password@123',
         'email': '',  # Missing email
         'role': 'STUDENT',
-        "phone_number": "",
         "university": "UCLouvain",
     })
     assert response.status_code == 400
     assert "email" in response.data
-    assert "phone_number" in response.data
 
 
 @pytest.mark.django_db

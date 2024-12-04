@@ -8,11 +8,9 @@ def test_create_user():
         email="test@example.com",
         password="testpassword123",
         username="testuser",
-        phone_number="0987654321"
     )
     assert user.email == "test@example.com"
     assert user.check_password("testpassword123")
-    assert user.phone_number == "0987654321"
     assert user.role == User.Roles.STUDENT
     assert user.is_active
     assert not user.is_staff
@@ -100,7 +98,6 @@ def test_student_manager_filter():
         email="student1@example.com",
         password="studentpassword1",
         username="studentuser1",
-        phone_number="0987654321"
     )
     user1.role = User.Roles.STUDENT
     user1.save()
@@ -109,7 +106,6 @@ def test_student_manager_filter():
         email="student2@example.com",
         password="studentpassword2",
         username="studentuser2",
-        phone_number="83484474884"
 
     )
     user2.role = User.Roles.STUDENT
@@ -119,7 +115,6 @@ def test_student_manager_filter():
         email="tutor@example.com",
         password="tutorpassword123",
         username="tutoruser",
-        phone_number="4848484940"
 
     )
     tutor_user.role = User.Roles.TUTOR
@@ -140,7 +135,6 @@ def test_tutor_manager_filter():
         email="tutor1@example.com",
         password="tutorpassword1",
         username="tutoruser1",
-        phone_number="0987654321"
 
     )
     tutor1.role = User.Roles.TUTOR
@@ -149,8 +143,7 @@ def test_tutor_manager_filter():
     tutor2 = User.objects.create_user(
         email="tutor2@example.com",
         password="tutorpassword2",
-        username="tutoruser2",
-        phone_number="0987654322"
+        username="tutoruser2"
 
     )
     tutor2.role = User.Roles.TUTOR
@@ -160,7 +153,6 @@ def test_tutor_manager_filter():
         email="student@example.com",
         password="studentpassword123",
         username="studentuser",
-        phone_number="0987654323"
 
     )
     student_user.role = User.Roles.STUDENT
