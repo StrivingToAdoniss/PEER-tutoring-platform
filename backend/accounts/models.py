@@ -30,12 +30,11 @@ class User(AbstractUser, PermissionsMixin):
         STUDENT = 'STUDENT', 'Student'
         TUTOR = 'TUTOR', 'Tutor'
 
-    class CurrentGrade(models.TextChoices):
-        FIRST = 'FIRST', 'First year'
-        SECOND = 'SECOND', 'Second year'
-        THIRD = 'THIRD', 'Third year'
-        FOURTH = 'FOURTH', 'Fourth year'
-        POSTGRADUATE = 'POSTGRADUATE', 'Postgraduate'
+    class CurrentGrade(models.IntegerChoices):
+        FIRST = 1, 'First year'
+        SECOND = 2, 'Second year'
+        THIRD = 3, 'Third year'
+        FOURTH = 4, 'Fourth year'
 
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
@@ -45,10 +44,8 @@ class User(AbstractUser, PermissionsMixin):
         default=Roles.STUDENT)
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(max_length=255, unique=True)
-    phone_number = models.CharField(max_length=20, unique=True)
     is_active = models.BooleanField(default=True)
-    current_grade = models.CharField(
-        max_length=20,
+    current_grade = models.IntegerField(
         choices=CurrentGrade.choices,
         default=CurrentGrade.FIRST)
     university = models.CharField(
@@ -111,6 +108,13 @@ def file_upload_to(instance, filename):
 
 
 class TutorMore(models.Model):
+    class Subject(models.TextChoices):
+        MATH = 'Math', 'Math'
+        PHYSICS = 'Physics', 'Physics'
+        ENGLISH = 'English', 'English'
+        CHEMISTRY = 'Chemistry', 'Chemistry'
+        BIOLOGY = 'Biology', 'Biology'
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -119,6 +123,8 @@ class TutorMore(models.Model):
     is_approved = models.BooleanField(default=False)
     photo_url = models.ImageField(upload_to=upload_to)
     confirmation_file = models.FileField(upload_to=file_upload_to)
+    subject = models.CharField(choices=Subject.choices, default=Subject.MATH)
+    specialization = models.TextField(max_length=1024, default='Math')
 
 
 class Tutor(User):
