@@ -5,6 +5,7 @@ import axios from 'axios';
 import Button from './Button';
 import '../styles/StudentForm.css';
 import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
+import { useNavigate } from 'react-router-dom';
 
 const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   useEffect(() => {
@@ -15,6 +16,8 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
       buttonContainer.classList.add('visible');
     }, 100);
   }, []);
+
+  const navigate = useNavigate(); 
 
   const institutes = [
     "KU Leuven",
@@ -132,7 +135,6 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Frontend validation for password and username
     const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&]).{4,}$/;
     const usernamePattern = /^.{4,}$/;
@@ -144,6 +146,8 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
         'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
     }
 
+
+
     if (!usernamePattern.test(formData.username)) {
       validationErrors.username = 'Username must be at least 4 characters long.';
     }
@@ -154,7 +158,8 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
     }
 
     try {
-      console.log('yay')
+      window.alert("We are here")
+      //navigate('/');
       const response = await axios.post('http://127.0.0.1:8000/api/register/', {
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -174,9 +179,9 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
       // Set the default authorization header for Axios
       axios.defaults.headers.common['Authorization'] = `Bearer ${access}`;
-
       // Proceed to the next step or redirect as needed
       onSubmit(formData);
+
     } catch (error) {
       // Handle errors returned by the server
       if (error.response && error.response.data) {
@@ -309,6 +314,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
           text="Register"
           className={isFormComplete ? 'blue-button' : 'gray-button'}
           disabled={!isFormComplete}
+          onClick={handleSubmit}
         />
       </div>
     </form>
