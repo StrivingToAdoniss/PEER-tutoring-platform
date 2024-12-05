@@ -28,7 +28,7 @@ def create_user():
 
 @pytest.mark.django_db
 def test_user_registration_success(api_client):
-    response = api_client.post('/api/registration', {
+    response = api_client.post('/api/v1/accounts/registration', {
         'username': 'testuser123',
         'password': 'Password@123',
         'email': 'testuser@example.com',
@@ -41,7 +41,7 @@ def test_user_registration_success(api_client):
 
 @pytest.mark.django_db
 def test_user_registration_failure(api_client):
-    response = api_client.post('/api/registration', {
+    response = api_client.post('/api/v1/accounts/registration', {
         'username': 'testuser123',
         'password': 'pass',  # Invalid password
         'email': 'testuser@example.com',
@@ -55,7 +55,7 @@ def test_user_registration_failure(api_client):
 @pytest.mark.django_db
 def test_user_login_success(api_client, create_user):
     user = create_user(password='Password@123')
-    response = api_client.post('/api/login', {
+    response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
         'password': 'Password@123'
     })
@@ -66,7 +66,7 @@ def test_user_login_success(api_client, create_user):
 @pytest.mark.django_db
 def test_user_login_failure(api_client, create_user):
     user = create_user(password='Password@123')
-    response = api_client.post('/api/login', {
+    response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
         'password': 'WrongPassword'
     })
@@ -79,7 +79,7 @@ def test_user_logout_success(api_client, create_user):
     user = create_user()
     refresh = RefreshToken.for_user(user)
     api_client.force_authenticate(user=user)
-    response = api_client.post('/api/logout', {
+    response = api_client.post('/api/v1/accounts/logout', {
         'refresh': str(refresh)
     })
     assert response.status_code == 205
@@ -90,7 +90,7 @@ def test_user_logout_success(api_client, create_user):
 def test_user_logout_failure(api_client, create_user):
     user = create_user()
     api_client.force_authenticate(user=user)
-    response = api_client.post('/api/logout', {
+    response = api_client.post('/api/v1/accounts/logout', {
         'refresh': 'InvalidToken'
     })
     assert response.status_code == 400
@@ -101,7 +101,7 @@ def test_user_logout_failure(api_client, create_user):
 def test_user_registration_duplicate_email(api_client, create_user):
     # Create a user with the same email
     create_user(email="duplicate@example.com")
-    response = api_client.post('/api/registration', {
+    response = api_client.post('/api/v1/accounts/registration', {
         'username': 'newuser',
         'password': 'Password@123',
         'email': 'duplicate@example.com',  # Duplicate email
@@ -114,7 +114,7 @@ def test_user_registration_duplicate_email(api_client, create_user):
 
 @pytest.mark.django_db
 def test_user_registration_missing_fields(api_client):
-    response = api_client.post('/api/registration', {
+    response = api_client.post('/api/v1/accounts/registration', {
         'username': '',
         'password': 'Password@123',
         'email': '',  # Missing email
@@ -127,7 +127,7 @@ def test_user_registration_missing_fields(api_client):
 
 @pytest.mark.django_db
 def test_user_login_unregistered_email(api_client):
-    response = api_client.post('/api/login', {
+    response = api_client.post('/api/v1/accounts/login', {
         'email': 'unregistered@example.com',
         'password': 'Password@123',
     })
@@ -137,7 +137,7 @@ def test_user_login_unregistered_email(api_client):
 
 @pytest.mark.django_db
 def test_user_login_missing_fields(api_client):
-    response = api_client.post('/api/login', {
+    response = api_client.post('/api/v1/accounts/login', {
         'email': '',  # Missing email
         'password': '',  # Missing password
     })
@@ -148,7 +148,7 @@ def test_user_login_missing_fields(api_client):
 
 @pytest.mark.django_db
 def test_user_logout_unauthenticated(api_client):
-    response = api_client.post('/api/logout', {
+    response = api_client.post('/api/v1/accounts/logout', {
         'refresh': 'SomeToken'
     })
     assert response.status_code == 401
@@ -158,7 +158,7 @@ def test_user_logout_unauthenticated(api_client):
 @pytest.mark.django_db
 def test_user_login_with_inactive_account(api_client, create_user):
     user = create_user(is_active=False)  # Inactive user
-    response = api_client.post('/api/login', {
+    response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
         'password': 'Password@123'
     })
