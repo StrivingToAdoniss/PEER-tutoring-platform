@@ -30,10 +30,14 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://127.0.0.1:80",
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -48,7 +52,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'debug_toolbar',
     'accounts',
+    'tutors_profiles',
     'rest_framework.authtoken',
+    'django_filters',
     'rest_framework_simplejwt.token_blacklist',
     'whitenoise.runserver_nostatic',
     'django_rest_passwordreset'

@@ -30,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         validated_data = validated_data.dict()
         validated_data.pop('photo_url', None)
         validated_data.pop('confirmation_file', None)
+        validated_data.pop('specialization', None)
         request_data = self.context.get('request')
         created_user = UserCustomModel.objects.create(**validated_data)
         if created_user.role == 'TUTOR':
@@ -51,10 +52,12 @@ class UserSerializer(serializers.ModelSerializer):
         try:
             photo_url = request_data.FILES.get('photo_url')
             confirmation_file = request_data.FILES.get('confirmation_file')
+            specialization = request_data.data.get('specialization')
             TutorMore.objects.create(
                 user=created_user,
                 photo_url=photo_url,
-                confirmation_file=confirmation_file)
+                confirmation_file=confirmation_file,
+                specialization=specialization)
         except Exception as e:
             raise serializers.ValidationError(
                 f"Failed to create Tutor data: {str(e)}")
@@ -87,3 +90,9 @@ class UserLoginSerializer(serializers.Serializer):
 
 class ResetPasswordEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class UserNestedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserCustomModel
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'university', 'current_grade']
