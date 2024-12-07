@@ -9,21 +9,17 @@ User = get_user_model()
 def api_client():
     return APIClient()
 
-
-@pytest.fixture
-def create_user():
-    def _create_user(**kwargs):
-        user_data = {
-            'username': 'testuser123',
-            'password': 'Password@123',
-            'email': 'testuser@example.com',
-            'role': 'STUDENT',
-            "university": "UCLouvain",
-        }
-        user_data.update(kwargs)
-        user = User.objects.create_user(**user_data)
-        return user
-    return _create_user
+def create_user(**kwargs):
+    user_data = {
+        'username': 'testuser123',
+        'password': 'Password@123',
+        'email': 'testuser@example.com',
+        'role': 'STUDENT',
+        "university": "UCLouvain",
+    }
+    user_data.update(kwargs)
+    user = User.objects.create_user(**user_data)
+    return user
 
 
 @pytest.mark.django_db
@@ -40,7 +36,7 @@ def test_user_registration_success(api_client):
 
 
 @pytest.mark.django_db
-def test_user_registration_failure(api_client):
+def test_user_registration_password_failure(api_client):
     response = api_client.post('/api/v1/accounts/registration', {
         'username': 'testuser123',
         'password': 'pass',  # Invalid password
@@ -53,7 +49,20 @@ def test_user_registration_failure(api_client):
 
 
 @pytest.mark.django_db
-def test_user_login_success(api_client, create_user):
+def test_user_registration_university_failure(api_client):
+    response = api_client.post('/api/v1/accounts/registration', {
+        'username': 'testuser123',
+        'password': 'pass',
+        'email': 'testuser@example.com',
+        'role': 'STUDENT',
+        "university": "KPI" # Invalid university
+    })
+    assert response.status_code == 400
+    assert '"KPI" is not a valid choice.' in str(response.data)
+
+
+@pytest.mark.django_db
+def test_user_login_success(api_client):
     user = create_user(password='Password@123')
     response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
@@ -64,7 +73,7 @@ def test_user_login_success(api_client, create_user):
 
 
 @pytest.mark.django_db
-def test_user_login_failure(api_client, create_user):
+def test_user_login_failure(api_client):
     user = create_user(password='Password@123')
     response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
@@ -75,7 +84,7 @@ def test_user_login_failure(api_client, create_user):
 
 
 @pytest.mark.django_db
-def test_user_logout_success(api_client, create_user):
+def test_user_logout_success(api_client):
     user = create_user()
     refresh = RefreshToken.for_user(user)
     api_client.force_authenticate(user=user)
@@ -87,7 +96,7 @@ def test_user_logout_success(api_client, create_user):
 
 
 @pytest.mark.django_db
-def test_user_logout_failure(api_client, create_user):
+def test_user_logout_failure(api_client):
     user = create_user()
     api_client.force_authenticate(user=user)
     response = api_client.post('/api/v1/accounts/logout', {
@@ -98,7 +107,7 @@ def test_user_logout_failure(api_client, create_user):
 
 
 @pytest.mark.django_db
-def test_user_registration_duplicate_email(api_client, create_user):
+def test_user_registration_duplicate_email(api_client):
     # Create a user with the same email
     create_user(email="duplicate@example.com")
     response = api_client.post('/api/v1/accounts/registration', {
