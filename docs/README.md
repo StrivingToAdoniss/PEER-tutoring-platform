@@ -62,28 +62,6 @@ sequenceDiagram
     ClientApp->>Student: Display search results or error message
 ```
 
-### Student Contact Tutor
-```mermaid
-sequenceDiagram
-    participant User
-    participant ClientApp
-    participant System
-    participant Tutor
-
-    User->>ClientApp: Access tutor's page and click "Contact Tutor"
-    ClientApp->>System: Request to open chat
-    System->>System: Check if user is registered
-    alt User Not Logged In
-        System->>ClientApp: USER.NOT_LOGGED_IN_ERROR
-    else User Logged In
-        System->>ClientApp: Open chat window
-        ClientApp->>User: Chat ready for communication
-        User->>System: Send message to tutor
-        System->>Tutor: Deliver message
-        Tutor->>User: Tutor replies to message
-    end
-```
-
 ### Tutor Registration
 ```mermaid
 sequenceDiagram
