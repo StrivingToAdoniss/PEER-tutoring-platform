@@ -156,7 +156,7 @@ def test_user_logout_unauthenticated(api_client):
 
 
 @pytest.mark.django_db
-def test_user_login_with_inactive_account(api_client, create_user):
+def test_user_login_with_inactive_account(api_client):
     user = create_user(is_active=False)  # Inactive user
     response = api_client.post('/api/v1/accounts/login', {
         'email': user.email,
