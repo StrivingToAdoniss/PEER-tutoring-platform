@@ -36,7 +36,7 @@ const LogInForm = () => {
       });
 
       // If successful, navigate to the home page or dashboard
-      if (response.status === 200) {
+      if (response.status === 201) {
         navigate('/');
       } else {
         setError('Invalid login credentials');
@@ -48,6 +48,9 @@ const LogInForm = () => {
 
   return (
     <div className="login-container">
+      <div className="login-page-image">
+        <img src={backgroundImage} alt="LogIn illustration" />
+      </div>
       <div className="login-content">
         <h1>Log in</h1>
         <form onSubmit={handleSubmit}>

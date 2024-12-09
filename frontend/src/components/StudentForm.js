@@ -3,8 +3,10 @@ import axios from 'axios';
 import Button from './Button';
 import '../styles/StudentForm.css';
 import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
+import { useNavigate } from 'react-router-dom';
 
 const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     const studentForm = document.querySelector('.student-form');
     const buttonContainer = document.querySelector('.form-button-container');
@@ -87,9 +89,16 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
         },
       }
     );
+    console.log('Submitting form data:', formDataToSubmit);
+    console.log('Current response status: ', response.status);
 
-    console.log('Registration successful:', response.data);
-    onSubmit(formData);
+    if(response.status === 201){
+      console.log('Registration successful:', response.data);
+      navigate('/login');
+      onSubmit(formData);
+
+    }
+
   } catch (error) {
     if (error.response && error.response.data) {
       setErrors(error.response.data);

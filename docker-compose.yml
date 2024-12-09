@@ -20,6 +20,8 @@ services:
     restart: on-failure
 
   frontend:
+    environment:
+    - CI=false
     build:
       context: ./frontend
     volumes:

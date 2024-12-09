@@ -3,7 +3,7 @@
 /* Initial hidden state for the container */
 .login-container,
 .login-content,
-.corner-image {
+.login-page-image {
   opacity: 0;
   transform: translateY(50px);  /* Slightly move elements down initially */
   transition: opacity 0.8s ease, transform 0.8s ease;  /* Smooth transitions */
@@ -16,7 +16,7 @@
   transform: translateY(0);  /* Slide elements into place */
 }
 
-.corner-image.visible {
+.login-page-image.visible {
   opacity: 0.4;
   transform: translateY(0);  /* Slide elements into place */
 }
@@ -43,7 +43,7 @@
   }
   
   /* Positioning the corner image */
-  .corner-image {
+  .login-page-image{
     position: absolute;
     bottom: 0;
     left: 0;
