@@ -135,3 +135,26 @@ sequenceDiagram
 
     ClientApp->>Admin: Display actions confirmation or error message
 ```
+
+### View Tutors and Use Filters (Unlogged User)
+```mermaid
+sequenceDiagram
+    participant User
+    participant ClientApp
+    participant APIService
+    participant Database
+
+    User->>ClientApp: Open Tutors Page
+    ClientApp->>APIService: Fetch Tutors List
+    APIService->>Database: Retrieve Tutors Data
+    Database-->>APIService: Return Tutors Data
+    APIService-->>ClientApp: Send Tutors List
+    ClientApp->>User: Display Tutors List
+
+    User->>ClientApp: Apply Filters (university, subject, location, mode, price)
+    ClientApp->>APIService: Fetch Filtered Tutors
+    APIService->>Database: Query with Filters
+    Database-->>APIService: Return Filtered Tutors
+    APIService-->>ClientApp: Send Filtered Tutors List
+    ClientApp->>User: Display Filtered Tutors
+```
