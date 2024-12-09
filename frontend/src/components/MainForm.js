@@ -23,9 +23,9 @@ const MainForm = () => {
     specialization: '',
     current_grade: '',
     role: '',
-    profilePhoto: null,             // For file uploads
+    photo_url: null,             // For file uploads
     profilePhotoPreview: '',        // Added for preview
-    certifications: null,           // For file uploads
+    confirmation_file: null,           // For file uploads
     certificateFileName: '',        // Added for file name
     subjects: [],
     specializations: {},
@@ -127,17 +127,12 @@ const MainForm = () => {
           return (
             <TutorUniversityStep
               formData={{
-                first_name: '',
-                last_name: '',
-                email: '',
-                username: '',
-                password: '',
                 university: '',
                 specialization: '',
                 current_grade: '',
-                profilePhoto: null,             // For file uploads
-                profilePhotoPreview: '',        // Added for preview
-                certifications: null,           // For file uploads
+                photo_url: null,
+                profilePhotoPreview: '',
+                confirmation_file: null,
                 certificateFileName: '',}}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
