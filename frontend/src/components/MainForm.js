@@ -14,16 +14,15 @@ const MainForm = () => {
   const [totalSteps, setTotalSteps] = useState(2); // Default to StudentForm steps
   const [formData, setFormData] = useState({
     // Common fields
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
+    username: '',
     password: '',
-    education: {
-      institute: '',
-      specialty: '',
-      courseNumber: '',
-      certifications: null,  // For file uploads
-    },
+    university: '',
+    specialization: '',
+    current_grade: '',
+    role: '',
     profilePhoto: null,             // For file uploads
     profilePhotoPreview: '',        // Added for preview
     certifications: null,           // For file uploads
@@ -87,18 +86,35 @@ const MainForm = () => {
         );
       case 2:
         if (role === 'Student') {
+          console.log("Showing Studen page");
           return (
             <StudentForm
-              formData={formData}
+            initialFormData={{
+              first_name: '',
+              last_name: '',
+              email: '',
+              username: '',
+              password: '',
+              university: '',
+              specialization: '',
+              current_grade: '',
+              role: 'STUDENT',}}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
             />
           );
         } else if (role === 'Tutor') {
+          console.log("Showing Tutor page");
           return (
             <TutorFormStep
-              formData={formData}
+            initialFormData={{
+              first_name: '',
+              last_name: '',
+              email: '',
+              username: '',
+              password: '',
+              role: 'TUTOR',}}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
@@ -110,7 +126,19 @@ const MainForm = () => {
         if (role === 'Tutor') {
           return (
             <TutorUniversityStep
-              formData={formData}
+              formData={{
+                first_name: '',
+                last_name: '',
+                email: '',
+                username: '',
+                password: '',
+                university: '',
+                specialization: '',
+                current_grade: '',
+                profilePhoto: null,             // For file uploads
+                profilePhotoPreview: '',        // Added for preview
+                certifications: null,           // For file uploads
+                certificateFileName: '',}}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}

@@ -10,7 +10,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
   const certificationInputRef = useRef(null);
 
   // Mock data for dropdowns
-  const institutes = [
+  const universities = [
     "KU Leuven",
     "Ghent University",
     "Wageningen University and Research",
@@ -141,7 +141,7 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
   formData.profilePhoto &&
   formData.certifications &&
   formData.education &&
-  formData.education.institute &&
+  formData.education.university &&
   formData.education.specialty &&
   formData.education.courseNumber;
 
@@ -192,15 +192,15 @@ const TutorUniversityStep = ({ formData, onBack, onNext, onChange }) => {
             <span className="side-text">Institute:</span>
             <div className="filterItem">
               <select
-                name="institute"
-                value={formData.education.institute}
+                name="university"
+                value={formData.education.university}
                 onChange={handleInputChange}
                 required
               >
-                <option value=""disabled hidden>Select Institute</option>
-                {institutes.map((institute, index) => (
-                  <option key={index} value={institute}>
-                    {institute}
+                <option value=""disabled hidden>Select University</option>
+                {universities.map((university, index) => (
+                  <option key={index} value={university}>
+                    {university}
                   </option>
                 ))}
               </select>

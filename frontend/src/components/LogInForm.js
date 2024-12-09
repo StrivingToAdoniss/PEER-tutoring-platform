@@ -80,8 +80,6 @@ const LogInForm = () => {
           Don't have an account? <Link to="/signup">Create One!</Link>
         </p>
       </div>
-      {/* Add the image in the lower-left corner */}
-      <img src={backgroundImage} alt="Background Illustration" className="corner-image" />
     </div>
   );
 };

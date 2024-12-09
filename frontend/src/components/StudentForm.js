@@ -38,10 +38,10 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (onChange) {
-      onChange({ [name]: value });
-    }
+    const updatedData = { ...formData, [name]: value };
+
+    setFormData(updatedData); // Update local state
+    onChange && onChange(updatedData); // Propagate changes to parent if needed
   };
 
  const handleSubmit = async (e) => {
@@ -107,7 +107,12 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
     }
   }
 };
-  const isFormComplete = Object.values(formData).every((value) => value.trim() !== '');
+  const isFormComplete = Object.values(formData).every(
+    (value) => typeof value === 'string' && value.trim() !== ''
+  );
+
+  console.log('formData:', formData);
+  console.log('isFormComplete:', isFormComplete);
 
   return (
     <div className="student-form-container">
