@@ -43,25 +43,6 @@ sequenceDiagram
     ClientApp->>User: Display Login Status
 ```
 
-### Student Search Tutor
-```mermaid
-sequenceDiagram
-    participant Student
-    participant ClientApp
-    participant System
-    participant Database
-
-    Student->>ClientApp: Uses filters and clicks "Search" button
-    ClientApp->>System: Submit search request
-    System->>Database: Perform search query
-    alt Tutors Found
-        System->>ClientApp: Display list of tutors
-    else Data Search Error
-        System->>ClientApp: USER.DATA_SEARCH_ERROR
-    end
-    ClientApp->>Student: Display search results or error message
-```
-
 ### Tutor Registration
 ```mermaid
 sequenceDiagram
@@ -74,9 +55,6 @@ sequenceDiagram
     Tutor->>ClientApp: Enters registration data (name, email, password, phone)
     Tutor->>ClientApp: Enters education details (Institution name, specialty)
     Tutor->>ClientApp: Uploads profile photo and certified document
-    Tutor->>ClientApp: Lists teaching subjects and levels
-    Tutor->>ClientApp: Specifies class location (online or offline) and place
-    Tutor->>ClientApp: Specifies cost per subject
 
     ClientApp->>System: Submit registration data
     System->>System: Validate data for correctness
@@ -109,8 +87,13 @@ sequenceDiagram
     ClientApp->>AuthService: Submit Login Credentials
     AuthService->>Database: Retrieve Tutor Data
     alt Valid Credentials
-        AuthService->>AuthService: Generate JWT
-        AuthService->>ClientApp: Login Successful (JWT)
+        Database-->>AuthService: Return Tutor Data
+        alt Tutor Approved
+            AuthService->>AuthService: Generate JWT
+            AuthService->>ClientApp: Login Successful (JWT)
+        else Tutor Not Approved
+            AuthService->>ClientApp: 403 Forbidden (Wait for Approval)
+        end
     else Invalid Credentials
         AuthService->>ClientApp: Login Failed
     end
