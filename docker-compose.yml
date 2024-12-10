@@ -7,13 +7,21 @@ services:
     ports:
       - "4444:4444"
       - "7900:7900"
+    healthcheck:
+      test: [ "CMD", "curl", "-sS", "http://localhost:4444/wd/hub/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   e2e-tests:
     build: e2e-tests
     environment:
       - SELENIUM_HOST=selenium-firefox
     depends_on:
-      - nginx
+      nginx:
+        condition: service_started
+      selenium-firefox:
+        condition: service_healthy
 
   db-migrations:
     build: ./backend
