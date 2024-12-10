@@ -51,16 +51,18 @@
   }
   
   /* Button container */
-  .form-button-container {
+  .tutor-form-button-container {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
   }
   
   /* Button styles */
-  .form-button-container button {
+  .tutor-form-button-container button {
     width: 48%;
+    margin: 0;
   }
+  
   
   @media (max-width: 768px) {
     .form-button-container {
