@@ -24,11 +24,10 @@ const MainForm = () => {
     current_grade: '',
     role: '',
     photo_url: null,             // For file uploads
-    profilePhotoPreview: '',        // Added for preview
     confirmation_file: null,           // For file uploads
-    certificateFileName: '',        // Added for file name
-    subjects: [],
-    specializations: {},
+    //subjects: [],
+    //specializations: {},
+    specialization: {},
   });
 
   const handleRoleSelection = (selectedRole) => {
