@@ -26,7 +26,7 @@ services:
       context: ./frontend
     volumes:
       - frontend:/app/build
-    restart: always
+
   nginx:
     build:
       context: ./nginx
