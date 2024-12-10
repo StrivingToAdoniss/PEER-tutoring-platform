@@ -14,22 +14,20 @@ const MainForm = () => {
   const [totalSteps, setTotalSteps] = useState(2); // Default to StudentForm steps
   const [formData, setFormData] = useState({
     // Common fields
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
+    username: '',
     password: '',
-    education: {
-      institute: '',
-      specialty: '',
-      courseNumber: '',
-      certifications: null,  // For file uploads
-    },
-    profilePhoto: null,             // For file uploads
-    profilePhotoPreview: '',        // Added for preview
-    certifications: null,           // For file uploads
-    certificateFileName: '',        // Added for file name
-    subjects: [],
-    specializations: {},
+    university: '',
+    specialization: '',
+    current_grade: '',
+    role: '',
+    photo_url: null,             // For file uploads
+    confirmation_file: null,           // For file uploads
+    //subjects: [],
+    //specializations: {},
+    specialization: {},
   });
 
   const handleRoleSelection = (selectedRole) => {
@@ -87,18 +85,23 @@ const MainForm = () => {
         );
       case 2:
         if (role === 'Student') {
+          formData.role = 'STUDENT'
+          console.log("Showing Studen page");
+
           return (
             <StudentForm
-              formData={formData}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
             />
           );
         } else if (role === 'Tutor') {
+          formData.role = 'TUTOR'
+          console.log("Showing Tutor page");
           return (
             <TutorFormStep
-              formData={formData}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
@@ -110,7 +113,7 @@ const MainForm = () => {
         if (role === 'Tutor') {
           return (
             <TutorUniversityStep
-              formData={formData}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
