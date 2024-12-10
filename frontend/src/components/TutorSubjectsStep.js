@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import SubjectSelector from './SubjectSelector';
 import SpecializationSelector from './SpecializationSelector';
 import Button from './Button';
+import axios from 'axios';
 import '../styles/TutorSubjectsStep.css';
 import backgroundImage from '../assets/SignUp/tutor_step_4_background.svg';
+import { useNavigate } from 'react-router-dom';
 
 const colors = [
   '#FFB6C1', '#ADD8E6', '#98FB98', '#DDA0DD', '#FFD700',
@@ -35,6 +37,7 @@ const assignColor = (name, colorMap) => {
 };
 
 const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
+  const navigate = useNavigate();
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [selectedSpecializations, setSelectedSpecializations] = useState({});
   const [colorMap, setColorMap] = useState({});
@@ -56,6 +59,41 @@ const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
       }));
     }
   };
+
+  const handleSubmit = async () => {
+    const updatedFormData = {
+      ...formData,
+      subjects: selectedSubjects,
+      specializations: selectedSpecializations,
+    };
+  
+    onChange(updatedFormData);
+  
+    // Prepare FormData
+    const formDataToSubmit = new FormData();
+    Object.keys(updatedFormData).forEach((key) => {
+      if (key === 'subjects' || key === 'specializations') {
+        // Handle array or object fields
+        formDataToSubmit.append(key, JSON.stringify(updatedFormData[key]));
+      } else {
+        formDataToSubmit.append(key, updatedFormData[key]);
+      }
+    });
+  
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/accounts/registration', formDataToSubmit, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Registration successful:', response.data);
+      navigate('/login'); // Redirect to login page
+    } catch (error) {
+      console.error('Error submitting form:', error.response?.data || error.message);
+      setError('Failed to submit the form. Please try again.');
+    }
+  };
+  
 
   const handleSubjectRemove = (subject) => {
     clearError();
@@ -143,7 +181,7 @@ const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
           <Button
             text="Next"
             className={isFormComplete ? 'blue-button' : 'gray-button'}
-            onClick={onNext}
+            onClick={handleSubmit}
             disabled={!isFormComplete}
           />
         </div>
