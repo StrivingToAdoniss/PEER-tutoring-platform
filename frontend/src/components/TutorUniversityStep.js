@@ -4,10 +4,11 @@ import '../styles/TutorUniversityStep.css';
 import backgroundImage from '../assets/SignUp/tutor_step_3_background.svg';
 
 const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
-  const [profilePhotoPreview, setProfilePhotoPreview] = useState(null);
-  const [certificateFileName, setCertificateFileName] = useState('');
   const profilePhotoInputRef = useRef(null);
   const certificationInputRef = useRef(null);
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [certificationName, setCertificationName] = useState(null);
+  const [confirmationFile, setConfirmationFile] = useState(null); 
 
   // Mock data for dropdowns
   const universities = [
@@ -94,42 +95,34 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   const specialties = ["Specialty X", "Specialty Y", "Specialty Z"];
   const courseNumbers = ["1", "2", "3", "4"];
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   onChange({
-  //     education: { [name]: value },
-  //   });
-  // };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedData = { ...formData, [name]: value };
-
-    setFormData(updatedData); // Update local state
-    onChange && onChange(updatedData); // Propagate changes to parent if needed
+    onChange({ [name]: value }); // Propagate changes to parent
   };
 
-  const [formData, setFormData] = useState(
-    initialFormData || {
-      university: '',
-      specialization: '',
-      current_grade: '',
-      photo_url: null,
-      profilePhotoPreview: '',
-      confirmation_file: null,
-      certificateFileName: '',
-    }
-  );
-
-
   useEffect(() => {
-    // Update local state if initialFormData changes
-    if (initialFormData) {
-      setFormData(initialFormData);
-      setProfilePhotoPreview(initialFormData.profilePhotoPreview || null);
-      setCertificateFileName(initialFormData.certificateFileName || '');
+    if (initialFormData.photo_url) {
+      if (initialFormData.photo_url instanceof File) {
+        const reader = new FileReader();
+        reader.onloadend = () => setPhotoPreview(reader.result);
+        reader.readAsDataURL(initialFormData.photo_url);
+      } else if (typeof initialFormData.photo_url === 'string') {
+        setPhotoPreview(initialFormData.photo_url);
+      }
+    } else {
+      setPhotoPreview(null); // Reset if undefined
     }
-  }, [initialFormData]);
+  
+    if (initialFormData.confirmation_file && initialFormData.confirmation_file !== confirmationFile) {
+      const name =
+        initialFormData.confirmation_file.name ||
+        (typeof initialFormData.confirmation_file === 'string'
+          ? initialFormData.confirmation_file
+          : null);
+      setCertificationName(name);
+    }
+  }, [initialFormData, confirmationFile]);
+  
   
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -138,35 +131,39 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
     if (e.target.name === 'photo_url') {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProfilePhotoPreview(reader.result);
+        setPhotoPreview(reader.result);
         onChange({
-          photo_url: file,
-          profilePhotoPreview: reader.result,
+          ...initialFormData,
+          photo_url: file, // Update photo_url in form data
         });
       };
       reader.readAsDataURL(file);
     } else if (e.target.name === 'confirmation_file') {
-      setCertificateFileName(file.name);
+      console.log('Selected File:', file);
+      setCertificationName(file.name);
       onChange({
-        confirmation_file: file,
-        certificateFileName: file.name,
+        ...initialFormData,
+        confirmation_file: file, // Update certifications in form data
       });
     }
   };
+  
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     onNext();
   };
 
   const isFormComplete =
-    formData.profilePhoto &&
-    formData.certifications &&
-    formData.university.trim() !== '' &&
-    formData.specialization.trim() !== '' &&
-    formData.current_grade.trim() !== '';
+  initialFormData.photo_url &&
+  initialFormData.confirmation_file &&
+  initialFormData.university.trim() !== '' &&
+  initialFormData.specialization.trim() !== '' &&
+  initialFormData.current_grade.trim() !== '';
 
-  console.log('formData:', formData);
+  console.log('formData:', initialFormData);
   console.log('isFormComplete:', isFormComplete);
+  console.log('FileName:', certificationName);
 
   return (
     <div className="tutor-form-step">
@@ -185,7 +182,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
             <div className="filterItem">
               <div className="upload-container">
                 <Button
-                  className={`plus-button ${profilePhotoPreview ? 'square-button' : ''}`}
+                  className={`plus-button ${photoPreview ? 'square-button' : ''}`}
                   onClick={(e) => {
                     e.preventDefault(); // Prevent form submission
                     profilePhotoInputRef.current.click();
@@ -199,9 +196,9 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
                   onChange={handleFileChange}
                   style={{ display: 'none' }}
                 />
-                {profilePhotoPreview && (
+                {photoPreview && (
                   <img
-                    src={profilePhotoPreview}
+                    src={photoPreview}
                     alt="Profile Preview"
                     className="photo-preview"
                   />
@@ -216,7 +213,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
             <div className="filterItem">
               <select
                 name="university"
-                value={formData.university}
+                value={initialFormData.university}
                 onChange={handleChange}
                 required
               >
@@ -236,7 +233,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
             <div className="filterItem">
               <select
                 name="specialization"
-                value={formData.specialization}
+                value={initialFormData.specialization}
                 onChange={handleChange}
                 required
               >
@@ -256,7 +253,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
             <div className="filterItem">
               <select
                 name="current_grade"
-                value={formData.current_grade}
+                value={initialFormData.current_grade}
                 onChange={handleChange}
                 required
               >
@@ -291,8 +288,8 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
                   style={{ display: 'none' }}
                 />
               </div>
-              {certificateFileName && (
-                <span className="file-name">{certificateFileName}</span>
+              {certificationName && typeof certificationName === 'string' && (
+                <span className="file-name">{certificationName}</span>
               )}
             </div>
           </div>

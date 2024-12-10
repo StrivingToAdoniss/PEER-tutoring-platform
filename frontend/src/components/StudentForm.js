@@ -20,28 +20,12 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   const specialties = ["Math", "Physics"];
   const courseNumbers = ["1", "2", "3", "4"];
 
-  const [formData, setFormData] = useState(
-    initialFormData || {
-      first_name: '',
-      last_name: '',
-      university: '',
-      specialization: '',
-      current_grade: '',
-      email: '',
-      username: '',
-      password: '',
-      role: 'STUDENT',
-    }
-  );
 
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedData = { ...formData, [name]: value };
-
-    setFormData(updatedData); // Update local state
-    onChange && onChange(updatedData); // Propagate changes to parent if needed
+    onChange({ [name]: value }); // Propagate changes to parent
   };
 
  const handleSubmit = async (e) => {
@@ -52,12 +36,12 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
   const validationErrors = {};
 
-  if (!passwordPattern.test(formData.password)) {
+  if (!passwordPattern.test(initialFormData.password)) {
     validationErrors.password =
       'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
   }
 
-  if (!usernamePattern.test(formData.username)) {
+  if (!usernamePattern.test(initialFormData.username)) {
     validationErrors.username = 'Username must be at least 4 characters long.';
   }
 
@@ -69,15 +53,15 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   try {
     // Create a FormData object and append fields
     const formDataToSubmit = new FormData();
-    formDataToSubmit.append('first_name', formData.first_name);
-    formDataToSubmit.append('last_name', formData.last_name);
-    formDataToSubmit.append('university', formData.university);
-    formDataToSubmit.append('specialization', formData.specialization);
-    formDataToSubmit.append('current_grade', formData.current_grade);
-    formDataToSubmit.append('email', formData.email);
-    formDataToSubmit.append('username', formData.username);
-    formDataToSubmit.append('password', formData.password);
-    formDataToSubmit.append('role', formData.role);
+    formDataToSubmit.append('first_name', initialFormData.first_name);
+    formDataToSubmit.append('last_name', initialFormData.last_name);
+    formDataToSubmit.append('university', initialFormData.university);
+    formDataToSubmit.append('specialization', initialFormData.specialization);
+    formDataToSubmit.append('current_grade', initialFormData.current_grade);
+    formDataToSubmit.append('email', initialFormData.email);
+    formDataToSubmit.append('username', initialFormData.username);
+    formDataToSubmit.append('password', initialFormData.password);
+    formDataToSubmit.append('role', initialFormData.role);
 
     // Send the FormData object
     const response = await axios.post(
@@ -95,7 +79,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
     if(response.status === 201){
       console.log('Registration successful:', response.data);
       navigate('/login');
-      onSubmit(formData);
+      onSubmit(initialFormData);
 
     }
 
@@ -107,11 +91,14 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
     }
   }
 };
-  const isFormComplete = Object.values(formData).every(
-    (value) => typeof value === 'string' && value.trim() !== ''
+
+const requiredFields = ['first_name', 'last_name', 'email', 'username', 'password', 'specialization', 'university', 'current_grade'];
+
+  const isFormComplete = Object.values(requiredFields).every(
+    (field) => initialFormData[field] && initialFormData[field].trim() !== ''
   );
 
-  console.log('formData:', formData);
+  console.log('formData:', initialFormData);
   console.log('isFormComplete:', isFormComplete);
 
   return (
@@ -126,7 +113,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
               type="text"
               name="first_name"
               placeholder="First Name"
-              value={formData.first_name}
+              value={initialFormData.first_name}
               onChange={handleChange}
               required
             />
@@ -136,7 +123,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
               type="text"
               name="last_name"
               placeholder="Last Name"
-              value={formData.last_name}
+              value={initialFormData.last_name}
               onChange={handleChange}
               required
             />
@@ -144,7 +131,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
             <select
               name="university"
-              value={formData.university}
+              value={initialFormData.university}
               onChange={handleChange}
               required
             >
@@ -160,7 +147,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
             <select
               name="current_grade"
-              value={formData.current_grade}
+              value={initialFormData.current_grade}
               onChange={handleChange}
               required
             >
@@ -177,7 +164,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
           <div className="form-column">
             <select
               name="specialization"
-              value={formData.specialization}
+              value={initialFormData.specialization}
               onChange={handleChange}
               required
             >
@@ -195,7 +182,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
               type="email"
               name="email"
               placeholder="Email"
-              value={formData.email}
+              value={initialFormData.email}
               onChange={handleChange}
               required
             />
@@ -205,7 +192,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
               type="text"
               name="username"
               placeholder="Username"
-              value={formData.username}
+              value={initialFormData.username}
               onChange={handleChange}
               required
             />
@@ -215,7 +202,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
               type="password"
               name="password"
               placeholder="Password"
-              value={formData.password}
+              value={initialFormData.password}
               onChange={handleChange}
               required
             />

@@ -9,26 +9,8 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedData = { ...formData, [name]: value };
-
-    setFormData(updatedData); // Update local state
-    onChange && onChange(updatedData); // Propagate changes to parent if needed
+    onChange({ [name]: value }); // Propagate changes to parent
   };
-
-
-
-  const [formData, setFormData] = useState(
-    initialFormData || {
-      first_name: '',
-      last_name: '',
-      email: '',
-      username: '',
-      password: '',
-      role: 'TUTOR',
-    }
-  );
-
-  
 
  const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,12 +20,12 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
 
     const validationErrors = {};
 
-    if (!passwordPattern.test(formData.password)) {
+    if (!passwordPattern.test(initialFormData.password)) {
       validationErrors.password =
         'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
     }
 
-    if (!usernamePattern.test(formData.username)) {
+    if (!usernamePattern.test(initialFormData.username)) {
       validationErrors.username = 'Username must be at least 4 characters long.';
     }
 
@@ -53,14 +35,6 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
     }
 
     try {
-      // Create a FormData object and append fields
-      const formDataToSubmit = new FormData();
-      formDataToSubmit.append('first_name', formData.first_name);
-      formDataToSubmit.append('last_name', formData.last_name);
-      formDataToSubmit.append('email', formData.email);
-      formDataToSubmit.append('username', formData.username);
-      formDataToSubmit.append('password', formData.password);
-      formDataToSubmit.append('role', formData.role);
 
       onNext();
 
@@ -73,11 +47,14 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
     }
 };
 
-  const isFormComplete = Object.values(formData).every(
-    (value) => typeof value === 'string' && value.trim() !== ''
+  const requiredFields = ['first_name', 'last_name', 'email', 'username', 'password'];
+
+// Check if only relevant fields are complete
+  const isFormComplete = requiredFields.every(
+    (field) => initialFormData[field] && initialFormData[field].trim() !== ''
   );
 
-  console.log('formData:', formData);
+  console.log('formData:', initialFormData);
   console.log('isFormComplete:', isFormComplete);
 
   return (
@@ -90,7 +67,7 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
               type="text"
               name="first_name"
               placeholder="First Name"
-              value={formData.first_name}
+              value={initialFormData.first_name}
               onChange={handleChange}
               required
             />
@@ -100,7 +77,7 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
               type="text"
               name="last_name"
               placeholder="Last Name"
-              value={formData.last_name}
+              value={initialFormData.last_name}
               onChange={handleChange}
               required
             />
@@ -110,7 +87,7 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
               type="email"
               name="email"
               placeholder="Email"
-              value={formData.email}
+              value={initialFormData.email}
               onChange={handleChange}
               required
             />
@@ -120,7 +97,7 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
               type="text"
               name="username"
               placeholder="Username"
-              value={formData.username}
+              value={initialFormData.username}
               onChange={handleChange}
               required
             />
@@ -130,7 +107,7 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
               type="password"
               name="password"
               placeholder="Password"
-              value={formData.password}
+              value={initialFormData.password}
               onChange={handleChange}
               required
             />

@@ -86,35 +86,23 @@ const MainForm = () => {
         );
       case 2:
         if (role === 'Student') {
+          formData.role = 'STUDENT'
           console.log("Showing Studen page");
+
           return (
             <StudentForm
-            initialFormData={{
-              first_name: '',
-              last_name: '',
-              email: '',
-              username: '',
-              password: '',
-              university: '',
-              specialization: '',
-              current_grade: '',
-              role: 'STUDENT',}}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
             />
           );
         } else if (role === 'Tutor') {
+          formData.role = 'TUTOR'
           console.log("Showing Tutor page");
           return (
             <TutorFormStep
-            initialFormData={{
-              first_name: '',
-              last_name: '',
-              email: '',
-              username: '',
-              password: '',
-              role: 'TUTOR',}}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
@@ -126,14 +114,7 @@ const MainForm = () => {
         if (role === 'Tutor') {
           return (
             <TutorUniversityStep
-              formData={{
-                university: '',
-                specialization: '',
-                current_grade: '',
-                photo_url: null,
-                profilePhotoPreview: '',
-                confirmation_file: null,
-                certificateFileName: '',}}
+            initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
