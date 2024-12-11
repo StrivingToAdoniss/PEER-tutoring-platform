@@ -70,8 +70,6 @@ def test_tutor_sign_up(driver: WebDriver):
     certification_input.send_keys(str(CERTIFICATE_PATH))  # Replace with the correct path
 
     driver.save_screenshot(f"{screenshots_dir}/filled_qualifications.png")
-    driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
-
     #driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
 
     # Add any additional assertions or steps to verify the process
