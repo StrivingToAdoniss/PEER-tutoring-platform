@@ -6,6 +6,7 @@ import backgroundImage from '../assets/SignUp/singup_student_background_step_2.s
 import { useNavigate } from 'react-router-dom';
 
 
+const baseURL = process.env.REACT_APP_BASE_URL;
 const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -66,7 +67,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
     // Send the FormData object
     const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/accounts/registration`,
+      `${baseURL}/accounts/registration`,
       formDataToSubmit,
       {
         headers: {
@@ -74,11 +75,10 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
         },
       }
     );
-    console.log('Submitting form data:', formDataToSubmit);
-    console.log('Current response status: ', response.status);
+
 
     if(response.status === 201){
-      console.log('Registration successful:', response.data);
+      //console.log('Registration successful:', response.data);
       navigate('/login');
       onSubmit(initialFormData);
 
@@ -99,8 +99,6 @@ const requiredFields = ['first_name', 'last_name', 'email', 'username', 'passwor
     (field) => initialFormData[field] && initialFormData[field].trim() !== ''
   );
 
-  console.log('formData:', initialFormData);
-  console.log('isFormComplete:', isFormComplete);
 
   return (
     <div className="student-form-container">

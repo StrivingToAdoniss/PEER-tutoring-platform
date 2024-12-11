@@ -54,8 +54,6 @@ const TutorFormStep = ({ initialFormData, onBack, onNext, onChange }) => {
     (field) => initialFormData[field] && initialFormData[field].trim() !== ''
   );
 
-  console.log('formData:', initialFormData);
-  console.log('isFormComplete:', isFormComplete);
 
   return (
     <div className="tutor-form-step">

@@ -58,7 +58,7 @@ const TutorSection = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleFilterChange = (filters) => {
-    console.log('Filters:', filters);
+    //console.log('Filters:', filters);
     // Implement filtering logic here
   };
 

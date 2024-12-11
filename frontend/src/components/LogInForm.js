@@ -4,6 +4,8 @@ import axios from 'axios';  // Axios for making HTTP requests
 import '../styles/LogIn.css';
 import backgroundImage from '../assets/LogIn/login_background.svg';
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ const LogInForm = () => {
     setError(null); // Reset any existing errors
 
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/accounts/login`, {
+      const response = await axios.post(`${baseURL}/accounts/login`, {
         email,
         password,
       });

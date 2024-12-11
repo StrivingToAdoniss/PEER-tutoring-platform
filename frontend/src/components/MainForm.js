@@ -71,7 +71,7 @@ const MainForm = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Form submitted!', formData);
+    //console.log('Form submitted!', formData);
     // Handle form submission logic here
   };
 
@@ -86,7 +86,7 @@ const MainForm = () => {
       case 2:
         if (role === 'Student') {
           formData.role = 'STUDENT'
-          console.log("Showing Studen page");
+          //console.log("Showing Studen page");
 
           return (
             <StudentForm
@@ -98,7 +98,7 @@ const MainForm = () => {
           );
         } else if (role === 'Tutor') {
           formData.role = 'TUTOR'
-          console.log("Showing Tutor page");
+          //console.log("Showing Tutor page");
           return (
             <TutorFormStep
             initialFormData={formData}
