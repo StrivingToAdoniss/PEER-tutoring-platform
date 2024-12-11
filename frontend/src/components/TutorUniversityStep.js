@@ -5,6 +5,9 @@ import backgroundImage from '../assets/SignUp/tutor_step_3_background.svg';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
+
 const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   const navigate = useNavigate();
   const profilePhotoInputRef = useRef(null);
@@ -144,7 +147,6 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
       };
       reader.readAsDataURL(file);
     } else if (e.target.name === 'confirmation_file') {
-      console.log('Selected File:', file);
       setCertificationName(file.name);
       onChange({
         ...initialFormData,
@@ -157,12 +159,12 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   const handleSubmit = async () => {
   
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/accounts/registration`, initialFormData, {
+      const response = await axios.post(`${baseURL}/accounts/registration`, initialFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Registration successful:', response.data);
+      //console.log('Registration successful:', response.data);
       navigate('/login'); // Redirect to login page
     } catch (error) {
       console.error('Error submitting form:', error.response?.data || error.message);
@@ -177,10 +179,6 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   initialFormData.university.trim() !== '' &&
   initialFormData.specialization.trim() !== '' &&
   initialFormData.current_grade.trim() !== '';
-
-  console.log('formData:', initialFormData);
-  console.log('isFormComplete:', isFormComplete);
-  console.log('FileName:', certificationName);
 
   return (
     <div className="tutor-form-step">
