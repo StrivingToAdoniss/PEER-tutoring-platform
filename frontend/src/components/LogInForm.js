@@ -30,7 +30,7 @@ const LogInForm = () => {
     setError(null); // Reset any existing errors
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/accounts/login', {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/accounts/login`, {
         email,
         password,
       });

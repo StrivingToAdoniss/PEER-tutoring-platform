@@ -5,6 +5,7 @@ import '../styles/StudentForm.css';
 import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
 import { useNavigate } from 'react-router-dom';
 
+
 const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -65,7 +66,7 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
 
     // Send the FormData object
     const response = await axios.post(
-      'http://127.0.0.1:8000/api/v1/accounts/registration',
+      `${process.env.REACT_APP_BASE_URL}/accounts/registration`,
       formDataToSubmit,
       {
         headers: {

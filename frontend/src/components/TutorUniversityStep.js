@@ -157,7 +157,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   const handleSubmit = async () => {
   
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/v1/accounts/registration', initialFormData, {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/accounts/registration`, initialFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
