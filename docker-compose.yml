@@ -22,6 +22,8 @@ services:
         condition: service_started
       selenium-firefox:
         condition: service_healthy
+    volumes:
+      - ./e2e_tests_screenshots/:/app/screenshots
 
   db-migrations:
     build: ./backend
@@ -52,6 +54,7 @@ services:
   frontend-builder:
     environment:
       - CI=false
+      - REACT_APP_BASE_URL=http://backend:8000
     build:
       context: ./frontend
     volumes:
