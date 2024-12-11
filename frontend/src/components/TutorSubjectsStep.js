@@ -86,7 +86,7 @@ const TutorSubjectsStep = ({ formData, onBack, onNext, onChange }) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Registration successful:', response.data);
+      //console.log('Registration successful:', response.data);
       navigate('/login'); // Redirect to login page
     } catch (error) {
       console.error('Error submitting form:', error.response?.data || error.message);
