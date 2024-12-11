@@ -15,7 +15,18 @@ PROFILE_PIC_PATH = Path("assets/profile_pic.jpg").absolute()
 def test_tutor_sign_up(driver: WebDriver):
     driver.get(FRONTEND_URL)
     driver.implicitly_wait(3)
+
+    screenshots_dir = "screenshots/test_tutor_sign_up"
+    os.makedirs(screenshots_dir, exist_ok=True)
+
+    sleep(0.5)
+    driver.save_screenshot(f"{screenshots_dir}/index.png")
+
     driver.find_element(by=By.XPATH, value='//button[text()="Sign up"]').click()
+
+    sleep(0.5)
+    driver.save_screenshot(f"{screenshots_dir}/account_type_selection.png")
+
     driver.find_element(by=By.XPATH, value='//h3[text()="Tutor"]/..').click()
 
     # Fill out the tutor sign-up form
@@ -24,6 +35,8 @@ def test_tutor_sign_up(driver: WebDriver):
     driver.find_element(by=By.NAME, value='email').send_keys('johndoe@example.com')
     driver.find_element(by=By.NAME, value='username').send_keys('johndoe')
     driver.find_element(by=By.NAME, value='password').send_keys('Securepassword123!')
+
+    driver.save_screenshot(f"{screenshots_dir}/filled_sign_up_form.png")
 
     # Click the "Next" button
     driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
@@ -56,9 +69,8 @@ def test_tutor_sign_up(driver: WebDriver):
     certification_input = driver.find_element(by=By.NAME, value='confirmation_file')
     certification_input.send_keys(str(CERTIFICATE_PATH))  # Replace with the correct path
 
-
+    driver.save_screenshot(f"{screenshots_dir}/filled_qualifications.png")
     #driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
 
     # Add any additional assertions or steps to verify the process
     # sleep(3000)
-
