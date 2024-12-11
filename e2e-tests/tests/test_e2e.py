@@ -35,33 +35,28 @@ def test_tutor_sign_up(driver: WebDriver):
     # Select institute
     institute_select = driver.find_element(by=By.NAME, value='university')
     institute_select.click()
-    driver.find_element(by=By.XPATH, value='//option[text()="KU Leuven"]').click()
+    institute_select.find_element(by=By.XPATH, value='//option[text()="KU Leuven"]').click()
 
     # Select specialty
     specialty_select = driver.find_element(by=By.NAME, value='specialization')
     specialty_select.click()
-    driver.find_element(by=By.XPATH, value='//option[text()="Specialty X"]').click()
+    specialty_select.find_element(by=By.XPATH, value='//option[text()="Specialty X"]').click()
+
+    # Select SUBJect
+    subject_select = driver.find_element(by=By.NAME, value='subject')
+    subject_select.click()
+    subject_select.find_element(by=By.XPATH, value='//option[text()="Subject X"]').click()
 
     # Select course number
     course_select = driver.find_element(by=By.NAME, value='current_grade')
     course_select.click()
-    driver.find_element(by=By.XPATH, value='//option[text()="1"]').click()
+    course_select.find_element(by=By.XPATH, value='//option[text()="1"]').click()
 
     # Upload certified document
     certification_input = driver.find_element(by=By.NAME, value='confirmation_file')
     certification_input.send_keys(str(CERTIFICATE_PATH))  # Replace with the correct path
-    driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
 
-    sleep(2)
 
-    # Step 3: Choose a subject
-    subject_select = driver.find_element(by=By.XPATH, value='//option[text()="Math"]/..')
-    subject_select.click()
-    subject_select.find_element(by=By.XPATH, value='//option[text()="Math"]').click()
-
-    spec_select = driver.find_element(by=By.XPATH, value='//option[text()="Calculus"]/..')
-    spec_select.click()
-    spec_select.find_element(by=By.XPATH, value='//option[text()="Calculus"]').click()
     #driver.find_element(by=By.XPATH, value='//button[text()="Next"]').click()
 
     # Add any additional assertions or steps to verify the process
