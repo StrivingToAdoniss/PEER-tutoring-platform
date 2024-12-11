@@ -26,22 +26,29 @@ const LogInForm = () => {
 
 
   const handleSubmit = async (event) => {
-    event.preventDefault();  // Prevent page reload
-    setError(null);  // Reset any existing errors
+    event.preventDefault(); // Prevent page reload
+    setError(null); // Reset any existing errors
 
     try {
-      const response = await axios.post('http://your-backend-url.com/api/login/', {
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/accounts/login', {
         email,
-        password
+        password,
       });
 
-      // If successful, navigate to the home page or dashboard
-      if (response.status === 201) {
-        navigate('/');
-      } else {
-        setError('Invalid login credentials');
+      const { status, data } = response;
+
+      if (status === 200) {
+        // Login successful, store JWT token locally
+        localStorage.setItem('accessToken', response.data.tokens.access);
+        localStorage.setItem('refreshToken', response.data.tokens.refresh);
+        navigate('/'); // Navigate to home or dashboard
+      } else if (status === 400) {
+        setError('Invalid login credentials. Please try again.');
+      } else if (status === 403) {
+        setError('Your account is not approved by the admin yet.');
       }
     } catch (error) {
+      // Handle unexpected errors
       setError('Failed to log in. Please check your credentials and try again.');
     }
   };
