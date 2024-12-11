@@ -2,13 +2,17 @@ import React, { useRef, useState, useEffect } from 'react';
 import Button from './Button';
 import '../styles/TutorUniversityStep.css';
 import backgroundImage from '../assets/SignUp/tutor_step_3_background.svg';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
+  const navigate = useNavigate();
   const profilePhotoInputRef = useRef(null);
   const certificationInputRef = useRef(null);
   const [photoPreview, setPhotoPreview] = useState(null);
   const [certificationName, setCertificationName] = useState(null);
   const [confirmationFile, setConfirmationFile] = useState(null); 
+  const [error, setError] = useState('');
 
   // Mock data for dropdowns
   const universities = [
@@ -93,6 +97,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
     "Haute École Albert Jacquard"
   ];
   const specialties = ["Specialty X", "Specialty Y", "Specialty Z"];
+  const subjects = ["Subject X", "Subject Y", "Subject Z"];
   const courseNumbers = ["1", "2", "3", "4"];
 
   const handleChange = (e) => {
@@ -149,10 +154,22 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
   };
   
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onNext();
+  const handleSubmit = async () => {
+  
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/v1/accounts/registration', initialFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Registration successful:', response.data);
+      navigate('/login'); // Redirect to login page
+    } catch (error) {
+      console.error('Error submitting form:', error.response?.data || error.message);
+      setError('Failed to submit the form. Please try again.');
+    }
   };
+  
 
   const isFormComplete =
   initialFormData.photo_url &&
@@ -247,7 +264,27 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
             </div>
           </div>
 
-          {/* Section 4: Course Number */}
+            {/* Section 4: Subject */}
+                    <div className="form-section">
+            <span className="side-text">Subject:</span>
+            <div className="filterItem">
+              <select
+                name="subject"
+                value={initialFormData.subject}
+                onChange={handleChange}
+                required
+              >
+                <option value=""disabled hidden>Select Subject To Tutor</option>
+                {subjects.map((subject, index) => (
+                  <option key={index} value={subject}>
+                    {subject}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Section 5: Course Number */}
           <div className="form-section">
             <span className="side-text">Course Number:</span>
             <div className="filterItem">
@@ -266,6 +303,8 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
               </select>
             </div>
           </div>
+
+          {error && <p className="error-text">{error}</p>}
 
           {/* Section 5: Certificate Upload */}
           <div className="form-section">

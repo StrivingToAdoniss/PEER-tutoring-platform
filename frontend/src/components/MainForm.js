@@ -27,7 +27,7 @@ const MainForm = () => {
     confirmation_file: null,           // For file uploads
     //subjects: [],
     //specializations: {},
-    specialization: {},
+    subject: '',
   });
 
   const handleRoleSelection = (selectedRole) => {

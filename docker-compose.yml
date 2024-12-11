@@ -1,6 +1,35 @@
 version: '3'
 
 services:
+  selenium-firefox:
+    image: selenium/standalone-firefox:latest
+    shm_size: '2gb'
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    healthcheck:
+      test: [ "CMD", "curl", "-sS", "http://localhost:4444/wd/hub/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  e2e-tests:
+    build: e2e-tests
+    environment:
+      - SELENIUM_HOST=selenium-firefox
+    depends_on:
+      nginx:
+        condition: service_started
+      selenium-firefox:
+        condition: service_healthy
+
+  db-migrations:
+    build: ./backend
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    command: python3 manage.py migrate --noinput
+
   backend:
     build:
       context: ./backend
@@ -11,24 +40,23 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - postgres-db
+      postgres-db:
+        condition: service_healthy
+      db-migrations:
+        condition: service_completed_successfully
     command: >
       /bin/bash -c "python3 manage.py collectstatic --noinput &&
-                    python3 manage.py makemigrations --noinput&&
-                    python3 manage.py migrate --noinput &&
-                    python3 manage.py shell -c \"from django.contrib.auth import get_user_model
-      User = get_user_model(); User.objects.create_superuser('admin@gmail.com', 'Django@2004')\" 
-      && gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
-    restart: on-failure
+                    python3 manage.py initadmin &&
+                    gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
 
-  frontend:
+  frontend-builder:
     environment:
-    - CI=false
+      - CI=false
     build:
       context: ./frontend
     volumes:
       - frontend:/app/build
-    restart: always
+
   nginx:
     build:
       context: ./nginx
@@ -38,8 +66,11 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - backend
-      - frontend
+      backend:
+        condition: service_started
+      frontend-builder:
+        condition: service_completed_successfully
+
   postgres-db:
     image: postgres:14.8-alpine3.18
 
@@ -51,9 +82,14 @@ services:
     ports:
       - "5432:5432"
 
+    healthcheck:
+      test: [ "CMD-SHELL", "PGPASSWORD=$${POSTGRES_PASSWORD} pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
+      interval: 5s
+      retries: 3
+      timeout: 5s
+
   redis-server:
     image: redis:7.2.5-alpine3.20
-
 
   celery:
     container_name: celery
@@ -65,8 +101,6 @@ services:
     depends_on:
       - redis-server
       - backend
-
-
 
 volumes:
   static:
