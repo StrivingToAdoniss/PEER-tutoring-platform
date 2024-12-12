@@ -6,6 +6,11 @@ A full-stack web application for peer-to-peer tutoring among university students
 
 Фронтенд для платформи Peer-To-Peer створено за допомогою фреймворку React.
 
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+  <img src="docs/assets/main_page_screen.png" alt="Main Page Screenshot" width="400">
+  <img src="docs/assets/tutor_list_screen.png" alt="Tutor List Screenshot" width="400">
+</div>
+
 ## Зміст
 
 1. [Особливості](#особливості)
