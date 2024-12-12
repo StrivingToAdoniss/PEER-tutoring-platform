@@ -279,6 +279,20 @@ cd backend
 ```
 
 3. Запустіть тести
+Для Bash:
 ```bash 
 export $(grep -v '^#' .test.env | xargs) && pytest ./accounts/tests ./tutors_profiles/tests 
 ```
+
+Для PowerShell:
+```bash
+Get-Content .test.env | ForEach-Object {
+    if ($_ -notmatch '^#' -and $_ -ne '') {
+        $key, $value = $_ -split '=', 2
+        [System.Environment]::SetEnvironmentVariable($key.Trim(), $value.Trim())
+    }
+}
+
+pytest ./accounts/tests ./tutors_profiles/tests
+```
+
