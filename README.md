@@ -6,6 +6,11 @@ A full-stack web application for peer-to-peer tutoring among university students
 
 Фронтенд для платформи Peer-To-Peer створено за допомогою фреймворку React.
 
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+  <img src="docs/main_page_screen.png" alt="Main Page Screenshot" width="400">
+  <img src="docs/tutor_list_screen.png" alt="Tutor List Screenshot" width="400">
+</div>
+
 ## Зміст
 
 1. [Особливості](#особливості)
@@ -122,6 +127,8 @@ src/
 - Застосунок підтримує завантаження файлів для фотографій профілю та сертифікаційних документів, які попередньо переглядаються перед відправкою.
 - Усі форми перевіряються на повноту та правильність перед переходом на наступний етап або відправленням.
 - Використовуйте .env для налаштувань, специфічних для середовища.
+
+
 
 ## To do
 
