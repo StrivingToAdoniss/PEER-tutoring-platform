@@ -33,7 +33,7 @@ const MainForm = () => {
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
     if (selectedRole === 'Tutor') {
-      setTotalSteps(4); // Tutor form has 4 steps
+      setTotalSteps(3); // Tutor form has 4 steps
     } else {
       setTotalSteps(2); // Student form has 2 steps
     }
@@ -111,6 +111,7 @@ const MainForm = () => {
         break;
       case 3:
         if (role === 'Tutor') {
+          formData.role = 'TUTOR'
           return (
             <TutorUniversityStep
             initialFormData={formData}
