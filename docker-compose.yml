@@ -54,7 +54,7 @@ services:
   frontend-builder:
     environment:
       - CI=false
-      - REACT_APP_BASE_URL=http://backend:8000
+      - REACT_APP_BASE_URL=http://127.0.0.1:8000/api/v1
     build:
       context: ./frontend
     volumes:
