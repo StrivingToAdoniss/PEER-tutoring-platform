@@ -8,7 +8,7 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 
-const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
+const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) => {
   const navigate = useNavigate();
   const profilePhotoInputRef = useRef(null);
   const certificationInputRef = useRef(null);
@@ -165,7 +165,13 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
         },
       });
       //console.log('Registration successful:', response.data);
-      navigate('/login'); // Redirect to login page
+      if(response.status === 201){
+        //console.log('Registration successful:', response.data);
+        navigate('/login');
+        onSubmit(initialFormData);
+  
+      }
+
     } catch (error) {
       console.error('Error submitting form:', error.response?.data || error.message);
       setError('Failed to submit the form. Please try again.');
@@ -337,7 +343,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onNext, onChange }) => {
         {/* Back and Next Buttons */}
         <div className="form-button-container">
           <Button text="Back" className="outline-button" onClick={onBack} />
-          <Button text="Next" className={isFormComplete ? 'blue-button' : 'gray-button'} disabled={!isFormComplete}/>
+          <Button text="Register" className={isFormComplete ? 'blue-button' : 'gray-button'} disabled={!isFormComplete}/>
         </div>
       </form>
     </div>

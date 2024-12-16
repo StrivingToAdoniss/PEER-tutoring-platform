@@ -116,7 +116,7 @@ const MainForm = () => {
             <TutorUniversityStep
             initialFormData={formData}
               onBack={handlePreviousStep}
-              onNext={handleNextStep}
+              onSubmit={handleSubmit}
               onChange={handleFormDataChange}
             />
           );
