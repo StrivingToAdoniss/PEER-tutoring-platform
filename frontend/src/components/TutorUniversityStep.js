@@ -138,7 +138,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
 
     const { name } = e.target;
 
-    console.log(`File selected for ${name}:`, file);
+    //console.log(`File selected for ${name}:`, file);
   
     if (name === 'photo_url') {
       const reader = new FileReader();
@@ -149,7 +149,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
       reader.readAsDataURL(file);
     } else if (name === 'confirmation_file') {
       setCertificationName(file.name);
-      console.log(`Confirmation file name: ${file.name}`);
+      //console.log(`Confirmation file name: ${file.name}`);
       onChange({ [name]: file });
     }
   };
@@ -174,24 +174,24 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
     if (initialFormData.photo_url instanceof File) {
       FinalformData.append('photo_url', initialFormData.photo_url);
     } else {
-      console.error('photo_url is not a File object:', initialFormData.photo_url);
+      //console.error('photo_url is not a File object:', initialFormData.photo_url);
     }
     
     if (initialFormData.confirmation_file instanceof File) {
       FinalformData.append('confirmation_file', initialFormData.confirmation_file);
     } else {
-      console.error('confirmation_file is not a File object:', initialFormData.confirmation_file);
+      //console.error('confirmation_file is not a File object:', initialFormData.confirmation_file);
     }
     
 
-    console.log('FormData being sent:');
-    for (let [key, value] of FinalformData.entries()) {
-      if (value instanceof File) {
-        console.log(`${key}: File {name: ${value.name}, size: ${value.size}}`);
-      } else {
-        console.log(`${key}:`, value);
-      }
-    }
+    // console.log('FormData being sent:');
+    // for (let [key, value] of FinalformData.entries()) {
+    //   if (value instanceof File) {
+    //     console.log(`${key}: File {name: ${value.name}, size: ${value.size}}`);
+    //   } else {
+    //     console.log(`${key}:`, value);
+    //   }
+    // }
     
 
     try {
@@ -208,11 +208,11 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
   
       }
       else{
-        console.log('We got error: ', response.status);
+        //console.log('We got error: ', response.status);
       }
 
     } catch (error) {
-      console.error('Error submitting form:', error.response?.data || error.message);
+      //console.error('Error submitting form:', error.response?.data || error.message);
       setError('Failed to submit the form. Please try again.');
     }
   };
