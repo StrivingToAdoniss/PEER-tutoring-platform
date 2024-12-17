@@ -54,6 +54,32 @@
   text-decoration: underline;
 }
 
+.logout-button {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.logout-button:hover {
+  transform: scale(1.1); /* Slight hover effect */
+}
+
+.profile-button {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1vw;
+  transition: transform 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: scale(1.1); /* Slight hover effect */
+}
+
+
+
 .navbar-links a.custom-nav-link:hover {
   font-weight: bold;
   color: black;

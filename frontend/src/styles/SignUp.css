@@ -126,6 +126,13 @@
   }
   
   
+  .signup-container .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9;
+  }
 
   /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
