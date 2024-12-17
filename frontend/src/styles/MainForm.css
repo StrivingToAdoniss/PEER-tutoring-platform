@@ -10,7 +10,7 @@
   /* Step progress component styling */
   .step-progress {
     position: fixed; /* Keep the progress bar fixed at the top */
-    top: 5vh; /* Stick to the top of the viewport */
+    top: 0.5vh; /* Stick to the top of the viewport */
     left: 0;
     right: 0;
     z-index: 10; /* Ensure it's above other content */
