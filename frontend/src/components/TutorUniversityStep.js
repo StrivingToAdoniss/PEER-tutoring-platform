@@ -135,31 +135,67 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    const { name } = e.target;
+
+    console.log(`File selected for ${name}:`, file);
   
-    if (e.target.name === 'photo_url') {
+    if (name === 'photo_url') {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result);
-        onChange({
-          ...initialFormData,
-          photo_url: file, // Update photo_url in form data
-        });
+        onChange({ [name]: file });
       };
       reader.readAsDataURL(file);
-    } else if (e.target.name === 'confirmation_file') {
+    } else if (name === 'confirmation_file') {
       setCertificationName(file.name);
-      onChange({
-        ...initialFormData,
-        confirmation_file: file, // Update certifications in form data
-      });
+      console.log(`Confirmation file name: ${file.name}`);
+      onChange({ [name]: file });
     }
   };
   
 
   const handleSubmit = async () => {
-  
+    
+    // Prepare FormData for file uploads
+    const FinalformData = new FormData();
+    FinalformData.append('first_name', initialFormData.first_name);
+    FinalformData.append('last_name', initialFormData.last_name);
+    FinalformData.append('email', initialFormData.email);
+    FinalformData.append('username', initialFormData.username);
+    FinalformData.append('password', initialFormData.password);
+    FinalformData.append('role', initialFormData.role);
+    FinalformData.append('current_grade', initialFormData.current_grade);
+    FinalformData.append('university', initialFormData.university);
+    FinalformData.append('specialization', initialFormData.specialization);
+    FinalformData.append('subject', initialFormData.subject);
+
+    // Append files
+    if (initialFormData.photo_url instanceof File) {
+      FinalformData.append('photo_url', initialFormData.photo_url);
+    } else {
+      console.error('photo_url is not a File object:', initialFormData.photo_url);
+    }
+    
+    if (initialFormData.confirmation_file instanceof File) {
+      FinalformData.append('confirmation_file', initialFormData.confirmation_file);
+    } else {
+      console.error('confirmation_file is not a File object:', initialFormData.confirmation_file);
+    }
+    
+
+    console.log('FormData being sent:');
+    for (let [key, value] of FinalformData.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: File {name: ${value.name}, size: ${value.size}}`);
+      } else {
+        console.log(`${key}:`, value);
+      }
+    }
+    
+
     try {
-      const response = await axios.post(`${baseURL}/accounts/registration`, initialFormData, {
+      const response = await axios.post(`${baseURL}/accounts/registration`, FinalformData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -170,6 +206,9 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
         navigate('/login');
         onSubmit(initialFormData);
   
+      }
+      else{
+        console.log('We got error: ', response.status);
       }
 
     } catch (error) {
@@ -343,7 +382,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
         {/* Back and Next Buttons */}
         <div className="form-button-container">
           <Button text="Back" className="outline-button" onClick={onBack} />
-          <Button text="Register" className={isFormComplete ? 'blue-button' : 'gray-button'} disabled={!isFormComplete}/>
+          <Button text="Register" className={isFormComplete ? 'blue-button' : 'gray-button'} disabled={!isFormComplete} onClick={(e) => {e.preventDefault(); handleSubmit();}}/>
         </div>
       </form>
     </div>

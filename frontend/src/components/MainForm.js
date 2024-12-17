@@ -53,7 +53,10 @@ const MainForm = () => {
       const updatedData = { ...prevData };
   
       for (const key in newData) {
-        if (
+        if (newData[key] instanceof File) {
+          // Assign File objects directly
+          updatedData[key] = newData[key];
+        } else if (
           typeof newData[key] === 'object' &&
           !Array.isArray(newData[key]) &&
           newData[key] !== null
@@ -61,7 +64,7 @@ const MainForm = () => {
           // Merge nested objects
           updatedData[key] = { ...prevData[key], ...newData[key] };
         } else {
-          // Update or add new fields
+          // Assign other values directly
           updatedData[key] = newData[key];
         }
       }
@@ -69,6 +72,7 @@ const MainForm = () => {
       return updatedData;
     });
   };
+  
 
   const handleSubmit = () => {
     //console.log('Form submitted!', formData);

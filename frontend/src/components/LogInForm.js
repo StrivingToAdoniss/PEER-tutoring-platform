@@ -37,21 +37,28 @@ const LogInForm = () => {
         password,
       });
 
-      const { status, data } = response;
-
-      if (status === 200) {
+      if (response.status === 200) {
         // Login successful, store JWT token locally
         localStorage.setItem('accessToken', response.data.tokens.access);
         localStorage.setItem('refreshToken', response.data.tokens.refresh);
         navigate('/'); // Navigate to home or dashboard
-      } else if (status === 400) {
-        setError('Invalid login credentials. Please try again.');
-      } else if (status === 403) {
-        setError('Your account is not approved by the admin yet.');
       }
     } catch (error) {
-      // Handle unexpected errors
-      setError('Failed to log in. Please check your credentials and try again.');
+      if (error.response) {
+        // Extract the status code from the response
+        const statusCode = error.response.status;
+    
+        if (statusCode === 400) {
+          setError('Invalid login credentials. Please try again.');
+        } else if (statusCode === 403) {
+          setError('Your account is not approved by the admin yet.');
+        } else {
+          setError('An unexpected error occurred. Please try again later.');
+        }
+      } else {
+        // Handle errors where no response is returned (e.g., network issues)
+        setError('Unable to connect to the server. Please check your connection.');
+      }
     }
   };
 
