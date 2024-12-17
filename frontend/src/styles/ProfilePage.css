@@ -1,0 +1,152 @@
+.profile-page {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #e6f3f7;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Sticky Navbar */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    padding: 2vh 3vw; /* Relative padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo-image {
+    height: 6vh; /* Adjusts with viewport height */
+  }
+  
+  .logout-button img {
+    cursor: pointer;
+    height: 5vh;
+  }
+  
+  /* Profile Container */
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5vh auto; /* Responsive margin */
+    padding: 2vh;
+    max-width: 35vw; /* Profile content width: 35% of the viewport width */
+    min-height: 70vh;
+  }
+  
+  /* Profile Header */
+  .profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 3vh;
+    width: 100%;
+  }
+  
+  .profile-picture {
+    width: 20vh; /* Profile picture size relative to viewport height */
+    height: 20vh;
+    border-radius: 15px;
+    object-fit: cover;
+  }
+  
+  /* Profile Details with Symmetrical Rows */
+  .profile-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 3vh 5vw; /* Vertical and horizontal spacing */
+    margin-top: 3vh;
+    width: 100%;
+  }
+  
+  .profile-details h1,
+  .profile-details .username {
+    grid-column: span 2; /* Ensure they span both columns */
+    margin-bottom: 2vh;
+  }
+  
+  .profile-details p {
+    display: flex;
+    align-items: center; /* Keep emoji and text vertically aligned */
+    gap: 1vw; /* Spacing between emoji and text */
+    font-size: 2.5vh;
+    color: #333;
+    margin: 0;
+    overflow-wrap: break-word; /* Ensure long text wraps properly */
+    word-break: break-word; /* Breaks the text if no space is found */
+  }
+  
+  
+  .profile-details h1 {
+    font-size: 4vh; /* Larger name size */
+    margin: 0;
+  }
+  
+  .profile-details .username {
+    font-size: 2.8vh;
+    color: #777;
+  }
+  
+  .certificate-link {
+    text-decoration: underline;
+    color: #007bff;
+  }
+  
+  .certificate-link:hover {
+    color: #0056b3;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 1024px) {
+    .profile-container {
+      max-width: 50vw;
+    }
+  
+    .profile-picture {
+      width: 18vh;
+      height: 18vh;
+    }
+  
+    .profile-details {
+      grid-template-columns: 1fr; /* Switch to single column */
+      gap: 2vh;
+      text-align: center;
+    }
+  
+    .profile-details p {
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-container {
+      max-width: 70vw;
+    }
+  
+    .profile-picture {
+      width: 15vh;
+      height: 15vh;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile-details p {
+      font-size: 2vh; /* Reduce font size for smaller screens */
+      gap: 1.5vw; /* Adjust spacing for smaller screens */
+    }
+  
+  
+    .profile-picture {
+      width: 12vh;
+      height: 12vh;
+    }
+  
+    .profile-details p {
+      font-size: 2vh;
+    }
+  }
+  
