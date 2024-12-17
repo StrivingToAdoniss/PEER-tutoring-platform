@@ -232,7 +232,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
       </div>
       <form onSubmit={handleSubmit} className="tutor-form">
         
-      <div class="outer-container">
+      <div className="outer-container">
         {/* Adjusted Width Container for Fields */}
         <div className="adjusted-width-container">
           

@@ -16,7 +16,7 @@ const LogInForm = () => {
     // Find the elements that need to animate
     const loginContainer = document.querySelector('.login-container');
     const loginContent = document.querySelector('.login-content');
-    const cornerImage = document.querySelector('.corner-image');
+    const cornerImage = document.querySelector('.login-page-image');
 
     // Add the 'visible' class after a short delay to trigger the animation
     setTimeout(() => {
