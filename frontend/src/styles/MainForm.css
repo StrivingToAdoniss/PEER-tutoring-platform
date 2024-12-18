@@ -17,6 +17,7 @@
     padding: 10px 0;
     width: 100%; /* Make it span the entire width */
     max-width: 100%; /* Optional: Set the max width for better control */
+    pointer-events: none;
   }
   
   

@@ -100,7 +100,7 @@ const TutorUniversityStep = ({ initialFormData, onBack, onSubmit, onChange }) =>
     "Haute École Albert Jacquard"
   ];
   const specialties = ["Specialty X", "Specialty Y", "Specialty Z"];
-  const subjects = ["Subject X", "Subject Y", "Subject Z"];
+  const subjects = ["Math", "Physics", "Biology", "English"];
   const courseNumbers = ["1", "2", "3", "4"];
 
   const handleChange = (e) => {
