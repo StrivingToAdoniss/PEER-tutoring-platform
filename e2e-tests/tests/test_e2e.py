@@ -65,7 +65,7 @@ def tutor_sign_up(driver: WebDriver):
     # Select SUBJect
     subject_select = driver.find_element(by=By.NAME, value='subject')
     subject_select.click()
-    subject_select.find_element(by=By.XPATH, value='//option[text()="Subject X"]').click()
+    subject_select.find_element(by=By.XPATH, value='//option[text()="Math"]').click()
 
     # Select course number
     course_select = driver.find_element(by=By.NAME, value='current_grade')
