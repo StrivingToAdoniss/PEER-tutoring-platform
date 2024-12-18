@@ -13,7 +13,9 @@ CERTIFICATE_PATH = Path("assets/certificate.pdf").absolute()
 PROFILE_PIC_PATH = Path("assets/profile_pic.jpg").absolute()
 
 
-def test_tutor_2e2(driver: WebDriver):
+def test_tutor_e2e(driver: WebDriver):
+    driver.implicitly_wait(5)
+
     tutor_sign_up(driver)
     tutor_log_in(driver, "impossible_login")
     admin_approve_tutor(driver)
@@ -24,12 +26,10 @@ def test_tutor_2e2(driver: WebDriver):
 
 def tutor_sign_up(driver: WebDriver):
     driver.get(FRONTEND_URL)
-    driver.implicitly_wait(3)
 
     screenshots_dir = "screenshots/test_tutor_sign_up"
     os.makedirs(screenshots_dir, exist_ok=True)
 
-    sleep(0.5)
     driver.save_screenshot(f"{screenshots_dir}/index.png")
 
     driver.find_element(by=By.XPATH, value='//button[text()="Sign up"]').click()
@@ -86,7 +86,6 @@ def tutor_log_in(driver: WebDriver, name):
     screenshots_dir = "screenshots/test_tutor_log_in"
     os.makedirs(screenshots_dir, exist_ok=True)
 
-    sleep(0.5)
     driver.save_screenshot(f"{screenshots_dir}/login.png")
 
     driver.find_element(by=By.XPATH, value='//button[text()="Log in"]').click()
@@ -102,7 +101,6 @@ def admin_approve_tutor(driver: WebDriver):
     os.makedirs(screenshots_dir, exist_ok=True)
 
     driver.get(f"{BACKEND_URL}/admin")
-    driver.implicitly_wait(3)
 
     driver.find_element(By.XPATH, '//input[@id="id_username"]').send_keys('admin@gmail.com')
     driver.find_element(By.XPATH, '//input[@id="id_password"]').send_keys('Django@2004')
