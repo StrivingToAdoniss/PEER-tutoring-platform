@@ -94,7 +94,7 @@ def tutor_log_in(driver: WebDriver, name):
     driver.find_element(By.XPATH, '//input[@type="email"]').send_keys('jenydoe@example.com')
 
     driver.find_element(By.XPATH, '//button[@type="submit" and contains(@class, "login-button")]').click()
-    driver.save_screenshot(f"{screenshots_dir}/{name}")
+    driver.save_screenshot(f"{screenshots_dir}/{name}.png")
 
 
 def admin_approve_tutor(driver: WebDriver):
