@@ -6,6 +6,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from tenacity import sleep
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://nginx")
+BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
 
 
 CERTIFICATE_PATH = Path("assets/certificate.pdf").absolute()
