@@ -22,6 +22,7 @@ def test_tutor_e2e(driver: WebDriver):
     tutor_log_in(driver, "possible_login")
     tutor_log_out(driver)
 
+
 def tutor_sign_up(driver: WebDriver):
     driver.get(FRONTEND_URL)
 
@@ -107,7 +108,6 @@ def admin_approve_tutor(driver: WebDriver):
     driver.save_screenshot(f"{screenshots_dir}/admin_login.png")
 
     driver.find_element(By.XPATH, '//input[@type="submit" and @value="Log in"]').click()
-
     driver.find_element(By.XPATH, '//a[@href="/admin/accounts/tutor/"]').click()
     driver.find_element(By.XPATH, '//a[text()="JennyDoe11"]').click()
 
@@ -130,7 +130,6 @@ def admin_approve_tutor(driver: WebDriver):
     action_dropdown.click()
 
     action_dropdown.find_element(By.XPATH, '//option[text()="Approve selected users"]').click()
-
     driver.save_screenshot(f"{screenshots_dir}/approve_tutor.png")
 
     driver.find_element(By.XPATH, '//button[@type="submit" and @name="index" and @value="0"]').click()
