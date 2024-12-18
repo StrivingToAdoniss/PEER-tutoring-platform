@@ -19,10 +19,8 @@ def test_tutor_e2e(driver: WebDriver):
     tutor_sign_up(driver)
     tutor_log_in(driver, "impossible_login")
     admin_approve_tutor(driver)
-    driver.get(FRONTEND_URL)
     tutor_log_in(driver, "possible_login")
     tutor_log_out(driver)
-
 
 def tutor_sign_up(driver: WebDriver):
     driver.get(FRONTEND_URL)
@@ -83,6 +81,7 @@ def tutor_sign_up(driver: WebDriver):
 
 
 def tutor_log_in(driver: WebDriver, name):
+    driver.get(FRONTEND_URL)
     screenshots_dir = "screenshots/test_tutor_log_in"
     os.makedirs(screenshots_dir, exist_ok=True)
 
