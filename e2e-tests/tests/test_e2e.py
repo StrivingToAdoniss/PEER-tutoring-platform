@@ -90,8 +90,9 @@ def tutor_log_in(driver: WebDriver, name):
     driver.save_screenshot(f"{screenshots_dir}/login.png")
 
     driver.find_element(by=By.XPATH, value='//button[text()="Log in"]').click()
-    driver.find_element(By.XPATH, '//input[@type="email"]').send_keys('jenydoe@example.com')
     driver.find_element(By.XPATH, '//input[@type="password"]').send_keys('Securepassword1234!!!')
+    driver.find_element(By.XPATH, '//input[@type="email"]').send_keys('jenydoe@example.com')
+
     driver.find_element(By.XPATH, '//button[@type="submit" and contains(@class, "login-button")]').click()
     driver.save_screenshot(f"{screenshots_dir}/{name}")
 
