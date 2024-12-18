@@ -25,17 +25,16 @@ def test_tutor_sign_up(driver: WebDriver):
 
     driver.find_element(by=By.XPATH, value='//button[text()="Sign up"]').click()
 
-    sleep(0.5)
     driver.save_screenshot(f"{screenshots_dir}/account_type_selection.png")
 
     driver.find_element(by=By.XPATH, value='//h3[text()="Tutor"]/..').click()
 
     # Fill out the tutor sign-up form
-    driver.find_element(by=By.NAME, value='first_name').send_keys('John')
+    driver.find_element(by=By.NAME, value='first_name').send_keys('Jenny')
     driver.find_element(by=By.NAME, value='last_name').send_keys('Doe')
-    driver.find_element(by=By.NAME, value='email').send_keys('johndoe@example.com')
-    driver.find_element(by=By.NAME, value='username').send_keys('johndoe')
-    driver.find_element(by=By.NAME, value='password').send_keys('Securepassword123!')
+    driver.find_element(by=By.NAME, value='email').send_keys('jenydoe@example.com')
+    driver.find_element(by=By.NAME, value='username').send_keys('JennyDoe11')
+    driver.find_element(by=By.NAME, value='password').send_keys('Securepassword1234!!!')
 
     driver.save_screenshot(f"{screenshots_dir}/filled_sign_up_form.png")
 
