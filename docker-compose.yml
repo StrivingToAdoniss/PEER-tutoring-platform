@@ -48,6 +48,10 @@ services:
         condition: service_healthy
       db-migrations:
         condition: service_completed_successfully
+      redis-server:
+        condition: service_healthy
+      celery:
+        condition: service_started
     command: >
       /bin/bash -c "python3 manage.py collectstatic --noinput &&
                     python3 manage.py initadmin &&
@@ -95,6 +99,8 @@ services:
 
   redis-server:
     image: redis:7.2.5-alpine3.20
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
   celery:
     container_name: celery
@@ -104,8 +110,8 @@ services:
     volumes:
       - ./backend:/usr/src/app
     depends_on:
-      - redis-server
-      - backend
+      redis-server:
+        condition: service_healthy
 
 volumes:
   static:
