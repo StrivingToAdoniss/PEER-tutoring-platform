@@ -4,8 +4,8 @@ import Button from './Button';
 import FilterBox from './FilterBox';
 
 // Import icons and images
-import mockTutor1 from '../assets/mock_tutor_1.jpg';
-import mockTutor2 from '../assets/mock_tutor_2.jpg';
+//import mockTutor1 from '../assets/mock_tutor_1.jpg';
+//import mockTutor2 from '../assets/mock_tutor_2.jpg';
 
 import iconSubject from '../assets/TutorSection/icon_subject.svg';
 import iconUniversity from '../assets/TutorSection/icon_university.svg';
@@ -13,38 +13,39 @@ import iconLanguage from '../assets/TutorSection/icon_language.svg';
 import iconLocation from '../assets/TutorSection/icon_location.svg';
 import iconRating from '../assets/TutorSection/icon_rating.svg';
 import iconPrice from '../assets/TutorSection/icon_price.svg';
+import tutors from '../utils/tutors.js'
 
 // Mock list of tutors with photos
-const tutors = [
-  {
-    name: 'Andrii Pupkin',
-    subject: 'Physics',
-    rating: 5,
-    price: '30€',
-    response: 1,
-    lessonDuration: '50 min',
-    bio: `An experienced, knowledgeable teacher will help you learn physics, study theory, learn to solve problems, think, analyze and draw conclusions. I work as a teacher of physics and computer science, I have 30 years of teaching experience, I have my own developments that are posted on various educational sites, I undergo annual training both in my specialty and in pedagogy and psychology.`,
-    location: 'Only online',
-    university: 'Université catholique de Louvain',
-    year: '3rd year',
-    languages: 'English C1, German B2, Ukrainian C1',
-    photo: mockTutor1,
-  },
-  {
-    name: 'Ihor Myshyk',
-    subject: 'Physics',
-    rating: 4.9,
-    price: '50€',
-    response: 10,
-    lessonDuration: '30 min',
-    bio: `Tutor for mathematics, physics, school, admission to university — Deep and accessible presentation of material, enthusiasm, optimism, block system, emphasis on practice, taking into account the psychological characteristics of the student. I have 16 years in educational institutions - school, lyceum, gymnasium, and 12 years - tutoring.`,
-    location: 'Brussels, online',
-    university: 'Universiteit Gent',
-    year: '3rd year',
-    languages: 'English',
-    photo: mockTutor2,
-  },
-];
+// const tutors = [
+//   {
+//     name: 'Andrii Pupkin',
+//     subject: 'Physics',
+//     rating: 5,
+//     price: '30€',
+//     response: 1,
+//     lessonDuration: '50 min',
+//     bio: `An experienced, knowledgeable teacher will help you learn physics, study theory, learn to solve problems, think, analyze and draw conclusions. I work as a teacher of physics and computer science, I have 30 years of teaching experience, I have my own developments that are posted on various educational sites, I undergo annual training both in my specialty and in pedagogy and psychology.`,
+//     location: 'Only online',
+//     university: 'Université catholique de Louvain',
+//     year: '3rd year',
+//     languages: 'English C1, German B2, Ukrainian C1',
+//     photo: mockTutor1,
+//   },
+//   {
+//     name: 'Ihor Myshyk',
+//     subject: 'Physics',
+//     rating: 4.9,
+//     price: '50€',
+//     response: 10,
+//     lessonDuration: '30 min',
+//     bio: `Tutor for mathematics, physics, school, admission to university — Deep and accessible presentation of material, enthusiasm, optimism, block system, emphasis on practice, taking into account the psychological characteristics of the student. I have 16 years in educational institutions - school, lyceum, gymnasium, and 12 years - tutoring.`,
+//     location: 'Brussels, online',
+//     university: 'Universiteit Gent',
+//     year: '3rd year',
+//     languages: 'English',
+//     photo: mockTutor2,
+//   },
+// ];
 
 const TutorSection = () => {
   const [currentPage, setCurrentPage] = useState(1);
