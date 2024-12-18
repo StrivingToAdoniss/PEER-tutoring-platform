@@ -17,6 +17,8 @@ services:
     build: e2e-tests
     environment:
       - SELENIUM_HOST=selenium-firefox
+      - FRONTEND_URL=http://nginx
+      - BACKEND_URL=http://backend:8000
     depends_on:
       nginx:
         condition: service_started
