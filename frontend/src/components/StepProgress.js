@@ -1,8 +1,25 @@
-import React from 'react';
-import '../styles/StepProgress.css'; // Custom styles for the step progress
+import React, { useEffect, useState } from 'react';
+import '../styles/StepProgress.css';
+import EventBus from '../services/EventBus';
+import { withLogger } from './withLogger';
 
-const StepProgress = ({ currentStep, totalSteps }) => {
-  // Create an array with the number of steps
+const StepProgress = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [totalSteps, setTotalSteps] = useState(1);
+
+  useEffect(() => {
+    const unsubStep = EventBus.on('stepChange', step => {
+      setCurrentStep(step);
+    });
+    const unsubTotal = EventBus.on('totalStepsChange', total => {
+      setTotalSteps(total);
+    });
+    return () => {
+      unsubStep();
+      unsubTotal();
+    };
+  }, []);
+
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
   return (
@@ -12,7 +29,6 @@ const StepProgress = ({ currentStep, totalSteps }) => {
           <div className={`step ${currentStep >= step ? 'active' : ''}`}>
             <div className="circle">{step}</div>
           </div>
-          {/* Add a line between the steps, but not after the last step */}
           {index < totalSteps - 1 && (
             <div className={`line ${currentStep > step ? 'filled' : ''}`}></div>
           )}
@@ -22,4 +38,4 @@ const StepProgress = ({ currentStep, totalSteps }) => {
   );
 };
 
-export default StepProgress;
+export default withLogger(StepProgress);
