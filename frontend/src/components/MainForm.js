@@ -1,111 +1,94 @@
-// src/components/MainForm.js
-import React, { useState } from 'react';
-import StepProgress from './StepProgress';
-import RoleSelection from './RoleSelection';
-import StudentForm from './StudentForm';
-import TutorFormStep from './TutorFormStep';
-import TutorUniversityStep from './TutorUniversityStep';
-import TutorSubjectsStep from './TutorSubjectsStep';
-import '../styles/MainForm.css';  // Importing the CSS for MainForm
+import React, { useState, useEffect } from "react";
+import SelectorFactory     from "./SelectorFactory";
+import StudentForm         from "./StudentForm";
+import TutorFormStep       from "./TutorFormStep";
+import TutorUniversityStep from "./TutorUniversityStep";
+import TutorSubjectsStep   from "./TutorSubjectsStep";
+import StepProgress        from "./StepProgress";
+import EventBus            from "../services/EventBus";
+import "../styles/MainForm.css";
 
 const MainForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [role, setRole] = useState(null); // Track selected role
-  const [totalSteps, setTotalSteps] = useState(2); // Default to StudentForm steps
-  const [formData, setFormData] = useState({
-    // Common fields
-    first_name: '',
-    last_name: '',
-    email: '',
-    username: '',
-    password: '',
-    university: '',
-    specialization: '',
-    current_grade: '',
-    role: '',
-    photo_url: null,             // For file uploads
-    confirmation_file: null,           // For file uploads
-    //subjects: [],
-    //specializations: {},
-    subject: '',
+  const [role, setRole]               = useState(null);
+  const [totalSteps, setTotalSteps]   = useState(2);
+  const [formData, setFormData]       = useState({
+    first_name: "", last_name: "", email: "", username: "", password: "",
+    university: "", specialization: "", current_grade: "", role: "",
+    photo_url: null, confirmation_file: null, subject: "",
   });
+
+  useEffect(() => {
+    EventBus.emit('stepChange', currentStep);
+  }, [currentStep]);
+
+  useEffect(() => {
+    EventBus.emit('totalStepsChange', totalSteps);
+  }, [totalSteps]);
 
   const handleRoleSelection = (selectedRole) => {
     setRole(selectedRole);
-    if (selectedRole === 'Tutor') {
-      setTotalSteps(3); // Tutor form has 4 steps
-    } else {
-      setTotalSteps(2); // Student form has 2 steps
-    }
-    handleNextStep(); // Move to next step after selecting a role
+    const newTotal = selectedRole === "Tutor" ? 3 : 2;
+    setTotalSteps(newTotal);
+    setCurrentStep(2);
   };
 
   const handleNextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, totalSteps));
+    setCurrentStep(prev => Math.min(prev + 1, totalSteps));
   };
 
   const handlePreviousStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    setCurrentStep(prev => Math.max(prev - 1, 1));
   };
 
   const handleFormDataChange = (newData) => {
-    setFormData((prevData) => {
-      const updatedData = { ...prevData };
-  
+    setFormData(prev => {
+      const updated = { ...prev };
       for (const key in newData) {
         if (newData[key] instanceof File) {
-          // Assign File objects directly
-          updatedData[key] = newData[key];
+          updated[key] = newData[key];
         } else if (
-          typeof newData[key] === 'object' &&
+          typeof newData[key] === "object" &&
           !Array.isArray(newData[key]) &&
           newData[key] !== null
         ) {
-          // Merge nested objects
-          updatedData[key] = { ...prevData[key], ...newData[key] };
+          updated[key] = { ...prev[key], ...newData[key] };
         } else {
-          // Assign other values directly
-          updatedData[key] = newData[key];
+          updated[key] = newData[key];
         }
       }
-  
-      return updatedData;
+      return updated;
     });
   };
-  
 
   const handleSubmit = () => {
-    //console.log('Form submitted!', formData);
-    // Handle form submission logic here
+    // submission logic
   };
 
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
         return (
-          <RoleSelection
+          <SelectorFactory
+            type="role"
             onSelectRole={handleRoleSelection}
           />
         );
       case 2:
-        if (role === 'Student') {
-          formData.role = 'STUDENT'
-          //console.log("Showing Studen page");
-
+        formData.role = role === "Tutor" ? "TUTOR" : "STUDENT";
+        if (role === "Student") {
           return (
             <StudentForm
-            initialFormData={formData}
+              initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
             />
           );
-        } else if (role === 'Tutor') {
-          formData.role = 'TUTOR'
-          //console.log("Showing Tutor page");
+        } else if (role === "Tutor") {
           return (
             <TutorFormStep
-            initialFormData={formData}
+              initialFormData={formData}
               onBack={handlePreviousStep}
               onNext={handleNextStep}
               onChange={handleFormDataChange}
@@ -114,11 +97,11 @@ const MainForm = () => {
         }
         break;
       case 3:
-        if (role === 'Tutor') {
-          formData.role = 'TUTOR'
+        if (role === "Tutor") {
+          formData.role = "TUTOR";
           return (
             <TutorUniversityStep
-            initialFormData={formData}
+              initialFormData={formData}
               onBack={handlePreviousStep}
               onSubmit={handleSubmit}
               onChange={handleFormDataChange}
@@ -127,7 +110,7 @@ const MainForm = () => {
         }
         break;
       case 4:
-        if (role === 'Tutor') {
+        if (role === "Tutor") {
           return (
             <TutorSubjectsStep
               formData={formData}
@@ -145,10 +128,7 @@ const MainForm = () => {
 
   return (
     <div className="main-form-container">
-      {/* StepProgress will always be at the top */}
-      <StepProgress currentStep={currentStep} totalSteps={totalSteps} />
-
-      {/* Render form content below StepProgress */}
+      <StepProgress />
       {renderStepContent()}
     </div>
   );

@@ -1,6 +1,8 @@
+// src/components/FilterBox.js
 import React, { useState } from 'react';
 import { RangeSlider } from './RangeSlider'; // Import your custom RangeSlider component
 import styles from '../styles/FilterBox.module.css';
+import { withLogger } from './withLogger';
 
 const FilterBox = ({
   subjects = [],
@@ -8,23 +10,22 @@ const FilterBox = ({
   universities = [],
   priceRange = [1, 500],
   currencyCode = '€',
-  minDistance = 1, // Minimum distance between the min and max price
+  minDistance = 1, // Minimum distance between min and max price
   onFilterChange,
 }) => {
   const [subject, setSubject] = useState('');
   const [location, setLocation] = useState('');
   const [mode, setMode] = useState('');
-  const [priceRangeState, setPriceRangeState] = useState(priceRange); // State for price range
+  const [priceRangeState, setPriceRangeState] = useState(priceRange);
   const [gender, setGender] = useState('');
   const [university, setUniversity] = useState('');
-  const [isPriceOpen, setIsPriceOpen] = useState(false); // To toggle price slider visibility
+  const [isPriceOpen, setIsPriceOpen] = useState(false);
 
   const handlePriceChange = (newPriceRange) => {
     setPriceRangeState(newPriceRange);
     handleFilterChange({ priceRange: newPriceRange });
   };
 
-  // Call when any filter changes
   const handleFilterChange = (updatedFilters = {}) => {
     const filters = {
       subject,
@@ -39,7 +40,6 @@ const FilterBox = ({
   };
 
   return (
-
     <div className={styles.filterBoxContainer}>
       <div className={styles.filterBox}>
         {/* Subject dropdown */}
@@ -52,7 +52,9 @@ const FilterBox = ({
               handleFilterChange();
             }}
           >
-            <option value=""disabled hidden>Select subject</option>
+            <option value="" disabled hidden>
+              Select subject
+            </option>
             {subjects.map((subj, index) => (
               <option key={index} value={subj}>
                 {subj}
@@ -62,7 +64,6 @@ const FilterBox = ({
         </div>
 
         {/* Location dropdown */}
-
         <div className={styles.filterItem}>
           <label>Location</label>
           <select
@@ -83,7 +84,6 @@ const FilterBox = ({
 
         {/* University dropdown */}
         <div className={styles.filterItem}>
-
           <label>University</label>
           <select
             value={university}
@@ -102,7 +102,6 @@ const FilterBox = ({
         </div>
 
         {/* Mode dropdown (Online/Offline) */}
-
         <div className={styles.filterItem}>
           <label>Mode</label>
           <select
@@ -118,39 +117,35 @@ const FilterBox = ({
           </select>
         </div>
 
-
+        {/* Price slider toggle */}
         <div className={styles.filterItem} style={{ position: 'relative' }}>
           <label>Price per lesson</label>
           <div
             className={styles.priceDisplay}
             onClick={() => setIsPriceOpen(!isPriceOpen)}
-            >
+          >
             {priceRangeState[0]} {currencyCode} – {priceRangeState[1]} {currencyCode}
             <button className={styles.toggleButton}>
-
               {isPriceOpen ? '✖' : '▼'}
             </button>
           </div>
           {isPriceOpen && (
-
             <div className={styles.customSliderContainer}>
-
               <RangeSlider
                 min={priceRange[0]}
                 max={priceRange[1]}
-                step={1} // Adjust step value as needed
+                step={1}
                 value={priceRangeState}
                 onChange={handlePriceChange}
-                isShowTooltip={true} // Optional: Show tooltips if needed
-                minDistance={minDistance} // Pass minDistance to RangeSlider
+                isShowTooltip={true}
+                minDistance={minDistance}
               />
             </div>
           )}
         </div>
 
-
-        <div className={styles.filterItem }>
-
+        {/* Gender dropdown */}
+        <div className={styles.filterItem}>
           <label>Gender</label>
           <select
             value={gender}
@@ -169,4 +164,4 @@ const FilterBox = ({
   );
 };
 
-export default FilterBox;
+export default withLogger(FilterBox);

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import ApiFacade from '../services/ApiFacade';
 import Button from './Button';
+import { withLogger } from './withLogger';
 import '../styles/StudentForm.css';
 import backgroundImage from '../assets/SignUp/singup_student_background_step_2.svg';
 import { useNavigate } from 'react-router-dom';
 
-
-const baseURL = process.env.REACT_APP_BASE_URL;
 const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const studentForm = document.querySelector('.student-form');
     const buttonContainer = document.querySelector('.form-button-container');
@@ -18,87 +19,73 @@ const StudentForm = ({ onSubmit, onBack, initialFormData, onChange }) => {
     }, 100);
   }, []);
 
-  const universities = ["KU Leuven", "Ghent University"];
-  const specialties = ["Math", "Physics"];
-  const courseNumbers = ["1", "2", "3", "4"];
-
-
-  const [errors, setErrors] = useState({});
+  const universities = ['KU Leuven', 'Ghent University'];
+  const specialties = ['Math', 'Physics'];
+  const courseNumbers = ['1', '2', '3', '4'];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    onChange({ [name]: value }); // Propagate changes to parent
+    onChange({ [name]: value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&]).{4,}$/;
+    const usernamePattern = /^.{4,}$/;
+    const validationErrors = {};
 
-  const passwordPattern = /^(?=.*[A-Z])(?=.*[@$!%*?&]).{4,}$/;
-  const usernamePattern = /^.{4,}$/;
+    if (!passwordPattern.test(initialFormData.password)) {
+      validationErrors.password =
+        'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
+    }
 
-  const validationErrors = {};
+    if (!usernamePattern.test(initialFormData.username)) {
+      validationErrors.username = 'Username must be at least 4 characters long.';
+    }
 
-  if (!passwordPattern.test(initialFormData.password)) {
-    validationErrors.password =
-      'Password must be at least 4 characters long, contain at least one uppercase letter and one special character.';
-  }
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-  if (!usernamePattern.test(initialFormData.username)) {
-    validationErrors.username = 'Username must be at least 4 characters long.';
-  }
+    try {
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append('first_name', initialFormData.first_name);
+      formDataToSubmit.append('last_name', initialFormData.last_name);
+      formDataToSubmit.append('university', initialFormData.university);
+      formDataToSubmit.append('specialization', initialFormData.specialization);
+      formDataToSubmit.append('current_grade', initialFormData.current_grade);
+      formDataToSubmit.append('email', initialFormData.email);
+      formDataToSubmit.append('username', initialFormData.username);
+      formDataToSubmit.append('password', initialFormData.password);
+      formDataToSubmit.append('role', initialFormData.role);
 
-  if (Object.keys(validationErrors).length > 0) {
-    setErrors(validationErrors);
-    return;
-  }
-
-  try {
-    // Create a FormData object and append fields
-    const formDataToSubmit = new FormData();
-    formDataToSubmit.append('first_name', initialFormData.first_name);
-    formDataToSubmit.append('last_name', initialFormData.last_name);
-    formDataToSubmit.append('university', initialFormData.university);
-    formDataToSubmit.append('specialization', initialFormData.specialization);
-    formDataToSubmit.append('current_grade', initialFormData.current_grade);
-    formDataToSubmit.append('email', initialFormData.email);
-    formDataToSubmit.append('username', initialFormData.username);
-    formDataToSubmit.append('password', initialFormData.password);
-    formDataToSubmit.append('role', initialFormData.role);
-
-    // Send the FormData object
-    const response = await axios.post(
-      `${baseURL}/accounts/registration`,
-      formDataToSubmit,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-
-
-    if(response.status === 201){
-      //console.log('Registration successful:', response.data);
+      await ApiFacade.registerUser(formDataToSubmit);
       navigate('/login');
       onSubmit(initialFormData);
-
+    } catch (err) {
+      if (err.response && err.response.data) {
+        setErrors(err.response.data);
+      } else {
+        console.error('Registration error:', err);
+      }
     }
+  };
 
-  } catch (error) {
-    if (error.response && error.response.data) {
-      setErrors(error.response.data);
-    } else {
-      console.error('Registration error:', error);
-    }
-  }
-};
+  const requiredFields = [
+    'first_name',
+    'last_name',
+    'email',
+    'username',
+    'password',
+    'specialization',
+    'university',
+    'current_grade',
+  ];
 
-const requiredFields = ['first_name', 'last_name', 'email', 'username', 'password', 'specialization', 'university', 'current_grade'];
-
-  const isFormComplete = Object.values(requiredFields).every(
+  const isFormComplete = requiredFields.every(
     (field) => initialFormData[field] && initialFormData[field].trim() !== ''
   );
-
 
   return (
     <div className="student-form-container">
@@ -137,9 +124,9 @@ const requiredFields = ['first_name', 'last_name', 'email', 'username', 'passwor
               <option value="" disabled>
                 Select University
               </option>
-              {universities.map((university, index) => (
-                <option key={index} value={university}>
-                  {university}
+              {universities.map((uni, index) => (
+                <option key={index} value={uni}>
+                  {uni}
                 </option>
               ))}
             </select>
@@ -221,4 +208,4 @@ const requiredFields = ['first_name', 'last_name', 'email', 'username', 'passwor
   );
 };
 
-export default StudentForm;
+export default withLogger(StudentForm);

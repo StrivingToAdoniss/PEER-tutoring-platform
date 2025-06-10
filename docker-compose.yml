@@ -17,8 +17,6 @@ services:
     build: e2e-tests
     environment:
       - SELENIUM_HOST=selenium-firefox
-      - FRONTEND_URL=http://nginx
-      - BACKEND_URL=http://backend:8000
     depends_on:
       nginx:
         condition: service_started
@@ -48,19 +46,18 @@ services:
         condition: service_healthy
       db-migrations:
         condition: service_completed_successfully
-      redis-server:
-        condition: service_healthy
-      celery:
-        condition: service_started
     command: >
       /bin/bash -c "python3 manage.py collectstatic --noinput &&
-                    python3 manage.py initadmin &&
-                    gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
+                    python3 manage.py makemigrations --noinput&&
+                    python3 manage.py migrate --noinput &&
+                    python3 manage.py shell -c \"from django.contrib.auth import get_user_model
+      User = get_user_model(); User.objects.create_superuser('admin@gmail.com', 'Django@2004')\" 
+      && gunicorn backend.wsgi:application --bind 0.0.0.0:8000"
 
   frontend-builder:
     environment:
       - CI=false
-      - REACT_APP_BASE_URL=http://nginx/api/v1
+      - REACT_APP_BASE_URL=http://127.0.0.1:8000/api/v1
     build:
       context: ./frontend
     volumes:
@@ -89,7 +86,7 @@ services:
       - POSTGRES_PASSWORD=django
 
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
     healthcheck:
       test: [ "CMD-SHELL", "PGPASSWORD=$${POSTGRES_PASSWORD} pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
@@ -99,8 +96,6 @@ services:
 
   redis-server:
     image: redis:7.2.5-alpine3.20
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
   celery:
     container_name: celery
@@ -110,8 +105,8 @@ services:
     volumes:
       - ./backend:/usr/src/app
     depends_on:
-      redis-server:
-        condition: service_healthy
+      - redis-server
+      - backend
 
 volumes:
   static:
