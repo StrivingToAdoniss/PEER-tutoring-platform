@@ -20,7 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/accounts/', include('accounts.urls')),
     path('api/v1/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-    path('api/v1/tutor_profile/', include('tutors_profiles.urls')),
+    path('api/v1/profiles/', include('profiles.urls')),
+    path('api/v1/reviews/', include('reviews.urls')),
     path(
         'swagger/schema/',
         schema_view.with_ui(

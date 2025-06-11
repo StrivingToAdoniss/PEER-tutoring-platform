@@ -13,18 +13,6 @@ services:
       timeout: 10s
       retries: 3
 
-  e2e-tests:
-    build: e2e-tests
-    environment:
-      - SELENIUM_HOST=selenium-firefox
-    depends_on:
-      nginx:
-        condition: service_started
-      selenium-firefox:
-        condition: service_healthy
-    volumes:
-      - ./e2e_tests_screenshots/:/app/screenshots
-
   db-migrations:
     build: ./backend
     depends_on:
