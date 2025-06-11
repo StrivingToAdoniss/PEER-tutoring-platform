@@ -1,18 +1,8 @@
 import os
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.webdriver import WebDriver
-from tenacity import sleep
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://nginx")
-
-
-def test_student_e2e(driver: WebDriver):
-    driver.implicitly_wait(5)
-
-    student_sign_up(driver)
-    student_log_in(driver)
-    student_log_out(driver)
 
 
 def student_sign_up(driver):
@@ -55,6 +45,7 @@ def student_log_in(driver):
     driver.find_element(By.XPATH, '//input[@type="email"]').send_keys('marcopolo@example.com')
 
     driver.find_element(By.XPATH, '//button[@type="submit" and contains(@class, "login-button")]').click()
+
 
 def student_log_out(driver):
     driver.find_element(By.XPATH, '//img[@class="logout-button" and @alt="Log out"]').click()

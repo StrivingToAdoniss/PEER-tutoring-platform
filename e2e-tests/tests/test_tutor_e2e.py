@@ -3,24 +3,12 @@ from pathlib import Path
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
-from tenacity import sleep
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://nginx")
 BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:8000")
 
-
 CERTIFICATE_PATH = Path("assets/certificate.pdf").absolute()
 PROFILE_PIC_PATH = Path("assets/profile_pic.jpg").absolute()
-
-
-def test_tutor_e2e(driver: WebDriver):
-    driver.implicitly_wait(5)
-
-    tutor_sign_up(driver)
-    tutor_log_in(driver, "impossible_login")
-    admin_approve_tutor(driver)
-    tutor_log_in(driver, "possible_login")
-    tutor_log_out(driver)
 
 
 def tutor_sign_up(driver: WebDriver):
@@ -141,5 +129,3 @@ def tutor_log_out(driver: WebDriver):
 
     driver.find_element(By.XPATH, '//img[@class="logout-button" and @alt="Log out"]').click()
     driver.save_screenshot(f"{screenshots_dir}/logout.png")
-
-
