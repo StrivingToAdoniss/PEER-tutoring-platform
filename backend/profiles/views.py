@@ -10,7 +10,7 @@ class ProfileListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = ProfileSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['profile_type']
+    filterset_fields = ["profile_type"]
     queryset = Profile.objects.all()
 
 
@@ -23,7 +23,7 @@ class ProfileDetailView(generics.RetrieveAPIView):
 class ProfileProtectedView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated, IsMatchingRole]
     serializer_class = ProfileCreateSerializer
-    lookup_field = 'pk'
+    lookup_field = "pk"
 
     def get_queryset(self):
         return Profile.objects.filter(user=self.request.user)

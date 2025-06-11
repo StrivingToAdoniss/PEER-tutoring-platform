@@ -9,6 +9,6 @@ from .models import Review
 @receiver(post_delete, sender=Review)
 def update_profile_rating(sender, instance, **kwargs):
     profile = instance.profile
-    agg = profile.reviews.aggregate(avg_rating=Avg('rating'))
-    profile.avg_rating = agg['avg_rating'] or 0
-    profile.save(update_fields=['avg_rating'])
+    agg = profile.reviews.aggregate(avg_rating=Avg("rating"))
+    profile.avg_rating = agg["avg_rating"] or 0
+    profile.save(update_fields=["avg_rating"])
