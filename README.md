@@ -65,24 +65,120 @@ Decorator: обгорнуто в withLogger.
 **RoleSelection**
 Factory Method: інтегрується через SelectorFactory як випадок type="role".
 
-# Backend and DevOps parts
-
-## Backend
-Бекенд для платформи Peer-To-Peer створено за допомогою Django REST framework в якості СУБД - PostgreSQL, Celery - для обробки background tasks таких як відправка підтвердження по email та Redis у якості - message broker.
-
-## DevOps
-Для налаштування взаємодії між компонентами був використаний Docker та Docker Compose. У якості веб-сервера було вирішено обрати Nginx. В якості CI - був використаний GitHub Actions. Усі налаштування можуть бути знайдені у папках `nginx` та `.github`.
-
----
+# Backend
 
 ## Функціонал
 - **Система авторизації та автентифікації** за допомогою JWT.
 - **Оптимізована база даних** для ролей користувачів (Тютори та Студенти) через використання проксі-моделей, оптимізацію запитів для уникнення N+1 проблеми та пагінацію.
 - **Тютори мають проходити затвердження адміном** перед доступом до системи. Процес апруву реалізовано через email-сповіщення з можливістю схвалення або відхилення заявки.
 - **Фільтри для пошуку тюторів** за університетом, спеціальністю, ціною за годину тощо.
-- Тютори можуть редагувати свій профіль, змінюючи інформацію про ціну занять, локацію тощо.
+- ** Тютори можуть редагувати свій профіль, змінюючи інформацію про ціну занять, локацію тощо.
+- ** Створення профіля для тютора та студента та управління ним
+- **  Можливість оцінювати тютора для студента
 
 ---
+
+
+## Proxy Pattern
+
+**Проблема:**  
+- Є єдина таблиця `User`, але треба дві «рольові» сутності — `Student` і `Tutor` — з різним API й поведінкою, без дублювання колонок чи зайвих JOIN-ів.
+
+**Імплементація:**  
+
+1. Створені proxy-класи:  
+   ```python
+   class Student(User):
+       class Meta:
+           proxy = True
+       objects = StudentManager()  # фільтр role='STUDENT'
+
+   class Tutor(User):
+       class Meta:
+           proxy = True
+       objects = TutorManager()   # фільтр role='TUTOR'
+   
+- Менеджери переопрацьовують `get_queryset()`, додаючи `WHERE role=…`.
+- У `save()` проксі автоматично встановлюють правильний `role`.
+
+**Результат:**
+
+- Жодного дублювання таблиць — усі користувачі в єдиній.
+- `Student.objects.all()` повертає лише студентів, `Tutor.objects.all()` — лише репетиторів.
+- Чистий код без розкиданих `if user.role == …` у бізнес-логіці.
+
+**Посилання:**
+- https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/backend/accounts/models.py
+
+## Factory Method Pattern
+
+**Проблема:**
+
+- Логіка створення й оновлення профілів різних типів (студентів vs репетиторів) розпорошується по в’юхах і серіалізаторах через `if/else`, що призводить до:
+  - дублювання валідацій,
+  - дублювання кроків присвоєння полів,
+  - складності додати новий тип профілю.
+
+**Імплементація:**
+
+- Strategy-інтерфейс із методами `validate(data)` та `fill(profile, data)`.
+- Конкретні стратегії: `TutorProfileStrategy`, `StudentProfileStrategy`.
+- ProfileFactory:
+  ```python
+  strat = STRATEGIES[data['profile_type']]
+  strat.validate(data)
+  strat.fill(profile, data)
+  profile.save()
+  ```
+- Виклик фабрики в серіалізаторах (`.create()`/`.update()`) та в’юхах (`serializer.save()`).
+
+**Результат:**
+
+- Єдина точка створення/оновлення профілів.
+- Жодного розкидання `if/else` у контролерах.
+- Легке додавання нових типів профілів через нову стратегію.
+
+**Посилання:**
+- https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/backend/profiles/services.py
+- https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/backend/profiles/serializers.py
+- https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/backend/profiles/views.py
+
+## Observer Pattern
+
+**Проблема:**
+
+- Потрібно автоматично оновлювати середній рейтинг репетитора при створенні, зміні чи видаленні відгуків.
+- Без Observer довелося б дублювати виклики перерахунку в кожному CRUD-методі.
+
+**Імплементація через Django-сигнали:**
+
+- Використовуються сигнали `post_save` та `post_delete` для моделі `Review`.
+- Функція-обробник:
+  ```python
+  @receiver(post_save, sender=Review)
+  @receiver(post_delete, sender=Review)
+  def update_profile_rating(sender, instance, **kwargs):
+      avg = instance.profile.reviews.aggregate(Avg('rating'))['rating__avg'] or 0
+      instance.profile.save(update_fields=['average_rating'])
+  ```
+- Підключення сигналів у `apps.py`, щоб Django їх «побачив».
+
+**Результат:**
+
+- Рейтинг перераховується автоматично — без ручних викликів у в’юхах.
+- Легка підписка нових обробників (сповіщення, логування) на ті ж події.
+
+**Посилання:**
+- https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/backend/reviews/signals.py
+
+---
+
+**Коротко:**
+
+- **Observer:** підписка-сповіщення про події через сигнали.
+- **Proxy:** сурогат моделі з тим самим інтерфейсом, але з фільтрацією/контролем, без окремих таблиць.
+- **Factory:** централізоване створення об’єктів із вибором реалізації та валідацією через стратегії.
+
 
 ## Запуск проекту
 1. Заповніть `.env` файл необхідними даними.
@@ -92,136 +188,3 @@ Factory Method: інтегрується через SelectorFactory як вип�
     docker-compose up --build
     ```
 
-3. Після успішного білда перейдіть за посиланням: [http://127.0.0.1:80](http://127.0.0.1:80).
-
-### Приклад запущеної сторінки:
-
-![image](https://github.com/user-attachments/assets/fc73307a-fc22-4a77-8caf-c26ef02c46d6)
----
-
-## Реєстрація тютора та студента
-
-- Для студента:  
-  ![Реєстрація студента](https://github.com/user-attachments/assets/eba03469-0d5d-4039-9d4a-bd64aa3ce626)
-
-- Для тютора:  
-  ![Реєстрація тютора](https://github.com/user-attachments/assets/24396a62-631f-462a-a31d-92fe14698739)
-
----
-
-## Логін
-
-За логікою проекту, студент може увійти одразу, а тютор потребує підтвердження:
-
-- **Для студента:**  
-  ![Логін студента](https://github.com/user-attachments/assets/f859adf4-58c8-4839-9f8b-24fcfbb3220e)
-
-- **Для неприйнятого тютора:**  
-  ![Логін неприйнятого тютора](https://github.com/user-attachments/assets/8a4dd7f8-7bcc-4977-920f-64fbf992913c)
-
-- **Адмінський апрув тютора:**  
-  ![Апрув тютора](https://github.com/user-attachments/assets/5ab30590-5bd9-4170-b230-5326999e3677)
-
-- **Логін для прийнятого тютора:**  
-  ![Логін прийнятого тютора](https://github.com/user-attachments/assets/c60375e4-ebc0-4841-a57c-d0f2638f06bb)
-
----
-
-## Додатковий функціонал
-- Можливість фільтрувати тюторів за різними критеріями.
-- Редагування профілю тютором.
-- Увесь функціонал протестовано за допомогою `pytest`.
-
-
-## Unit tests
-
-Для забезпечення стабільності та надійності платформи реалізовані наступні тести:
-
-1. **accounts/test_models.py** 
-   - Перевіряє створення та властивості моделей користувачів, студентів, викладачів, і зв'язаних об'єктів, таких як TutorMore, а також роботу менеджерів моделей.
-   
-2. **accounts/test_urls.py**  
-   - Перевіряє правильність URL-роутінгу для основних ендпоінтів, таких як реєстрація, вхід, вихід, та оновлення токена.
-
-3. **accounts/test_tasks.py** 
-   - Tестує коректність виконання асинхронних задач, зокрема скидання пароля, відправлення повідомлень викладачам і адміністраторам.
-
-4. **accounts/test_views.py**
-   - Тестує API-ендпоінти для реєстрації, входу, виходу, і обробки помилок, таких як відсутність полів або некоректні дані.
-
-5. **tutors_profiles/test_filters.py**
-   - Перевіряє роботу фільтрів для моделі TutorProfile, включаючи фільтрацію за університетом, предметом, локацією, форматом занять та ціною за годину.
-
-6. **tutors_profiles/test_models.py**
-   - Тестує створення та валідацію моделі TutorProfile, зокрема перевірку значень полів, поведінку за замовчуванням та валідаційні обмеження.
-
-7. **tutors_profiles/test_urls.py**
-   - Перевіряє правильність URL-роутінгу для ендпоінтів, таких як список профілів, створення профілю та оновлення профілю викладача.
-
-8. **tutors_profiles/test_views.py**
-   - Тестує API-ендпоінти для створення, перегляду, оновлення профілів викладачів, включаючи перевірку автентифікації, авторизації та обробки запитів.
-
-## Встановлення та запуск
-
-### Встановлення
-
-1. Клонуйте репозиторій:
-```bash
-   git clone <https://github.com/StrivingToAdoniss/PEER-tutoring-platform.git>
-```
-
-2. Перейдіть до каталогу проекту:
-```bash
-   cd <repository-folder>
-```
-
-3. Встановіть залежності:
-```bash
-   pip install -r requirements.txt
-```
-
-### Запуск тестів:
-
-1. Запустіть проект командою:
-```bash
- docker-compose up 
- ```
-
-2. Перейдіть в директорію backend
-```bash 
-cd backend
-```
-
-3. Запустіть тести
-Для Bash:
-```bash 
-export $(grep -v '^#' .test.env | xargs) && pytest ./accounts/tests ./tutors_profiles/tests 
-```
-
-Для PowerShell:
-```bash
-Get-Content .test.env | ForEach-Object {
-    if ($_ -notmatch '^#' -and $_ -ne '') {
-        $key, $value = $_ -split '=', 2
-        [System.Environment]::SetEnvironmentVariable($key.Trim(), $value.Trim())
-    }
-}
-
-pytest ./accounts/tests ./tutors_profiles/tests
-```
-
-## End-to-end tests
-
-E2e (end-to-end) тести
-   - Перевіряє повний процес реєстрації викладача на веб-платформі. Включаючи всі етапи, такі як реєстрація, спроба зайти в акаунт,
-далі адміністратор з своєї сторінки одобряє викладача, викладач успішно логіниться та виходить з своєї сторінки
-   - Перевіряє повний процес реєстрації студента на веб-платформі. Включаючи всі етапи, такі як реєстрація, логін та логаут
-   - Робить скріншоти на ключових етапах (для валідації та документації). Скріншоти можна знайти в вкладці actions
-натиснувши на конкретний запуск workflow з назвою End to end tests. Знизу сторінки в секції Artifacts можна завантажити e2e_tests_screenshots 
-
-### Встановлення та запуск
-
-```bash
-docker compose run --build --rm e2e-tests
-```
-Під час запуску можна зайти на [інтерактивну сесію vnc в браузері](http://localhost:7900/?autoconnect=1&resize=scale&password=secret) і подивится як виконуються тести
