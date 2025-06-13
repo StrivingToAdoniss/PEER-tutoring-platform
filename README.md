@@ -40,30 +40,111 @@ A full-stack web application for peer-to-peer tutoring among university students
 
 ## Виористання GoF патернів
 
-**LogInForm**
+### Factory Method (для селекторів)
+**Проблема:**
+- У формах багато місць, де рендериться один із кількох схожих компонентів (RoleSelection, SubjectSelector, SpecializationSelector). Без фабрики доводиться дублювати імпорти й умовні if/else або switch.
+  
+**Імплементація:**
 
-Facade: замість прямого axios викликає ApiFacade.login(...) для аутентифікації.
+```jsx
+// SelectorFactory: ключ `type` → потрібний компонент  
+const selectorMap = { role: RoleSelection, subject: SubjectSelector, specialization: SpecializationSelector };  
+export default function SelectorFactory({ type, ...props }) {  
+  const C = selectorMap[type];  
+  return C ? <C {...props}/> : null;  
+}
+```
+**Результат:**
 
-Decorator: обгорнуто в withLogger (логування пропсів) і може бути обгорнуто в withErrorBoundary (фолбек при помилці).
+- Єдина точка реєстрації нових селекторів;
+- Чистий код у формах без громіздких умов;
+- Легкість масштабування — додати новий селектор лише в selectorMap.
 
-**MainForm**
+**Посилання:**
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/SelectorFactory.js
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/MainForm.js
 
-Observer: публікує зміни кроків (stepChange, totalStepsChange) у EventBus.
+### Decorator (HOC: withLogger, withErrorBoundary)
+**Проблема:**
+- Повторюване логування props і обробка помилок у кожному компоненті вручну захаращує код.
 
-Factory Method: рендерить різні селектори через єдиний SelectorFactory за ключем type.
+**Імплементація:**
 
-**FilterBox**
+```jsx
+// withLogger: логування props  
+export function withLogger(W) { … return <W {...props}/>; }
 
-Decorator: обгорнуто в withLogger для централізованого логування пропсів.
+// withErrorBoundary: fallback UI при помилці  
+export function withErrorBoundary(W, fallback) { … if (hasError) return fallback; else return <W/>; }
+```
+**Результат:**
 
-**TutorSection**
+- Логіка логування/фолбеку винесена в HOC без змін у самих компонентах;
+- У разі рендер-помилки показується запасний інтерфейс;
+- Легке вмикання/вимикання декорацій заміною одного рядка у export default.
 
-Facade: отримує список репетиторів через ApiFacade.fetchTutors(...).
+**Посилання:**
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/withLogger.js
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/withErrorBoundry.js
 
-Decorator: обгорнуто в withLogger.
+### Facade (ApiFacade)
+**Проблема:**
+- Кожен компонент робить свої HTTP-запити (axios.post, axios.get), дублюючи URL, заголовки й обробку токенів.
+  
+**Імплементація:**
 
-**RoleSelection**
-Factory Method: інтегрується через SelectorFactory як випадок type="role".
+```jsx
+class ApiFacade {
+  async login(creds) { return axios.post(`${BASE}/accounts/login`, creds); }
+  async registerUser(fd) { return axios.post(`${BASE}/accounts/registration`, fd, { … }); }
+  async fetchTutors(filters) { return axios.get(`${BASE}/tutors`, { params: filters }); }
+  async getProfile() { return axios.get(`${BASE}/accounts/profile`, { headers: { Authorization: … } }); }
+}
+export default new ApiFacade();
+```
+**Результат:**
+
+- Єдиний інтерфейс для всіх API-дзвінків;
+- Централізоване налаштування BASE_URL і заголовків;
+- Мінімум дублювання коду у компонентах.
+
+**Посилання:**
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/services/ApiFacade.js
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/LogInForm.js
+
+### Observer (EventBus)
+**Проблема:**
+- Керувати станом прогрес-бару (StepProgress) із глибинного компонента без “пробросу” пропсів через кожний рівень.
+  
+**Імплементація:**
+
+```jsx
+// EventBus: on(event, cb) ↔ emit(event, payload)
+class EventBus { … }
+export default new EventBus();
+jsx
+Copy
+Edit
+// MainForm: публікує зміни
+EventBus.emit('stepChange', currentStep);
+EventBus.emit('totalStepsChange', totalSteps);
+
+// StepProgress: підписується на події
+useEffect(() => {
+  const unsub1 = EventBus.on('stepChange', setCurrent);
+  const unsub2 = EventBus.on('totalStepsChange', setTotal);
+  return () => { unsub1(); unsub2(); };
+}, []);
+```
+**Результат:**
+
+- Незалежність компонентів: MainForm і StepProgress не пов’язані пропсами;
+- Легко додавати інші підписники на ті самі події (наприклад, показ підказок);
+- Чистий, безпрокладний обмін повідомленнями через події.
+
+  **Посилання:**
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/services/EventBus.js
+  - https://github.com/StrivingToAdoniss/PEER-tutoring-platform/blob/main/frontend/src/components/StepProgress.js
 
 # Backend
 
